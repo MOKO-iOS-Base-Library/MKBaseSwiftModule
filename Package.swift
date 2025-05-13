@@ -37,7 +37,7 @@ let package = Package(
                 .product(name: "TextFieldEffects", package: "TextFieldEffects"),
                 .product(name: "Toast", package: "Toast-Swift")
             ],
-            path: "Sources/MKBaseSwiftModule",
+            path: "Sources",
             resources: [
                 .process("Assets")
             ],
