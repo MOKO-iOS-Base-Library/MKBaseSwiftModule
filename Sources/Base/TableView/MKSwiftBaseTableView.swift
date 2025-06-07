@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MKSwiftBaseTableView:UITableView {
+open class MKSwiftBaseTableView:UITableView {
     override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style);
         if #available(iOS 15.0, tvOS 15, *) {
@@ -18,7 +18,7 @@ class MKSwiftBaseTableView:UITableView {
         self.backgroundColor = .white;
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }

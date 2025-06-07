@@ -14,7 +14,7 @@ private let offsetX: CGFloat = 15
 private let selectButtonWidth: CGFloat = 130
 private let selectButtonHeight: CGFloat = 30
 
-class MKSwiftTextButtonCellModel {
+public class MKSwiftTextButtonCellModel {
     // MARK: Cell Top Configuration
     var index: Int = 0
     var contentColor: UIColor = .white
@@ -63,13 +63,13 @@ class MKSwiftTextButtonCellModel {
 
 // MARK: - Protocol
 
-protocol MKSwiftTextButtonCellDelegate: AnyObject {
+public protocol MKSwiftTextButtonCellDelegate: AnyObject {
     func MKSwiftTextButtonCellSelected(index: Int, dataListIndex: Int, value: String)
 }
 
 // MARK: - Cell
 
-class MKSwiftTextButtonCell: UITableViewCell {
+public class MKSwiftTextButtonCell: UITableViewCell {
     
     // MARK: Properties
     static let cellIdentifier = "MKSwiftTextButtonCellIdentifier"
@@ -164,12 +164,12 @@ class MKSwiftTextButtonCell: UITableViewCell {
         setNeedsLayout()
     }
     
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         updateConstraints()
     }
     
-    internal override func updateConstraints() {
+    public override func updateConstraints() {
         guard let dataModel = dataModel else { return }
         
         let hasNote = !dataModel.noteMsg.isEmpty

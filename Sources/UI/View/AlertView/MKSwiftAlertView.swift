@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MKSwiftAlertViewAction {
+public class MKSwiftAlertViewAction {
     let title: String
     let handler: (() -> Void)
     
@@ -17,7 +17,7 @@ class MKSwiftAlertViewAction {
     }
 }
 
-class MKSwiftAlertViewTextField {
+public class MKSwiftAlertViewTextField {
     let textValue: String
     let placeholder: String
     let textFieldType: MKSwiftTextFieldType
@@ -37,7 +37,7 @@ class MKSwiftAlertViewTextField {
     }
 }
 
-class MKSwiftAlertView: UIView {
+public class MKSwiftAlertView: UIView {
     
     // MARK: - Constants
     private let centerViewOffsetX: CGFloat = 50.0

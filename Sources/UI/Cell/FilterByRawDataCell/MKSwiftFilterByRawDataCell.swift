@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class MKSwiftFilterByRawDataCellModel: NSObject {
+public class MKSwiftFilterByRawDataCellModel: NSObject {
     var index: Int = 0
     var msg: String = ""
     var contentColor: UIColor = .white
@@ -69,18 +69,18 @@ class MKSwiftFilterByRawDataCellModel: NSObject {
     }
 }
 
-enum MKFilterByRawDataTextType: Int {
+public enum MKFilterByRawDataTextType: Int {
     case dataType
     case minIndex
     case maxIndex
     case rawDataType
 }
 
-protocol MKSwiftFilterByRawDataCellDelegate: AnyObject {
+public protocol MKSwiftFilterByRawDataCellDelegate: AnyObject {
     func mk_rawFilterDataChanged(_ textType: MKFilterByRawDataTextType, index: Int, textValue: String)
 }
 
-class MKSwiftFilterByRawDataCell: MKSwiftBaseCell {
+public class MKSwiftFilterByRawDataCell: MKSwiftBaseCell {
     var dataModel: MKSwiftFilterByRawDataCellModel? {
         didSet {
             updateContent()

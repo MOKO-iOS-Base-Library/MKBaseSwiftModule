@@ -9,7 +9,7 @@
 import SnapKit
 import UIKit
 
-class MKSwiftBaseCell: UITableViewCell {
+open class MKSwiftBaseCell: UITableViewCell {
     var indexPath:IndexPath?;
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -18,11 +18,11 @@ class MKSwiftBaseCell: UITableViewCell {
         contentView.addSubview(lineView);
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews();
         lineView.snp.makeConstraints { make in
             make.left.equalTo(15);

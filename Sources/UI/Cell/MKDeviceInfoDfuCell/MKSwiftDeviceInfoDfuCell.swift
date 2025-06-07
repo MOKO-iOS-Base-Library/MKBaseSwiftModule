@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 // MARK: - Cell Model
-class MKSwiftDeviceInfoDfuCellModel {
+public class MKSwiftDeviceInfoDfuCellModel {
     var index: Int = 0
     var leftMsg: String = ""
     var rightMsg: String = ""
@@ -17,12 +17,12 @@ class MKSwiftDeviceInfoDfuCellModel {
 }
 
 // MARK: - Cell Delegate
-protocol MKSwiftDeviceInfoDfuCellDelegate: AnyObject {
+public protocol MKSwiftDeviceInfoDfuCellDelegate: AnyObject {
     func mk_textButtonCell_buttonAction(_ index: Int)
 }
 
 // MARK: - Cell Implementation
-class MKSwiftDeviceInfoDfuCell: MKSwiftBaseCell {
+public class MKSwiftDeviceInfoDfuCell: MKSwiftBaseCell {
     
     // MARK: - UI Components
     private var msgLabel: UILabel!
@@ -85,7 +85,7 @@ class MKSwiftDeviceInfoDfuCell: MKSwiftBaseCell {
     }
     
     // MARK: - Layout
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         
         msgLabel.snp.remakeConstraints { make in

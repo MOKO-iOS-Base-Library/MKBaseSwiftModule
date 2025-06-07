@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 // MARK: - Cell Model
-class MKSwiftButtonMsgCellModel {
+public class MKSwiftButtonMsgCellModel {
     // Cell top configuration
     var index: Int = 0
     var contentColor: UIColor = .white
@@ -46,12 +46,12 @@ class MKSwiftButtonMsgCellModel {
 }
 
 // MARK: - Cell Delegate
-protocol MKSwiftButtonMsgCellDelegate: AnyObject {
+public protocol MKSwiftButtonMsgCellDelegate: AnyObject {
     func mk_buttonMsgCellButtonPressed(_ index: Int)
 }
 
 // MARK: - Cell Implementation
-class MKSwiftButtonMsgCell: MKSwiftBaseCell {
+public class MKSwiftButtonMsgCell: MKSwiftBaseCell {
     
     // MARK: - UI Components
     private var msgLabel: UILabel!
@@ -120,7 +120,7 @@ class MKSwiftButtonMsgCell: MKSwiftBaseCell {
     }
     
     // MARK: - Layout
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         
         let hasNote = !(noteLabel.text?.isEmpty ?? true)

@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 // MARK: - Cell Model
-class MKSwiftNormalTextCellModel {
+public class MKSwiftNormalTextCellModel {
     var methodName: String = ""
     var contentColor: UIColor = .white
     
@@ -51,7 +51,7 @@ class MKSwiftNormalTextCellModel {
 }
 
 // MARK: - Cell Implementation
-class MKSwiftNormalTextCell: MKSwiftBaseCell {
+public class MKSwiftNormalTextCell: MKSwiftBaseCell {
     
     // MARK: - UI Components
     private var leftIcon: UIImageView?
@@ -120,7 +120,7 @@ class MKSwiftNormalTextCell: MKSwiftBaseCell {
     }
     
     // MARK: - Layout
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         
         let hasNote = !noteLabel.text!.isEmpty

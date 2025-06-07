@@ -8,19 +8,19 @@
 import UIKit
 import SnapKit
 
-class MKSwiftFilterBeaconCellModel: NSObject {
+public class MKSwiftFilterBeaconCellModel: NSObject {
     var index: Int = 0
     var msg: String = ""
     var minValue: String = ""
     var maxValue: String = ""
 }
 
-protocol MKSwiftFilterBeaconCellDelegate: AnyObject {
+public protocol MKSwiftFilterBeaconCellDelegate: AnyObject {
     func mk_beaconMinValueChanged(_ value: String, index: Int)
     func mk_beaconMaxValueChanged(_ value: String, index: Int)
 }
 
-class MKSwiftFilterBeaconCell: MKSwiftBaseCell {
+public class MKSwiftFilterBeaconCell: MKSwiftBaseCell {
     var dataModel: MKSwiftFilterBeaconCellModel? {
         didSet {
             updateContent()

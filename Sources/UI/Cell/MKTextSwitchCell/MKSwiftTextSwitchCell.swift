@@ -10,7 +10,7 @@ import SnapKit
 
 // MARK: - Model
 
-class MKSwiftTextSwitchCellModel {
+public class MKSwiftTextSwitchCellModel {
     // MARK: Cell Top Configuration
     var index: Int = 0
     var contentColor: UIColor = .white
@@ -49,13 +49,13 @@ class MKSwiftTextSwitchCellModel {
 
 // MARK: - Protocol
 
-protocol MKSwiftTextSwitchCellDelegate: AnyObject {
+public protocol MKSwiftTextSwitchCellDelegate: AnyObject {
     func MKSwiftTextSwitchCellStatusChanged(isOn: Bool, index: Int)
 }
 
 // MARK: - Cell
 
-class MKSwiftTextSwitchCell: UITableViewCell {
+public class MKSwiftTextSwitchCell: UITableViewCell {
     
     // MARK: Properties
     static let cellIdentifier = "MKSwiftTextSwitchCellIdentifier"
@@ -157,12 +157,12 @@ class MKSwiftTextSwitchCell: UITableViewCell {
         setNeedsLayout()
     }
     
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         updateConstraints()
     }
     
-    internal override func updateConstraints() {
+    public override func updateConstraints() {
         guard let dataModel = dataModel else { return }
         
         let hasNote = !dataModel.noteMsg.isEmpty

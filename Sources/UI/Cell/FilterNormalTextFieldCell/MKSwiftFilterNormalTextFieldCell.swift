@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 // MARK: - Cell Model
-class MKSwiftFilterNormalTextFieldCellModel {
+public class MKSwiftFilterNormalTextFieldCellModel {
     var index: Int = 0
     var msg: String = ""
     var textFieldValue: String = ""
@@ -19,12 +19,12 @@ class MKSwiftFilterNormalTextFieldCellModel {
 }
 
 // MARK: - Cell Delegate
-protocol MKSwiftFilterNormalTextFieldCellDelegate: AnyObject {
+public protocol MKSwiftFilterNormalTextFieldCellDelegate: AnyObject {
     func mk_filterNormalTextFieldValueChanged(_ text: String, index: Int)
 }
 
 // MARK: - Cell Implementation
-class MKSwiftFilterNormalTextFieldCell: MKSwiftBaseCell {
+public class MKSwiftFilterNormalTextFieldCell: MKSwiftBaseCell {
     
     // MARK: - UI Components
     private var msgLabel: UILabel!

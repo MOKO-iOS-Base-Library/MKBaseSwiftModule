@@ -10,14 +10,14 @@ import SnapKit
 
 // MARK: - Enums
 
-enum MKSwiftTextFieldCellType {
+public enum MKSwiftTextFieldCellType {
     case normal
     case topLine
 }
 
 // MARK: - Model
 
-class MKSwiftTextFieldCellModel {
+public class MKSwiftTextFieldCellModel {
     // MARK: Cell Top Configuration
     var index: Int = 0
     var contentColor: UIColor = .white

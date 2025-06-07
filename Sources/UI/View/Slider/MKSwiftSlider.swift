@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MKSwiftSlider: UISlider {
+public class MKSwiftSlider: UISlider {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setThumbImage(loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftSlider", imageName: "mk_swift_sliderThumbIcon.png"), for: .normal)

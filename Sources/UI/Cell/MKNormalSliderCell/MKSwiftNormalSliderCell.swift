@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 // MARK: - Cell Model
-class MKSwiftNormalSliderCellModel {
+public class MKSwiftNormalSliderCellModel {
     // Cell top configuration
     var index: Int = 0
     var msg: NSAttributedString = NSAttributedString()
@@ -60,12 +60,12 @@ class MKSwiftNormalSliderCellModel {
 }
 
 // MARK: - Cell Delegate
-protocol MKSwiftNormalSliderCellDelegate: AnyObject {
+public protocol MKSwiftNormalSliderCellDelegate: AnyObject {
     func mk_normalSliderValueChanged(_ value: Int, index: Int)
 }
 
 // MARK: - Cell Implementation
-class MKSwiftNormalSliderCell: MKSwiftBaseCell {
+public class MKSwiftNormalSliderCell: MKSwiftBaseCell {
     
     // MARK: - UI Components
     private var msgLabel: UILabel!
@@ -138,7 +138,7 @@ class MKSwiftNormalSliderCell: MKSwiftBaseCell {
     }
     
     // MARK: - Layout
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         
         msgLabel.snp.remakeConstraints { make in

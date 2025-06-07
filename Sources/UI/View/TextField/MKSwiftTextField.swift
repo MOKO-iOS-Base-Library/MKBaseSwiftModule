@@ -2,7 +2,7 @@ import UIKit
 
 // MARK: - MKSwiftTextField
 
-enum MKSwiftTextFieldType: Int {
+public enum MKSwiftTextFieldType: Int {
     case normal
     case realNumberOnly
     case letterOnly
@@ -11,7 +11,7 @@ enum MKSwiftTextFieldType: Int {
     case uuidMode
 }
 
-class MKSwiftTextField: UITextField {
+public class MKSwiftTextField: UITextField {
     
     var maxLength: Int = 0
     var textType: MKSwiftTextFieldType = .normal {
@@ -64,7 +64,7 @@ class MKSwiftTextField: UITextField {
     
     // MARK: - Override Methods
     
-    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+    public override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         let allowedActions: [Selector] = [
             #selector(paste(_:)),
             #selector(copy(_:)),
@@ -76,12 +76,12 @@ class MKSwiftTextField: UITextField {
         return allowedActions.contains(action) ? true : super.canPerformAction(action, withSender: sender)
     }
     
-    override func delete(_ sender: Any?) {
+    public override func delete(_ sender: Any?) {
         // Required to prevent crash when delete is called from UIMenuController
         print(sender as Any)
     }
     
-    override func drawPlaceholder(in rect: CGRect) {
+    public override func drawPlaceholder(in rect: CGRect) {
         guard let placeholder = placeholder, let font = font else { return }
         
         let placeholderSize = (placeholder as NSString).size(withAttributes: [.font: font])

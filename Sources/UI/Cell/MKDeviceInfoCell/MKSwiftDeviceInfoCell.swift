@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 // MARK: - Cell Model
-class MKSwiftDeviceInfoCellModel {
+public class MKSwiftDeviceInfoCellModel {
     var leftMsg: String = ""
     var rightMsg: String = ""
     
@@ -24,7 +24,7 @@ class MKSwiftDeviceInfoCellModel {
 }
 
 // MARK: - Cell Implementation
-class MKSwiftDeviceInfoCell: MKSwiftBaseCell {
+public class MKSwiftDeviceInfoCell: MKSwiftBaseCell {
     
     // MARK: - UI Components
     private var msgLabel: UILabel!
@@ -77,7 +77,7 @@ class MKSwiftDeviceInfoCell: MKSwiftBaseCell {
     }
     
     // MARK: - Layout
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         
         let leftSize = msgLabel.text?.size(withFont: msgLabel.font, maxSize: CGSize(width: (contentView.frame.width / 2 - 15 - 5), height: .greatestFiniteMagnitude))

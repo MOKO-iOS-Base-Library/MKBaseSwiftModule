@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 // MARK: - Cell Model
-class MKSwiftSettingTextCellModel {
+public class MKSwiftSettingTextCellModel {
     var contentColor: UIColor = .white
     
     // Left label and icon
@@ -20,7 +20,7 @@ class MKSwiftSettingTextCellModel {
 }
 
 // MARK: - Cell Implementation
-class MKSwiftSettingTextCell: MKSwiftBaseCell {
+public class MKSwiftSettingTextCell: MKSwiftBaseCell {
     
     // MARK: - UI Components
     private var leftIcon: UIImageView?
@@ -73,7 +73,7 @@ class MKSwiftSettingTextCell: MKSwiftBaseCell {
     }
     
     // MARK: - Layout
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         
         if let leftIcon = leftIcon {
