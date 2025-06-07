@@ -222,36 +222,4 @@ extension UIColor {
         let luminance = 0.2126 * red + 0.7152 * green + 0.0722 * blue
         return luminance < 0.5
     }
-    
-    convenience init?(hex: String) {
-        let r, g, b, a: CGFloat
-        
-        var hexColor = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
-        
-        if hexColor.hasPrefix("#") {
-            hexColor.remove(at: hexColor.startIndex)
-        }
-        
-        let scanner = Scanner(string: hexColor)
-        var hexNumber: UInt64 = 0
-        
-        guard scanner.scanHexInt64(&hexNumber) else { return nil }
-        
-        switch hexColor.count {
-        case 6: // RGB (24-bit)
-            r = CGFloat((hexNumber & 0xFF0000) >> 16) / 255
-            g = CGFloat((hexNumber & 0x00FF00) >> 8) / 255
-            b = CGFloat(hexNumber & 0x0000FF) / 255
-            a = 1.0
-        case 8: // ARGB (32-bit)
-            r = CGFloat((hexNumber & 0xFF000000) >> 24) / 255
-            g = CGFloat((hexNumber & 0x00FF0000) >> 16) / 255
-            b = CGFloat((hexNumber & 0x0000FF00) >> 8) / 255
-            a = CGFloat(hexNumber & 0x000000FF) / 255
-        default:
-            return nil
-        }
-        
-        self.init(red: r, green: g, blue: b, alpha: a)
-    }
 }
