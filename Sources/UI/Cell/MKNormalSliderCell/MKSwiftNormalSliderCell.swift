@@ -11,34 +11,34 @@ import SnapKit
 // MARK: - Cell Model
 public class MKSwiftNormalSliderCellModel {
     // Cell top configuration
-    var index: Int = 0
-    var msg: NSAttributedString = NSAttributedString()
-    var contentColor: UIColor = .white
+    public var index: Int = 0
+    public var msg: NSAttributedString = NSAttributedString()
+    public var contentColor: UIColor = .white
     
     // Right unit label configuration
-    var unit: String = "dBm"
-    var unitColor: UIColor = Color.defaultText
-    var unitFont: UIFont = .systemFont(ofSize: 11)
+    public var unit: String = "dBm"
+    public var unitColor: UIColor = Color.defaultText
+    public var unitFont: UIFont = Font.MKFont(11)
     
     // Slider configuration
-    var sliderEnable: Bool = true
-    var sliderMinValue: Int = -127
-    var sliderMaxValue: Int = 0
-    var sliderValue: Int = 0
+    public var sliderEnable: Bool = true
+    public var sliderMinValue: Int = -127
+    public var sliderMaxValue: Int = 0
+    public var sliderValue: Int = 0
     
     // Bottom label configuration
-    var changed: Bool = false
-    var noteMsg: String = ""
-    var leftNoteMsg: String = ""
-    var rightNoteMsg: String = ""
-    var noteMsgColor: UIColor = Color.defaultText
-    var noteMsgFont: UIFont = .systemFont(ofSize: 12)
+    public var changed: Bool = false
+    public var noteMsg: String = ""
+    public var leftNoteMsg: String = ""
+    public var rightNoteMsg: String = ""
+    public var noteMsgColor: UIColor = Color.defaultText
+    public var noteMsgFont: UIFont = Font.MKFont(12)
     
-    func cellHeightWithContentWidth(_ width: CGFloat) -> CGFloat {
+    public func cellHeightWithContentWidth(_ width: CGFloat) -> CGFloat {
         let msgHeight: CGFloat
         if !msg.string.isEmpty {
             msgHeight = String.size(with: msg.string,
-                                  font: .systemFont(ofSize: 15),
+                                  font: Font.MKFont(15),
                                   maxSize: CGSize(width: width, height: .greatestFiniteMagnitude)).height
         } else {
             msgHeight = 0
@@ -74,13 +74,23 @@ public class MKSwiftNormalSliderCell: MKSwiftBaseCell {
     private var noteLabel: UILabel!
     
     // MARK: - Properties
-    var dataModel: MKSwiftNormalSliderCellModel? {
+    public var dataModel: MKSwiftNormalSliderCellModel? {
         didSet {
             updateUI()
         }
     }
     
-    weak var delegate: MKSwiftNormalSliderCellDelegate?
+    public weak var delegate: MKSwiftNormalSliderCellDelegate?
+    
+    // MARK: - Class Methods
+    public class func initCellWithTableView(_ tableView: UITableView) -> MKSwiftNormalSliderCell {
+        let identifier = "MKSwiftNormalSliderCellIdenty"
+        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftNormalSliderCell
+        if cell == nil {
+            cell = MKSwiftNormalSliderCell(style: .default, reuseIdentifier: identifier)
+        }
+        return cell!
+    }
     
     // MARK: - Constants
     private let offset_X: CGFloat = 15
@@ -94,47 +104,6 @@ public class MKSwiftNormalSliderCell: MKSwiftBaseCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Class Methods
-    class func initCellWithTableView(_ tableView: UITableView) -> MKSwiftNormalSliderCell {
-        let identifier = "MKSwiftNormalSliderCellIdenty"
-        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftNormalSliderCell
-        if cell == nil {
-            cell = MKSwiftNormalSliderCell(style: .default, reuseIdentifier: identifier)
-        }
-        return cell!
-    }
-    
-    // MARK: - UI Setup
-    private func setupUI() {
-        contentView.backgroundColor = .white
-        
-        msgLabel = UILabel()
-        msgLabel.textColor = Color.defaultText
-        msgLabel.textAlignment = .left
-        msgLabel.font = .systemFont(ofSize: 15)
-        msgLabel.numberOfLines = 0
-        contentView.addSubview(msgLabel)
-        
-        sliderValueLabel = UILabel()
-        sliderValueLabel.textColor = Color.defaultText
-        sliderValueLabel.textAlignment = .left
-        sliderValueLabel.font = .systemFont(ofSize: 11)
-        contentView.addSubview(sliderValueLabel)
-        
-        sliderView = MKSwiftSlider()
-        sliderView.maximumValue = 0
-        sliderView.minimumValue = -127
-        sliderView.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
-        contentView.addSubview(sliderView)
-        
-        noteLabel = UILabel()
-        noteLabel.textColor = Color.defaultText
-        noteLabel.font = .systemFont(ofSize: 12)
-        noteLabel.textAlignment = .left
-        noteLabel.numberOfLines = 0
-        contentView.addSubview(noteLabel)
     }
     
     // MARK: - Layout
@@ -198,6 +167,37 @@ public class MKSwiftNormalSliderCell: MKSwiftBaseCell {
             withFont: noteLabel.font,
             maxSize: CGSize(width: width, height: .greatestFiniteMagnitude)  // Changed offset_X to offsetX
         )
+    }
+    
+    // MARK: - UI Setup
+    private func setupUI() {
+        contentView.backgroundColor = .white
+        
+        msgLabel = UILabel()
+        msgLabel.textColor = Color.defaultText
+        msgLabel.textAlignment = .left
+        msgLabel.font = Font.MKFont(15)
+        msgLabel.numberOfLines = 0
+        contentView.addSubview(msgLabel)
+        
+        sliderValueLabel = UILabel()
+        sliderValueLabel.textColor = Color.defaultText
+        sliderValueLabel.textAlignment = .left
+        sliderValueLabel.font = Font.MKFont(11)
+        contentView.addSubview(sliderValueLabel)
+        
+        sliderView = MKSwiftSlider()
+        sliderView.maximumValue = 0
+        sliderView.minimumValue = -127
+        sliderView.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
+        contentView.addSubview(sliderView)
+        
+        noteLabel = UILabel()
+        noteLabel.textColor = Color.defaultText
+        noteLabel.font = Font.MKFont(12)
+        noteLabel.textAlignment = .left
+        noteLabel.numberOfLines = 0
+        contentView.addSubview(noteLabel)
     }
     
     private func updateUI() {

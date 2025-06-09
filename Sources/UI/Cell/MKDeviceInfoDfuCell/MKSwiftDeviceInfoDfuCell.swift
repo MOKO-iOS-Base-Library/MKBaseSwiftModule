@@ -10,10 +10,10 @@ import SnapKit
 
 // MARK: - Cell Model
 public class MKSwiftDeviceInfoDfuCellModel {
-    var index: Int = 0
-    var leftMsg: String = ""
-    var rightMsg: String = ""
-    var rightButtonTitle: String = ""
+    public var index: Int = 0
+    public var leftMsg: String = ""
+    public var rightMsg: String = ""
+    public var rightButtonTitle: String = ""
 }
 
 // MARK: - Cell Delegate
@@ -30,13 +30,23 @@ public class MKSwiftDeviceInfoDfuCell: MKSwiftBaseCell {
     private var rightButton: UIButton!
     
     // MARK: - Properties
-    var dataModel: MKSwiftDeviceInfoDfuCellModel? {
+    public var dataModel: MKSwiftDeviceInfoDfuCellModel? {
         didSet {
             updateUI()
         }
     }
     
-    weak var delegate: MKSwiftDeviceInfoDfuCellDelegate?
+    public weak var delegate: MKSwiftDeviceInfoDfuCellDelegate?
+    
+    // MARK: - Class Methods
+    public class func initCellWithTableView(_ tableView: UITableView) -> MKSwiftDeviceInfoDfuCell {
+        let identifier = "MKSwiftDeviceInfoDfuCellIdenty"
+        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftDeviceInfoDfuCell
+        if cell == nil {
+            cell = MKSwiftDeviceInfoDfuCell(style: .default, reuseIdentifier: identifier)
+        }
+        return cell!
+    }
     
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -46,42 +56,6 @@ public class MKSwiftDeviceInfoDfuCell: MKSwiftBaseCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Class Methods
-    class func initCellWithTableView(_ tableView: UITableView) -> MKSwiftDeviceInfoDfuCell {
-        let identifier = "MKSwiftDeviceInfoDfuCellIdenty"
-        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftDeviceInfoDfuCell
-        if cell == nil {
-            cell = MKSwiftDeviceInfoDfuCell(style: .default, reuseIdentifier: identifier)
-        }
-        return cell!
-    }
-    
-    // MARK: - UI Setup
-    private func setupUI() {
-        contentView.backgroundColor = .white
-        
-        msgLabel = UILabel()
-        msgLabel.textColor = Color.defaultText
-        msgLabel.font = .systemFont(ofSize: 15)
-        msgLabel.textAlignment = .left
-        contentView.addSubview(msgLabel)
-        
-        rightMsgLabel = UILabel()
-        rightMsgLabel.textColor = Color.fromHex(0x808080)
-        rightMsgLabel.font = .systemFont(ofSize: 13)
-        rightMsgLabel.textAlignment = .right
-        contentView.addSubview(rightMsgLabel)
-        
-        rightButton = UIButton(type: .custom)
-        rightButton.titleLabel?.font = .systemFont(ofSize: 12)
-        rightButton.setTitleColor(Color.defaultText, for: .normal)
-        rightButton.addTarget(self, action: #selector(rightButtonPressed), for: .touchUpInside)
-        rightButton.layer.borderColor = UIColor.lightGray.cgColor
-        rightButton.layer.borderWidth = 0.5
-        rightButton.layer.cornerRadius = 4
-        contentView.addSubview(rightButton)
     }
     
     // MARK: - Layout
@@ -114,6 +88,33 @@ public class MKSwiftDeviceInfoDfuCell: MKSwiftBaseCell {
     @objc private func rightButtonPressed() {
         delegate?.mk_textButtonCell_buttonAction(dataModel?.index ?? 0)
     }
+    
+    // MARK: - UI Setup
+    private func setupUI() {
+        contentView.backgroundColor = .white
+        
+        msgLabel = UILabel()
+        msgLabel.textColor = Color.defaultText
+        msgLabel.font = Font.MKFont(15)
+        msgLabel.textAlignment = .left
+        contentView.addSubview(msgLabel)
+        
+        rightMsgLabel = UILabel()
+        rightMsgLabel.textColor = Color.fromHex(0x808080)
+        rightMsgLabel.font = Font.MKFont(13)
+        rightMsgLabel.textAlignment = .right
+        contentView.addSubview(rightMsgLabel)
+        
+        rightButton = UIButton(type: .custom)
+        rightButton.titleLabel?.font = Font.MKFont(12)
+        rightButton.setTitleColor(Color.defaultText, for: .normal)
+        rightButton.addTarget(self, action: #selector(rightButtonPressed), for: .touchUpInside)
+        rightButton.layer.borderColor = UIColor.lightGray.cgColor
+        rightButton.layer.borderWidth = 0.5
+        rightButton.layer.cornerRadius = 4
+        contentView.addSubview(rightButton)
+    }
+    
     
     // MARK: - Update UI
     private func updateUI() {

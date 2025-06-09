@@ -10,77 +10,97 @@ import UIKit
 
 open class MKSwiftBaseViewController: UIViewController, UIGestureRecognizerDelegate {
     
-    // MARK: - UI Components
-    
-    private(set) lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 20, weight: .medium)
-        label.textColor = .white
-        label.textAlignment = .center
-        label.backgroundColor = .clear
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private(set) lazy var leftButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        button.tintColor = .white
-        button.contentHorizontalAlignment = .left
-        button.titleLabel?.font = .systemFont(ofSize: 16)
-        button.addTarget(self, action: #selector(leftButtonMethod), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    private(set) lazy var rightButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.titleLabel?.font = .systemFont(ofSize: 16)
-        button.setTitleColor(.white, for: .normal)
-        button.addTarget(self, action: #selector(rightButtonMethod), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
     // MARK: - Properties
     
-    var isPresented: Bool = false
-    var defaultTitle: String? {
+    open var isPresented: Bool = false
+    open var defaultTitle: String? {
         didSet {
             titleLabel.text = self.title ?? defaultTitle
         }
     }
     
-    var custom_naviBarColor: UIColor? = .systemBlue {
+    open var custom_naviBarColor: UIColor? = .systemBlue {
         didSet {
             updateNavigationBarAppearance()
         }
     }
     
-    var isRootViewController: Bool {
+    open var isRootViewController: Bool {
         return navigationController?.viewControllers.first == self
     }
     
     // MARK: - Lifecycle
     
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupNavigationBar()
     }
     
-    public override func viewDidAppear(_ animated: Bool) {
+    open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         navigationController?.interactivePopGestureRecognizer?.delegate = self
     }
     
-    public override func viewWillDisappear(_ animated: Bool) {
+    open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
     
-    public override func viewDidDisappear(_ animated: Bool) {
+    open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
+    }
+    
+    // MARK: - Actions
+    
+    @objc open func leftButtonMethod() {
+        if isPresented {
+            dismiss(animated: true)
+        } else {
+            navigationController?.popViewController(animated: true)
+        }
+    }
+
+    @objc open func rightButtonMethod() {
+        // 子类重写实现
+    }
+    
+    // MARK: - Public Methods
+    
+    open func setNavigationBarImage(_ image: UIImage) {
+        edgesForExtendedLayout = []
+        let resizedImage = image.resizableImage(withCapInsets: UIEdgeInsets(top: 2, left: 1, bottom: 2, right: 1))
+        navigationController?.navigationBar.setBackgroundImage(resizedImage, for: .default)
+    }
+    
+    open func popToViewController(withClassName className: String) {
+        guard let navController = navigationController else { return }
+        
+        if let targetVC = navController.viewControllers.first(where: { String(describing: type(of: $0)) == className }) {
+            navController.popToViewController(targetVC, animated: true)
+        } else {
+            navController.popToRootViewController(animated: true)
+        }
+    }
+    
+    // MARK: - UIGestureRecognizerDelegate
+    
+    open func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return !isRootViewController
+    }
+    
+    open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    open func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return gestureRecognizer is UIScreenEdgePanGestureRecognizer
+    }
+    
+    // MARK: - Status Bar
+    
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return custom_naviBarColor?.isDark == true ? .lightContent : .darkContent
     }
     
     // MARK: - Setup
@@ -158,57 +178,37 @@ open class MKSwiftBaseViewController: UIViewController, UIGestureRecognizerDeleg
         setNeedsStatusBarAppearanceUpdate()
     }
     
-    // MARK: - Actions
+    // MARK: - UI Components
     
-    @objc func leftButtonMethod() {
-        if isPresented {
-            dismiss(animated: true)
-        } else {
-            navigationController?.popViewController(animated: true)
-        }
-    }
+    private(set) lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = Font.MKFont(20)
+        label.textColor = .white
+        label.textAlignment = .center
+        label.backgroundColor = .clear
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
-    @objc func rightButtonMethod() {
-        // 子类重写实现
-    }
+    private(set) lazy var leftButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        button.tintColor = .white
+        button.contentHorizontalAlignment = .left
+        button.titleLabel?.font = Font.MKFont(16)
+        button.addTarget(self, action: #selector(leftButtonMethod), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
     
-    // MARK: - Public Methods
-    
-    func setNavigationBarImage(_ image: UIImage) {
-        edgesForExtendedLayout = []
-        let resizedImage = image.resizableImage(withCapInsets: UIEdgeInsets(top: 2, left: 1, bottom: 2, right: 1))
-        navigationController?.navigationBar.setBackgroundImage(resizedImage, for: .default)
-    }
-    
-    func popToViewController(withClassName className: String) {
-        guard let navController = navigationController else { return }
-        
-        if let targetVC = navController.viewControllers.first(where: { String(describing: type(of: $0)) == className }) {
-            navController.popToViewController(targetVC, animated: true)
-        } else {
-            navController.popToRootViewController(animated: true)
-        }
-    }
-    
-    // MARK: - UIGestureRecognizerDelegate
-    
-    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return !isRootViewController
-    }
-    
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
-    }
-    
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return gestureRecognizer is UIScreenEdgePanGestureRecognizer
-    }
-    
-    // MARK: - Status Bar
-    
-    public override var preferredStatusBarStyle: UIStatusBarStyle {
-        return custom_naviBarColor?.isDark == true ? .lightContent : .darkContent
-    }
+    private(set) lazy var rightButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.titleLabel?.font = Font.MKFont(16)
+        button.setTitleColor(.white, for: .normal)
+        button.addTarget(self, action: #selector(rightButtonMethod), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
 }
 
 // MARK: - UIColor Extension

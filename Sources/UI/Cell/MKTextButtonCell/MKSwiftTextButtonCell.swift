@@ -16,28 +16,28 @@ private let selectButtonHeight: CGFloat = 30
 
 public class MKSwiftTextButtonCellModel {
     // MARK: Cell Top Configuration
-    var index: Int = 0
-    var contentColor: UIColor = .white
+    public var index: Int = 0
+    public var contentColor: UIColor = .white
     
     // MARK: Left Label Configuration
-    var msg: String = ""
-    var msgColor: UIColor = Color.defaultText
-    var msgFont: UIFont = .systemFont(ofSize: 15)
+    public var msg: String = ""
+    public var msgColor: UIColor = Color.defaultText
+    public var msgFont: UIFont = Font.MKFont(15)
     
     // MARK: Right Button Configuration
-    var buttonEnable: Bool = true
-    var dataList: [String] = []
-    var dataListIndex: Int = 0
-    var buttonBackColor: UIColor = Color.fromHex(0x2F84D0)
-    var buttonTitleColor: UIColor = .white
-    var buttonLabelFont: UIFont = .systemFont(ofSize: 15)
+    public var buttonEnable: Bool = true
+    public var dataList: [String] = []
+    public var dataListIndex: Int = 0
+    public var buttonBackColor: UIColor = Color.fromHex(0x2F84D0)
+    public var buttonTitleColor: UIColor = .white
+    public var buttonLabelFont: UIFont = Font.MKFont(15)
     
     // MARK: Bottom Label Configuration
-    var noteMsg: String = ""
-    var noteMsgColor: UIColor = Color.defaultText
-    var noteMsgFont: UIFont = .systemFont(ofSize: 12)
+    public var noteMsg: String = ""
+    public var noteMsgColor: UIColor = Color.defaultText
+    public var noteMsgFont: UIFont = Font.MKFont(12)
     
-    func cellHeight(withContentWidth width: CGFloat) -> CGFloat {
+    public func cellHeight(withContentWidth width: CGFloat) -> CGFloat {
         let msgFont = self.msgFont
         let msgWidth = width - 3 * offsetX - selectButtonWidth  // Changed offset_X to offsetX
         let msgSize = msg.size(
@@ -74,42 +74,23 @@ public class MKSwiftTextButtonCell: UITableViewCell {
     // MARK: Properties
     static let cellIdentifier = "MKSwiftTextButtonCellIdentifier"
     
-    var dataModel: MKSwiftTextButtonCellModel? {
+    public var dataModel: MKSwiftTextButtonCellModel? {
         didSet {
             updateUI()
         }
     }
     
-    weak var delegate: MKSwiftTextButtonCellDelegate?
+    public weak var delegate: MKSwiftTextButtonCellDelegate?
     
-    // MARK: UI Components
-    private lazy var msgLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Color.defaultText
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 15)
-        label.numberOfLines = 0
-        return label
-    }()
-    
-    private lazy var selectedButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = Color.fromHex(0x2F84D0)
-        button.layer.masksToBounds = true
-        button.layer.cornerRadius = 6
-        button.addTarget(self, action: #selector(selectedButtonPressed), for: .touchUpInside)
-        return button
-    }()
-    
-    private lazy var noteLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Color.defaultText
-        label.font = .systemFont(ofSize: 12)
-        label.textAlignment = .left
-        label.numberOfLines = 0
-        return label
-    }()
+    // MARK: - Class Methods
+    public class func initCellWithTableView(_ tableView: UITableView) -> MKSwiftTextButtonCell {
+        let identifier = "MKSwiftTextButtonCellIdenty"
+        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftTextButtonCell
+        if cell == nil {
+            cell = MKSwiftTextButtonCell(style: .default, reuseIdentifier: identifier)
+        }
+        return cell!
+    }
     
     private let offsetX: CGFloat = 15
     private let selectButtonWidth: CGFloat = 130
@@ -123,45 +104,6 @@ public class MKSwiftTextButtonCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: Public Methods
-    static func dequeueReusableCell(with tableView: UITableView) -> MKSwiftTextButtonCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? MKSwiftTextButtonCell {
-            return cell
-        }
-        return MKSwiftTextButtonCell(style: .default, reuseIdentifier: cellIdentifier)
-    }
-    
-    // MARK: Private Methods
-    private func setupUI() {
-        contentView.addSubview(msgLabel)
-        contentView.addSubview(selectedButton)
-        contentView.addSubview(noteLabel)
-    }
-    
-    private func updateUI() {
-        guard let dataModel = dataModel else { return }
-        
-        contentView.backgroundColor = dataModel.contentColor
-        msgLabel.text = dataModel.msg
-        msgLabel.font = dataModel.msgFont
-        msgLabel.textColor = dataModel.msgColor
-        selectedButton.isEnabled = dataModel.buttonEnable
-        
-        if dataModel.dataList.indices.contains(dataModel.dataListIndex) {
-            selectedButton.setTitle(dataModel.dataList[dataModel.dataListIndex], for: .normal)
-        }
-        
-        selectedButton.titleLabel?.font = dataModel.buttonLabelFont
-        selectedButton.backgroundColor = dataModel.buttonBackColor
-        selectedButton.setTitleColor(dataModel.buttonTitleColor, for: .normal)
-        
-        noteLabel.text = dataModel.noteMsg
-        noteLabel.font = dataModel.noteMsgFont
-        noteLabel.textColor = dataModel.noteMsgColor
-        
-        setNeedsLayout()
     }
     
     public override func layoutSubviews() {
@@ -246,4 +188,64 @@ public class MKSwiftTextButtonCell: UITableViewCell {
             )
         }
     }
+    
+    // MARK: Private Methods
+    private func setupUI() {
+        contentView.addSubview(msgLabel)
+        contentView.addSubview(selectedButton)
+        contentView.addSubview(noteLabel)
+    }
+    
+    private func updateUI() {
+        guard let dataModel = dataModel else { return }
+        
+        contentView.backgroundColor = dataModel.contentColor
+        msgLabel.text = dataModel.msg
+        msgLabel.font = dataModel.msgFont
+        msgLabel.textColor = dataModel.msgColor
+        selectedButton.isEnabled = dataModel.buttonEnable
+        
+        if dataModel.dataList.indices.contains(dataModel.dataListIndex) {
+            selectedButton.setTitle(dataModel.dataList[dataModel.dataListIndex], for: .normal)
+        }
+        
+        selectedButton.titleLabel?.font = dataModel.buttonLabelFont
+        selectedButton.backgroundColor = dataModel.buttonBackColor
+        selectedButton.setTitleColor(dataModel.buttonTitleColor, for: .normal)
+        
+        noteLabel.text = dataModel.noteMsg
+        noteLabel.font = dataModel.noteMsgFont
+        noteLabel.textColor = dataModel.noteMsgColor
+        
+        setNeedsLayout()
+    }
+    
+    // MARK: UI Components
+    private lazy var msgLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Color.defaultText
+        label.textAlignment = .left
+        label.font = Font.MKFont(15)
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    private lazy var selectedButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = Color.fromHex(0x2F84D0)
+        button.layer.masksToBounds = true
+        button.layer.cornerRadius = 6
+        button.addTarget(self, action: #selector(selectedButtonPressed), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var noteLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Color.defaultText
+        label.font = Font.MKFont(12)
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        return label
+    }()
 }

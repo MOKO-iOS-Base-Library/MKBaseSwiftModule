@@ -10,13 +10,13 @@ import SnapKit
 
 // MARK: - Cell Model
 public class MKSwiftDeviceInfoCellModel {
-    var leftMsg: String = ""
-    var rightMsg: String = ""
+    public var leftMsg: String = ""
+    public var rightMsg: String = ""
     
-    func cellHeightWithContentWidth(_ width: CGFloat) -> CGFloat {
-        let leftSize = leftMsg.size(withFont: .systemFont(ofSize: 15), maxSize: CGSize(width: (width / 2 - 15 - 5), height: .greatestFiniteMagnitude))
+    public func cellHeightWithContentWidth(_ width: CGFloat) -> CGFloat {
+        let leftSize = leftMsg.size(withFont: Font.MKFont(15), maxSize: CGSize(width: (width / 2 - 15 - 5), height: .greatestFiniteMagnitude))
         
-        let rightSize = rightMsg.size(withFont: .systemFont(ofSize: 15), maxSize: CGSize(width: (width / 2 - 15 - 5), height: .greatestFiniteMagnitude))
+        let rightSize = rightMsg.size(withFont: Font.MKFont(15), maxSize: CGSize(width: (width / 2 - 15 - 5), height: .greatestFiniteMagnitude))
         
         let height = max(leftSize.height, rightSize.height)
         return max(44, height + 20)
@@ -26,16 +26,26 @@ public class MKSwiftDeviceInfoCellModel {
 // MARK: - Cell Implementation
 public class MKSwiftDeviceInfoCell: MKSwiftBaseCell {
     
-    // MARK: - UI Components
-    private var msgLabel: UILabel!
-    private var rightMsgLabel: UILabel!
-    
     // MARK: - Properties
-    var dataModel: MKSwiftDeviceInfoCellModel? {
+    public var dataModel: MKSwiftDeviceInfoCellModel? {
         didSet {
             updateUI()
         }
     }
+    
+    // MARK: - Class Methods
+    public class func initCellWithTableView(_ tableView: UITableView) -> MKSwiftDeviceInfoCell {
+        let identifier = "MKSwiftDeviceInfoCellIdenty"
+        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftDeviceInfoCell
+        if cell == nil {
+            cell = MKSwiftDeviceInfoCell(style: .default, reuseIdentifier: identifier)
+        }
+        return cell!
+    }
+    
+    // MARK: - UI Components
+    private var msgLabel: UILabel!
+    private var rightMsgLabel: UILabel!
     
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -45,35 +55,6 @@ public class MKSwiftDeviceInfoCell: MKSwiftBaseCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Class Methods
-    class func initCellWithTableView(_ tableView: UITableView) -> MKSwiftDeviceInfoCell {
-        let identifier = "MKSwiftDeviceInfoCellIdenty"
-        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftDeviceInfoCell
-        if cell == nil {
-            cell = MKSwiftDeviceInfoCell(style: .default, reuseIdentifier: identifier)
-        }
-        return cell!
-    }
-    
-    // MARK: - UI Setup
-    private func setupUI() {
-        contentView.backgroundColor = .white
-        
-        msgLabel = UILabel()
-        msgLabel.textColor = Color.defaultText
-        msgLabel.font = .systemFont(ofSize: 15)
-        msgLabel.textAlignment = .left
-        msgLabel.numberOfLines = 0
-        contentView.addSubview(msgLabel)
-        
-        rightMsgLabel = UILabel()
-        rightMsgLabel.textColor = Color.defaultText
-        rightMsgLabel.textAlignment = .right
-        rightMsgLabel.font = .systemFont(ofSize: 13)
-        rightMsgLabel.numberOfLines = 0
-        contentView.addSubview(rightMsgLabel)
     }
     
     // MARK: - Layout
@@ -86,7 +67,7 @@ public class MKSwiftDeviceInfoCell: MKSwiftBaseCell {
             make.left.equalToSuperview().offset(15)
             make.right.equalTo(contentView.snp.centerX).offset(-5)
             make.centerY.equalToSuperview()
-            make.height.equalTo(leftSize?.height ?? UIFont.systemFont(ofSize: 15).lineHeight)
+            make.height.equalTo(leftSize?.height ?? Font.MKFont(15).lineHeight)
         }
         
         let rightSize = rightMsgLabel.text?.size(withFont: msgLabel.font, maxSize: CGSize(width: (contentView.frame.width / 2 - 15 - 5), height: .greatestFiniteMagnitude))
@@ -95,8 +76,27 @@ public class MKSwiftDeviceInfoCell: MKSwiftBaseCell {
             make.right.equalToSuperview().offset(-15)
             make.left.equalTo(contentView.snp.centerX).offset(5)
             make.centerY.equalToSuperview()
-            make.height.equalTo(rightSize?.height ?? UIFont.systemFont(ofSize: 15).lineHeight)
+            make.height.equalTo(rightSize?.height ?? Font.MKFont(15).lineHeight)
         }
+    }
+    
+    // MARK: - UI Setup
+    private func setupUI() {
+        contentView.backgroundColor = .white
+        
+        msgLabel = UILabel()
+        msgLabel.textColor = Color.defaultText
+        msgLabel.font = Font.MKFont(15)
+        msgLabel.textAlignment = .left
+        msgLabel.numberOfLines = 0
+        contentView.addSubview(msgLabel)
+        
+        rightMsgLabel = UILabel()
+        rightMsgLabel.textColor = Color.defaultText
+        rightMsgLabel.textAlignment = .right
+        rightMsgLabel.font = Font.MKFont(13)
+        rightMsgLabel.numberOfLines = 0
+        contentView.addSubview(rightMsgLabel)
     }
     
     // MARK: - Update UI

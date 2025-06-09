@@ -10,7 +10,7 @@ import SnapKit
 import UIKit
 
 open class MKSwiftBaseCell: UITableViewCell {
-    var indexPath:IndexPath?;
+    public var indexPath:IndexPath?;
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none;

@@ -10,27 +10,27 @@ import SnapKit
 
 // MARK: - Cell Model
 public class MKSwiftNormalTextCellModel {
-    var methodName: String = ""
-    var contentColor: UIColor = .white
+    public var methodName: String = ""
+    public var contentColor: UIColor = .white
     
     // Left label and icon
-    var leftIcon: UIImage?
-    var leftMsgTextFont: UIFont = .systemFont(ofSize: 15)
-    var leftMsgTextColor: UIColor = Color.defaultText
-    var leftMsg: String = ""
+    public var leftIcon: UIImage?
+    public var leftMsgTextFont: UIFont = Font.MKFont(15)
+    public var leftMsgTextColor: UIColor = Color.defaultText
+    public var leftMsg: String = ""
     
     // Right label
-    var rightMsgTextFont: UIFont = .systemFont(ofSize: 13)
-    var rightMsgTextColor: UIColor = Color.fromHex(0x808080)
-    var rightMsg: String = ""
-    var showRightIcon: Bool = false
+    public var rightMsgTextFont: UIFont = Font.MKFont(13)
+    public var rightMsgTextColor: UIColor = Color.fromHex(0x808080)
+    public var rightMsg: String = ""
+    public var showRightIcon: Bool = false
     
     // Bottom label
-    var noteMsg: String = ""
-    var noteMsgColor: UIColor = Color.defaultText
-    var noteMsgFont: UIFont = .systemFont(ofSize: 12)
+    public var noteMsg: String = ""
+    public var noteMsgColor: UIColor = Color.defaultText
+    public var noteMsgFont: UIFont = Font.MKFont(12)
     
-    func cellHeightWithContentWidth(_ width: CGFloat) -> CGFloat {
+    public func cellHeightWithContentWidth(_ width: CGFloat) -> CGFloat {
         let maxMsgWidth: CGFloat
         if let icon = leftIcon {
             maxMsgWidth = width / 2 - 15 - 3 - icon.size.width - 3
@@ -48,10 +48,29 @@ public class MKSwiftNormalTextCellModel {
         
         return max(msgSize.height + 2 * 15, 50) + noteSize.height + 10
     }
+    
+    public init() {}  
 }
 
 // MARK: - Cell Implementation
 public class MKSwiftNormalTextCell: MKSwiftBaseCell {
+    
+    // MARK: - Properties
+    public var dataModel: MKSwiftNormalTextCellModel? {
+        didSet {
+            updateUI()
+        }
+    }
+    
+    // MARK: - Class Methods
+    public class func initCellWithTableView(_ tableView: UITableView) -> MKSwiftNormalTextCell {
+        let identifier = "MKSwiftNormalTextCellIdenty"
+        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftNormalTextCell
+        if cell == nil {
+            cell = MKSwiftNormalTextCell(style: .default, reuseIdentifier: identifier)
+        }
+        return cell!
+    }
     
     // MARK: - UI Components
     private var leftIcon: UIImageView?
@@ -59,13 +78,6 @@ public class MKSwiftNormalTextCell: MKSwiftBaseCell {
     private var rightMsgLabel: UILabel!
     private var rightIcon: UIImageView!
     private var noteLabel: UILabel!
-    
-    // MARK: - Properties
-    var dataModel: MKSwiftNormalTextCellModel? {
-        didSet {
-            updateUI()
-        }
-    }
     
     private let offset_X: CGFloat = 15
     
@@ -77,46 +89,6 @@ public class MKSwiftNormalTextCell: MKSwiftBaseCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Class Methods
-    class func initCellWithTableView(_ tableView: UITableView) -> MKSwiftNormalTextCell {
-        let identifier = "MKSwiftNormalTextCellIdenty"
-        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftNormalTextCell
-        if cell == nil {
-            cell = MKSwiftNormalTextCell(style: .default, reuseIdentifier: identifier)
-        }
-        return cell!
-    }
-    
-    // MARK: - UI Setup
-    private func setupUI() {
-        contentView.backgroundColor = .white
-        
-        leftMsgLabel = UILabel()
-        leftMsgLabel.textColor = Color.defaultText
-        leftMsgLabel.textAlignment = .left
-        leftMsgLabel.font = .systemFont(ofSize: 15)
-        leftMsgLabel.numberOfLines = 0
-        contentView.addSubview(leftMsgLabel)
-        
-        rightMsgLabel = UILabel()
-        rightMsgLabel.textColor = Color.fromHex(0x808080)
-        rightMsgLabel.textAlignment = .right
-        rightMsgLabel.font = .systemFont(ofSize: 13)
-        contentView.addSubview(rightMsgLabel)
-        
-        rightIcon = UIImageView()
-        rightIcon.image = loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftNormalTextCell", imageName: "mk_swift_goNextButton.png")
-        rightIcon.isHidden = true
-        contentView.addSubview(rightIcon)
-        
-        noteLabel = UILabel()
-        noteLabel.textColor = Color.defaultText
-        noteLabel.font = .systemFont(ofSize: 12)
-        noteLabel.textAlignment = .left
-        noteLabel.numberOfLines = 0
-        contentView.addSubview(noteLabel)
     }
     
     // MARK: - Layout
@@ -204,6 +176,36 @@ public class MKSwiftNormalTextCell: MKSwiftBaseCell {
         let size = text.size(withFont: noteLabel.font, maxSize: CGSize(width: width, height: .greatestFiniteMagnitude))
     
         return CGSize(width: width, height: size.height)
+    }
+    
+    // MARK: - UI Setup
+    private func setupUI() {
+        contentView.backgroundColor = .white
+        
+        leftMsgLabel = UILabel()
+        leftMsgLabel.textColor = Color.defaultText
+        leftMsgLabel.textAlignment = .left
+        leftMsgLabel.font = Font.MKFont(15)
+        leftMsgLabel.numberOfLines = 0
+        contentView.addSubview(leftMsgLabel)
+        
+        rightMsgLabel = UILabel()
+        rightMsgLabel.textColor = Color.fromHex(0x808080)
+        rightMsgLabel.textAlignment = .right
+        rightMsgLabel.font = Font.MKFont(13)
+        contentView.addSubview(rightMsgLabel)
+        
+        rightIcon = UIImageView()
+        rightIcon.image = loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftNormalTextCell", imageName: "mk_swift_goNextButton.png")
+        rightIcon.isHidden = true
+        contentView.addSubview(rightIcon)
+        
+        noteLabel = UILabel()
+        noteLabel.textColor = Color.defaultText
+        noteLabel.font = Font.MKFont(12)
+        noteLabel.textAlignment = .left
+        noteLabel.numberOfLines = 0
+        contentView.addSubview(noteLabel)
     }
     
     private func updateUI() {

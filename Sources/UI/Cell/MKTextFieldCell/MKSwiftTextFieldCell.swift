@@ -19,40 +19,40 @@ public enum MKSwiftTextFieldCellType {
 
 public class MKSwiftTextFieldCellModel {
     // MARK: Cell Top Configuration
-    var index: Int = 0
-    var contentColor: UIColor = .white
+    public var index: Int = 0
+    public var contentColor: UIColor = .white
     
     // MARK: Left Label Configuration
-    var msg: String = ""
-    var msgColor: UIColor = Color.defaultText
-    var msgFont: UIFont = .systemFont(ofSize: 15)
+    public var msg: String = ""
+    public var msgColor: UIColor = Color.defaultText
+    public var msgFont: UIFont = Font.MKFont(15)
     
     // MARK: Right Label Configuration
-    var unit: String = ""
-    var unitColor: UIColor = Color.defaultText
-    var unitFont: UIFont = .systemFont(ofSize: 13)
+    public var unit: String = ""
+    public var unitColor: UIColor = Color.defaultText
+    public var unitFont: UIFont = Font.MKFont(13)
     
     // MARK: TextField Configuration
-    var textEnable: Bool = true
-    var cellType: MKSwiftTextFieldCellType = .normal
-    var textFieldValue: String = ""
-    var textPlaceholder: String = ""
-    var textAlignment: NSTextAlignment = .left
-    var textFieldTextColor: UIColor = Color.defaultText
-    var textFieldTextFont: UIFont = .systemFont(ofSize: 15)
-    var textFieldType: MKSwiftTextFieldType = .normal
-    var maxLength: Int = 0
-    var clearButtonMode: UITextField.ViewMode = .never
-    var borderColor: UIColor = Color.fromHex(0xDEDEDE)
+    public var textEnable: Bool = true
+    public var cellType: MKSwiftTextFieldCellType = .normal
+    public var textFieldValue: String = ""
+    public var textPlaceholder: String = ""
+    public var textAlignment: NSTextAlignment = .left
+    public var textFieldTextColor: UIColor = Color.defaultText
+    public var textFieldTextFont: UIFont = Font.MKFont(15)
+    public var textFieldType: MKSwiftTextFieldType = .normal
+    public var maxLength: Int = 0
+    public var clearButtonMode: UITextField.ViewMode = .never
+    public var borderColor: UIColor = Color.fromHex(0xDEDEDE)
     
     // MARK: Bottom Label Configuration
-    var noteMsg: String = ""
-    var noteMsgColor: UIColor = Color.defaultText
-    var noteMsgFont: UIFont = .systemFont(ofSize: 12)
+    public var noteMsg: String = ""
+    public var noteMsgColor: UIColor = Color.defaultText
+    public var noteMsgFont: UIFont = Font.MKFont(12)
     
     private let offsetX: CGFloat = 15
     
-    func cellHeight(withContentWidth width: CGFloat) -> CGFloat {
+    public func cellHeight(withContentWidth width: CGFloat) -> CGFloat {
         let msgWidth = (width - 3 * offsetX) / 2
         let msgSize = msg.size(withFont: msgFont, maxSize: CGSize(width: msgWidth, height: .greatestFiniteMagnitude))
         
@@ -78,58 +78,23 @@ class MKSwiftTextFieldCell: MKSwiftBaseCell {
     // MARK: Properties
     static let cellIdentifier = "MKSwiftTextFieldCellIdentifier"
     
-    var dataModel: MKSwiftTextFieldCellModel? {
+    public var dataModel: MKSwiftTextFieldCellModel? {
         didSet {
             updateUI()
         }
     }
     
-    weak var delegate: MKSwiftTextFieldCellDelegate?
+    public weak var delegate: MKSwiftTextFieldCellDelegate?
     
-    // MARK: UI Components
-    private lazy var msgLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Color.defaultText
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 15)
-        label.numberOfLines = 0
-        return label
-    }()
-    
-    private lazy var textBorderView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.layer.masksToBounds = true
-        view.layer.borderWidth = 0.5
-        view.layer.borderColor = Color.fromHex(0xDEDEDE).cgColor
-        return view
-    }()
-    
-    private lazy var textField: MKSwiftTextField = {
-        let field = MKSwiftTextField(textFieldType: .normal)
-        field.borderStyle = .none
-        field.textChangedBlock = { [weak self] text in
-            self?.textFieldValueChanged(text)
+    // MARK: - Class Methods
+    public class func initCellWithTableView(_ tableView: UITableView) -> MKSwiftTextFieldCell {
+        let identifier = "MKSwiftTextFieldCellIdenty"
+        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftTextFieldCell
+        if cell == nil {
+            cell = MKSwiftTextFieldCell(style: .default, reuseIdentifier: identifier)
         }
-        return field
-    }()
-    
-    private lazy var unitLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Color.defaultText
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 13)
-        return label
-    }()
-    
-    private lazy var noteLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Color.defaultText
-        label.font = .systemFont(ofSize: 12)
-        label.textAlignment = .left
-        label.numberOfLines = 0
-        return label
-    }()
+        return cell!
+    }
     
     private let offsetX: CGFloat = 15
     private let textBorderViewHeight: CGFloat = 35
@@ -155,12 +120,14 @@ class MKSwiftTextFieldCell: MKSwiftBaseCell {
         updateConstraints()
     }
     
-    // MARK: Public Methods
-    static func dequeueReusableCell(with tableView: UITableView) -> MKSwiftTextFieldCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? MKSwiftTextFieldCell {
-            return cell
-        }
-        return MKSwiftTextFieldCell(style: .default, reuseIdentifier: cellIdentifier)
+    // MARK: Actions
+    private func textFieldValueChanged(_ textValue: String) {
+        guard let dataModel = dataModel else { return }
+        delegate?.mkDeviceTextCellValueChanged(dataModel.index, textValue: textValue)
+    }
+    
+    @objc private func needHiddenKeyboard() {
+        textField.resignFirstResponder()
     }
     
     // MARK: Private Methods
@@ -303,13 +270,48 @@ class MKSwiftTextFieldCell: MKSwiftBaseCell {
         return dataModel.noteMsg.size(withFont: dataModel.noteMsgFont, maxSize: CGSize(width: width, height: .greatestFiniteMagnitude))
     }
     
-    // MARK: Actions
-    private func textFieldValueChanged(_ textValue: String) {
-        guard let dataModel = dataModel else { return }
-        delegate?.mkDeviceTextCellValueChanged(dataModel.index, textValue: textValue)
-    }
+    // MARK: UI Components
+    private lazy var msgLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Color.defaultText
+        label.textAlignment = .left
+        label.font = Font.MKFont(15)
+        label.numberOfLines = 0
+        return label
+    }()
     
-    @objc private func needHiddenKeyboard() {
-        textField.resignFirstResponder()
-    }
+    private lazy var textBorderView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.masksToBounds = true
+        view.layer.borderWidth = 0.5
+        view.layer.borderColor = Color.fromHex(0xDEDEDE).cgColor
+        return view
+    }()
+    
+    private lazy var textField: MKSwiftTextField = {
+        let field = MKSwiftTextField(textFieldType: .normal)
+        field.borderStyle = .none
+        field.textChangedBlock = { [weak self] text in
+            self?.textFieldValueChanged(text)
+        }
+        return field
+    }()
+    
+    private lazy var unitLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Color.defaultText
+        label.textAlignment = .left
+        label.font = Font.MKFont(13)
+        return label
+    }()
+    
+    private lazy var noteLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Color.defaultText
+        label.font = Font.MKFont(12)
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        return label
+    }()
 }

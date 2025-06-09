@@ -10,29 +10,39 @@ import SnapKit
 
 // MARK: - Cell Model
 public class MKSwiftSettingTextCellModel {
-    var contentColor: UIColor = .white
+    public var contentColor: UIColor = .white
     
     // Left label and icon
-    var leftIcon: UIImage?
-    var leftMsgTextFont: UIFont = .systemFont(ofSize: 15)
-    var leftMsgTextColor: UIColor = Color.defaultText
-    var leftMsg: String = ""
+    public var leftIcon: UIImage?
+    public var leftMsgTextFont: UIFont = Font.MKFont(15)
+    public var leftMsgTextColor: UIColor = Color.defaultText
+    public var leftMsg: String = ""
 }
 
 // MARK: - Cell Implementation
 public class MKSwiftSettingTextCell: MKSwiftBaseCell {
     
-    // MARK: - UI Components
-    private var leftIcon: UIImageView?
-    private var leftMsgLabel: UILabel!
-    private var rightIcon: UIImageView!
-    
     // MARK: - Properties
-    var dataModel: MKSwiftSettingTextCellModel? {
+    public var dataModel: MKSwiftSettingTextCellModel? {
         didSet {
             updateUI()
         }
     }
+    
+    // MARK: - Class Methods
+    public class func initCellWithTableView(_ tableView: UITableView) -> MKSwiftSettingTextCell {
+        let identifier = "MKSwiftSettingTextCellIdenty"
+        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftSettingTextCell
+        if cell == nil {
+            cell = MKSwiftSettingTextCell(style: .default, reuseIdentifier: identifier)
+        }
+        return cell!
+    }
+    
+    // MARK: - UI Components
+    private var leftIcon: UIImageView?
+    private var leftMsgLabel: UILabel!
+    private var rightIcon: UIImageView!
     
     private let offset_X: CGFloat = 15
     
@@ -44,32 +54,6 @@ public class MKSwiftSettingTextCell: MKSwiftBaseCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Class Methods
-    class func initCellWithTableView(_ tableView: UITableView) -> MKSwiftSettingTextCell {
-        let identifier = "MKSwiftSettingTextCellIdenty"
-        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftSettingTextCell
-        if cell == nil {
-            cell = MKSwiftSettingTextCell(style: .default, reuseIdentifier: identifier)
-        }
-        return cell!
-    }
-    
-    // MARK: - UI Setup
-    private func setupUI() {
-        contentView.backgroundColor = .white
-        
-        leftMsgLabel = UILabel()
-        leftMsgLabel.textColor = Color.defaultText
-        leftMsgLabel.textAlignment = .left
-        leftMsgLabel.font = .systemFont(ofSize: 15)
-        leftMsgLabel.numberOfLines = 0
-        contentView.addSubview(leftMsgLabel)
-        
-        rightIcon = UIImageView()
-        rightIcon.image = loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftSettingTextCell", imageName: "mk_swift_goNextButton.png")
-        contentView.addSubview(rightIcon)
     }
     
     // MARK: - Layout
@@ -102,6 +86,22 @@ public class MKSwiftSettingTextCell: MKSwiftBaseCell {
             make.centerY.equalToSuperview()
             make.height.equalTo(14)
         }
+    }
+    
+    // MARK: - UI Setup
+    private func setupUI() {
+        contentView.backgroundColor = .white
+        
+        leftMsgLabel = UILabel()
+        leftMsgLabel.textColor = Color.defaultText
+        leftMsgLabel.textAlignment = .left
+        leftMsgLabel.font = Font.MKFont(15)
+        leftMsgLabel.numberOfLines = 0
+        contentView.addSubview(leftMsgLabel)
+        
+        rightIcon = UIImageView()
+        rightIcon.image = loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftSettingTextCell", imageName: "mk_swift_goNextButton.png")
+        contentView.addSubview(rightIcon)
     }
     
     // MARK: - Update UI

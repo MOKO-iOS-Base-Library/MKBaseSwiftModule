@@ -7,29 +7,20 @@
 
 import UIKit
 
-@MainActor struct MKSwiftUIAdaptor {
-    // MARK: - Fonts
-    static func font(size: CGFloat, weight: UIFont.Weight = .regular) -> UIFont {
-        UIFont.systemFont(ofSize: size, weight: weight)
-    }
-    
+@MainActor public struct MKSwiftUIAdaptor {
     // MARK: - Button Factory
-    static func createRoundedButton(
+    public static func createRoundedButton(
         title: String,
-        backgroundColor: UIColor = Color.navBar,
-        titleColor: UIColor = .white,
-        cornerRadius: CGFloat = 10,
-        fontSize: CGFloat = 15,
         target: Any? = nil,
         action: Selector? = nil
     ) -> UIButton {
         let button = UIButton(type: .custom)
-        button.backgroundColor = backgroundColor
+        button.backgroundColor = Color.navBar
         button.setTitle(title, for: .normal)
-        button.setTitleColor(titleColor, for: .normal)
-        button.titleLabel?.font = font(size: fontSize)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = Font.MKFont(15)
         button.layer.masksToBounds = true
-        button.layer.cornerRadius = cornerRadius
+        button.layer.cornerRadius = 6
         
         if let target = target, let action = action {
             button.addTarget(target, action: action, for: .touchUpInside)
@@ -39,49 +30,45 @@ import UIKit
     }
     
     // MARK: - Label Factory
-    static func createLabel(
-        text: String,
-        textColor: UIColor = Color.defaultText,
-        fontSize: CGFloat = 15,
-        alignment: NSTextAlignment = .left
+    public static func createNormalLabel(
+        text: String
     ) -> UILabel {
         let label = UILabel()
         label.text = text
-        label.textColor = textColor
-        label.font = font(size: fontSize)
-        label.textAlignment = alignment
+        label.textColor = Color.defaultText
+        label.font = Font.MKFont(15)
+        label.textAlignment = .left
         label.numberOfLines = 0
         return label
     }
     
     // MARK: - TextField Factory
-    static func createTextField(
+    public static func createTextField(
         text: String = "",
         placeholder: String = "",
         textType: MKSwiftTextFieldType = .normal,
         textColor: UIColor = Color.defaultText,
-        fontSize: CGFloat = 15,
-        borderColor: UIColor = UIColor(white: 0.635, alpha: 1.0),
-        cornerRadius: CGFloat = 6,
-        borderWidth: CGFloat = 0.5
+        textAlignment: NSTextAlignment = .left,
+        maxLen: Int = 0
     ) -> MKSwiftTextField {
         let textField = MKSwiftTextField(textFieldType: textType)
         textField.text = text
         textField.placeholder = placeholder
         textField.textColor = textColor
-        textField.font = font(size: fontSize)
-        textField.textAlignment = .left
+        textField.font = Font.MKFont(15)
+        textField.textAlignment = textAlignment
+        textField.maxLength = maxLen
         
         textField.layer.masksToBounds = true
-        textField.layer.borderColor = borderColor.cgColor
-        textField.layer.borderWidth = borderWidth
-        textField.layer.cornerRadius = cornerRadius
+        textField.layer.borderColor = Color.line.cgColor
+        textField.layer.borderWidth = 0.5
+        textField.layer.cornerRadius = 6
         
         return textField
     }
     
     // MARK: - Attributed String
-    static func createAttributedString(
+    public static func createAttributedString(
         strings: [String],
         fonts: [UIFont],
         colors: [UIColor]
@@ -107,7 +94,7 @@ import UIKit
     }
     
     // MARK: - Text Size Calculation
-    static func calculateTextSize(
+    public static func calculateTextSize(
         attributedString: NSAttributedString,
         maxWidth: CGFloat = .greatestFiniteMagnitude,
         maxHeight: CGFloat = .greatestFiniteMagnitude
@@ -129,7 +116,7 @@ import UIKit
         )
     }
     
-    static func strHeight(forAttributedString string: NSAttributedString, viewWidth: CGFloat) -> CGFloat {
+    public static func strHeight(forAttributedString string: NSAttributedString, viewWidth: CGFloat) -> CGFloat {
         guard string.length > 0 else {
             return 0
         }

@@ -8,7 +8,7 @@
 import UIKit
 
 open class MKSwiftBaseTableView:UITableView {
-    override init(frame: CGRect, style: UITableView.Style) {
+    public override init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style);
         if #available(iOS 15.0, tvOS 15, *) {
             self.sectionHeaderTopPadding = 0;

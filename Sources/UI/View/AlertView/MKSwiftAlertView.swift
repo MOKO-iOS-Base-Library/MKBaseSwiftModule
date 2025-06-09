@@ -67,7 +67,7 @@ public class MKSwiftAlertView: UIView {
         let label = UILabel()
         label.textAlignment = .center
         label.textColor = Color.defaultText
-        label.font = UIFont.systemFont(ofSize: 14.0)
+        label.font = Font.MKFont(14)
         label.numberOfLines = 0
         return label
     }()
@@ -261,7 +261,7 @@ public class MKSwiftAlertView: UIView {
                               textType: MKSwiftTextFieldType) -> MKSwiftTextField {
         let textField = MKSwiftTextField(textFieldType: textType)
         textField.textColor = Color.defaultText
-        textField.font = UIFont.systemFont(ofSize: 13.0)
+        textField.font = Font.MKFont(13)
         textField.textAlignment = .left
         textField.placeholder = placeHolder
         textField.text = textValue

@@ -8,21 +8,23 @@
 import UIKit
 import SnapKit
 
-public class MKSwiftFilterByRawDataCellModel: NSObject {
-    var index: Int = 0
-    var msg: String = ""
-    var contentColor: UIColor = .white
-    var dataType: String = ""
-    var minIndex: String = ""
-    var maxIndex: String = ""
-    var rawData: String = ""
-    var rawDataMaxBytes: Int = 29
-    var dataTypePlaceHolder: String = ""
-    var minTextFieldPlaceHolder: String = ""
-    var maxTextFieldPlaceHolder: String = ""
-    var rawTextFieldPlaceHolder: String = ""
+public class MKSwiftFilterByRawDataCellModel {
+    public var index: Int = 0
+    public var msg: String = ""
+    public var contentColor: UIColor = .white
+    public var dataType: String = ""
+    public var minIndex: String = ""
+    public var maxIndex: String = ""
+    public var rawData: String = ""
+    public var rawDataMaxBytes: Int = 29
+    public var dataTypePlaceHolder: String = ""
+    public var minTextFieldPlaceHolder: String = ""
+    public var maxTextFieldPlaceHolder: String = ""
+    public var rawTextFieldPlaceHolder: String = ""
     
-    func validParamsSuccess() -> Bool {
+    public init() {}
+    
+    public func validParamsSuccess() -> Bool {
         // Use String.isHexadecimal constant with matchesRegex method
         guard dataType.count == 2, dataType.matchesRegex(String.isHexadecimal) else {
             return false
@@ -60,7 +62,7 @@ public class MKSwiftFilterByRawDataCellModel: NSObject {
         return rawData.count == totalLen
     }
     
-    func validRawDatas() -> Bool {
+    public func validRawDatas() -> Bool {
         guard Valid.isStringValid(rawData), rawData.count <= rawDataMaxBytes * 2,
               rawData.matchesRegex(String.isHexadecimal) else {
             return false
@@ -81,78 +83,33 @@ public protocol MKSwiftFilterByRawDataCellDelegate: AnyObject {
 }
 
 public class MKSwiftFilterByRawDataCell: MKSwiftBaseCell {
-    var dataModel: MKSwiftFilterByRawDataCellModel? {
+    public var dataModel: MKSwiftFilterByRawDataCellModel? {
         didSet {
             updateContent()
         }
     }
     
-    weak var delegate: MKSwiftFilterByRawDataCellDelegate?
+    public weak var delegate: MKSwiftFilterByRawDataCellDelegate?
     
-    private lazy var msgLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Color.defaultText
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 15)
-        return label
-    }()
-    
-    private lazy var typeTextField: MKSwiftTextField = {
-        let textField = MKSwiftTextField(textFieldType: .hexCharOnly)
-        textField.maxLength = 2
-        textField.textChangedBlock = { [weak self] text in
-            self?.textFieldValueChanged(text, textType: .dataType)
+    // MARK: - Class Methods
+    public class func initCellWithTableView(_ tableView: UITableView) -> MKSwiftFilterByRawDataCell {
+        let identifier = "MKSwiftFilterByRawDataCellIdenty"
+        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftFilterByRawDataCell
+        if cell == nil {
+            cell = MKSwiftFilterByRawDataCell(style: .default, reuseIdentifier: identifier)
         }
-        return textField
-    }()
-    
-    private lazy var minTextField: MKSwiftTextField = {
-        let textField = MKSwiftTextField(textFieldType: .realNumberOnly)
-        textField.maxLength = 2
-        textField.textChangedBlock = { [weak self] text in
-            self?.textFieldValueChanged(text, textType: .minIndex)
-        }
-        return textField
-    }()
-    
-    private lazy var maxTextField: MKSwiftTextField = {
-        let textField = MKSwiftTextField(textFieldType: .realNumberOnly)
-        textField.maxLength = 2
-        textField.textChangedBlock = { [weak self] text in
-            self?.textFieldValueChanged(text, textType: .maxIndex)
-        }
-        return textField
-    }()
-    
-    private let characterLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.textColor = Color.defaultText
-        label.font = .systemFont(ofSize: 20)
-        label.text = "~"
-        return label
-    }()
-    
-    private let unitLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.textColor = Color.defaultText
-        label.font = .systemFont(ofSize: 13)
-        label.text = "Byte"
-        return label
-    }()
-    
-    private lazy var rawDataField: MKSwiftTextField = {
-        let textField = MKSwiftTextField(textFieldType: .hexCharOnly)
-        textField.textChangedBlock = { [weak self] text in
-            self?.textFieldValueChanged(text, textType: .rawDataType)
-        }
-        return textField
-    }()
+        return cell!
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupUI()
+        contentView.addSubview(msgLabel)
+        contentView.addSubview(typeTextField)
+        contentView.addSubview(minTextField)
+        contentView.addSubview(maxTextField)
+        contentView.addSubview(characterLabel)
+        contentView.addSubview(unitLabel)
+        contentView.addSubview(rawDataField)
         setupNotifications()
     }
     
@@ -164,20 +121,17 @@ public class MKSwiftFilterByRawDataCell: MKSwiftBaseCell {
         NotificationCenter.default.removeObserver(self)
     }
     
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+        setupUI()
+    }
+    
     private func setupUI() {
-        contentView.addSubview(msgLabel)
-        contentView.addSubview(typeTextField)
-        contentView.addSubview(minTextField)
-        contentView.addSubview(maxTextField)
-        contentView.addSubview(characterLabel)
-        contentView.addSubview(unitLabel)
-        contentView.addSubview(rawDataField)
-        
         msgLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(15)
             make.right.equalToSuperview().offset(-15)
             make.top.equalToSuperview().offset(5)
-            make.height.equalTo(UIFont.systemFont(ofSize: 15).lineHeight)
+            make.height.equalTo(Font.MKFont(15).lineHeight)
         }
         
         typeTextField.snp.makeConstraints { make in
@@ -221,29 +175,9 @@ public class MKSwiftFilterByRawDataCell: MKSwiftBaseCell {
             make.top.equalTo(typeTextField.snp.bottom).offset(15)
             make.bottom.equalToSuperview().offset(-5)
         }
-        
-        // Configure text fields appearance
-        [typeTextField, minTextField, maxTextField, rawDataField].forEach {
-            $0.backgroundColor = .white
-            $0.font = .systemFont(ofSize: 13)
-            $0.textColor = Color.defaultText
-            $0.textAlignment = .left
-            $0.layer.masksToBounds = true
-            $0.layer.borderWidth = 0.5
-            $0.layer.borderColor = Color.rgb(162, 162, 162).cgColor
-            $0.layer.cornerRadius = 6
-        }
     }
     
-    private func setupNotifications() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(textFieldHiddenKeyboard),
-            name: Notification.Name("MKTextFieldNeedHiddenKeyboard"),
-            object: nil
-        )
-    }
-    
+    //MARK: - Event method
     @objc private func textFieldHiddenKeyboard() {
         [typeTextField, minTextField, maxTextField, rawDataField].forEach {
             $0.resignFirstResponder()
@@ -253,6 +187,16 @@ public class MKSwiftFilterByRawDataCell: MKSwiftBaseCell {
     private func textFieldValueChanged(_ text: String, textType: MKFilterByRawDataTextType) {
         guard let dataModel = dataModel else { return }
         delegate?.mk_rawFilterDataChanged(textType, index: dataModel.index, textValue: text)
+    }
+    
+    //MARK: - Private method
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(textFieldHiddenKeyboard),
+            name: Notification.Name("MKTextFieldNeedHiddenKeyboard"),
+            object: nil
+        )
     }
     
     private func updateContent() {
@@ -270,12 +214,66 @@ public class MKSwiftFilterByRawDataCell: MKSwiftBaseCell {
         rawDataField.maxLength = dataModel.rawDataMaxBytes * 2
     }
     
-    static func initCellWithTableView(_ tableView: UITableView) -> MKSwiftFilterByRawDataCell {
-        let identifier = "MKSwiftFilterByRawDataCellIdenty"
-        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftFilterByRawDataCell
-        if cell == nil {
-            cell = MKSwiftFilterByRawDataCell(style: .default, reuseIdentifier: identifier)
+    //MARK: - Lazy method
+    private lazy var msgLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Color.defaultText
+        label.textAlignment = .left
+        label.font = Font.MKFont(15)
+        return label
+    }()
+    
+    private lazy var typeTextField: MKSwiftTextField = {
+        let textField = MKSwiftUIAdaptor.createTextField(placeholder: "",textType: .hexCharOnly,maxLen: 2)
+        textField.font = Font.MKFont(13)
+        textField.textChangedBlock = { [weak self] text in
+            self?.textFieldValueChanged(text, textType: .dataType)
         }
-        return cell!
-    }
+        return textField
+    }()
+    
+    private lazy var minTextField: MKSwiftTextField = {
+        let textField = MKSwiftUIAdaptor.createTextField(placeholder: "",textType: .realNumberOnly,maxLen: 2)
+        textField.font = Font.MKFont(13)
+        textField.textChangedBlock = { [weak self] text in
+            self?.textFieldValueChanged(text, textType: .minIndex)
+        }
+        return textField
+    }()
+    
+    private lazy var maxTextField: MKSwiftTextField = {
+        let textField = MKSwiftUIAdaptor.createTextField(placeholder: "",textType: .realNumberOnly,maxLen: 2)
+        textField.font = Font.MKFont(13)
+        textField.textChangedBlock = { [weak self] text in
+            self?.textFieldValueChanged(text, textType: .maxIndex)
+        }
+        return textField
+    }()
+    
+    private lazy var characterLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.textColor = Color.defaultText
+        label.font = Font.MKFont(20)
+        label.text = "~"
+        return label
+    }()
+    
+    private lazy var unitLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.textColor = Color.defaultText
+        label.font = Font.MKFont(13)
+        label.text = "Byte"
+        return label
+    }()
+    
+    private lazy var rawDataField: MKSwiftTextField = {
+        let textField = MKSwiftUIAdaptor.createTextField(placeholder: "",textType: .hexCharOnly)
+        textField.font = Font.MKFont(13)
+        textField.textChangedBlock = { [weak self] text in
+            self?.textFieldValueChanged(text, textType: .rawDataType)
+        }
+        return textField
+    }()
 }

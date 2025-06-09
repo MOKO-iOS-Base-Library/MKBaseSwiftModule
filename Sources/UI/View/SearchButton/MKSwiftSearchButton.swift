@@ -49,7 +49,7 @@ public class MKSwiftSearchButton: UIControl {
         let label = UILabel()
         label.textColor = Color.rgb(220, 220, 220)
         label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = Font.MKFont(15)
         label.text = "Edit Filter"
         return label
     }()
@@ -58,7 +58,7 @@ public class MKSwiftSearchButton: UIControl {
         let label = UILabel()
         label.textColor = .darkText
         label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = Font.MKFont(15)
         label.lineBreakMode = .byTruncatingTail
         return label
     }()

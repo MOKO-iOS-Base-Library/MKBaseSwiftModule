@@ -34,7 +34,7 @@ public class MKSwiftFilterEditSectionHeaderView: UITableViewHeaderFooterView {
     private lazy var msgLabel: UILabel = {
         let label = UILabel()
         label.textColor = Color.defaultText
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = Font.MKFont(14)
         label.textAlignment = .left
         return label
     }()
@@ -107,7 +107,7 @@ public class MKSwiftFilterEditSectionHeaderView: UITableViewHeaderFooterView {
             make.left.equalToSuperview().offset(15)
             make.right.equalTo(addButton.snp.left).offset(-15)
             make.centerY.equalToSuperview()
-            make.height.equalTo(UIFont.systemFont(ofSize: 14).lineHeight)
+            make.height.equalTo(Font.MKFont(14).lineHeight)
         }
     }
     

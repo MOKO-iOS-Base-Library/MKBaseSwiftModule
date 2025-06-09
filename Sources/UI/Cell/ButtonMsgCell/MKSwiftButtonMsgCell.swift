@@ -11,27 +11,29 @@ import SnapKit
 // MARK: - Cell Model
 public class MKSwiftButtonMsgCellModel {
     // Cell top configuration
-    var index: Int = 0
-    var contentColor: UIColor = .white
+    public var index: Int = 0
+    public var contentColor: UIColor = .white
     
     // Left label configuration
-    var msg: String = ""
-    var msgColor: UIColor = Color.defaultText
-    var msgFont: UIFont = .systemFont(ofSize: 15)
+    public var msg: String = ""
+    public var msgColor: UIColor = Color.defaultText
+    public var msgFont: UIFont = Font.MKFont(15)
     
     // Right button configuration
-    var buttonEnable: Bool = true
-    var buttonTitle: String = ""
-    var buttonBackColor: UIColor = Color.navBar
-    var buttonTitleColor: UIColor = .white
-    var buttonLabelFont: UIFont = .systemFont(ofSize: 15)
+    public var buttonEnable: Bool = true
+    public var buttonTitle: String = ""
+    public var buttonBackColor: UIColor = Color.navBar
+    public var buttonTitleColor: UIColor = .white
+    public var buttonLabelFont: UIFont = Font.MKFont(15)
     
     // Bottom label configuration
-    var noteMsg: String = ""
-    var noteMsgColor: UIColor = Color.defaultText
-    var noteMsgFont: UIFont = .systemFont(ofSize: 12)
+    public var noteMsg: String = ""
+    public var noteMsgColor: UIColor = Color.defaultText
+    public var noteMsgFont: UIFont = Font.MKFont(12)
     
-    func cellHeightWithContentWidth(_ width: CGFloat) -> CGFloat {
+    public init() {}
+    
+    public func cellHeightWithContentWidth(_ width: CGFloat) -> CGFloat {
         let maxMsgWidth = width - 3 * 15 - 130 // offset_X = 15, selectButtonWidth = 130
         let msgSize = msg.size(withFont: msgFont, maxSize: CGSize(width: maxMsgWidth, height: .greatestFiniteMagnitude))
         
@@ -52,20 +54,24 @@ public protocol MKSwiftButtonMsgCellDelegate: AnyObject {
 
 // MARK: - Cell Implementation
 public class MKSwiftButtonMsgCell: MKSwiftBaseCell {
-    
-    // MARK: - UI Components
-    private var msgLabel: UILabel!
-    private var selectedButton: UIButton!
-    private var noteLabel: UILabel!
-    
     // MARK: - Properties
-    var dataModel: MKSwiftButtonMsgCellModel? {
+    public var dataModel: MKSwiftButtonMsgCellModel? {
         didSet {
-            updateUI()
+            updateContent()
         }
     }
     
-    weak var delegate: MKSwiftButtonMsgCellDelegate?
+    public weak var delegate: MKSwiftButtonMsgCellDelegate?
+    
+    // MARK: - Class Methods
+    public class func initCellWithTableView(_ tableView: UITableView) -> MKSwiftButtonMsgCell {
+        let identifier = "MKSwiftButtonMsgCellIdenty"
+        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftButtonMsgCell
+        if cell == nil {
+            cell = MKSwiftButtonMsgCell(style: .default, reuseIdentifier: identifier)
+        }
+        return cell!
+    }
     
     // MARK: - Constants
     private let offset_X: CGFloat = 15
@@ -75,48 +81,13 @@ public class MKSwiftButtonMsgCell: MKSwiftBaseCell {
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupUI()
+        contentView.addSubview(msgLabel)
+        contentView.addSubview(selectedButton)
+        contentView.addSubview(noteLabel)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Class Methods
-    class func initCellWithTableView(_ tableView: UITableView) -> MKSwiftButtonMsgCell {
-        let identifier = "MKSwiftButtonMsgCellIdenty"
-        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftButtonMsgCell
-        if cell == nil {
-            cell = MKSwiftButtonMsgCell(style: .default, reuseIdentifier: identifier)
-        }
-        return cell!
-    }
-    
-    // MARK: - UI Setup
-    private func setupUI() {
-        contentView.backgroundColor = .white
-        
-        msgLabel = UILabel()
-        msgLabel.textColor = Color.defaultText
-        msgLabel.textAlignment = .left
-        msgLabel.font = .systemFont(ofSize: 15)
-        msgLabel.numberOfLines = 0
-        contentView.addSubview(msgLabel)
-        
-        selectedButton = UIButton(type: .custom)
-        selectedButton.setTitleColor(.white, for: .normal)
-        selectedButton.backgroundColor = Color.navBar
-        selectedButton.layer.masksToBounds = true
-        selectedButton.layer.cornerRadius = 6
-        selectedButton.addTarget(self, action: #selector(selectedButtonPressed), for: .touchUpInside)
-        contentView.addSubview(selectedButton)
-        
-        noteLabel = UILabel()
-        noteLabel.textColor = Color.defaultText
-        noteLabel.font = .systemFont(ofSize: 12)
-        noteLabel.textAlignment = .left
-        noteLabel.numberOfLines = 0
-        contentView.addSubview(noteLabel)
     }
     
     // MARK: - Layout
@@ -183,7 +154,8 @@ public class MKSwiftButtonMsgCell: MKSwiftBaseCell {
         return CGSize(width: width, height: size.height)
     }
     
-    private func updateUI() {
+    // MARK: - UI Setup
+    private func updateContent() {
         guard let dataModel = dataModel else { return }
         
         contentView.backgroundColor = dataModel.contentColor
@@ -203,4 +175,31 @@ public class MKSwiftButtonMsgCell: MKSwiftBaseCell {
         
         setNeedsLayout()
     }
+    
+    // MARK: - Lazy
+    private lazy var msgLabel: UILabel = {
+        let msgLabel = UILabel()
+        msgLabel.textColor = Color.defaultText
+        msgLabel.textAlignment = .left
+        msgLabel.font = Font.MKFont(15)
+        msgLabel.numberOfLines = 0
+        return msgLabel
+    }()
+    private lazy var selectedButton: UIButton = {
+        let selectedButton = UIButton(type: .custom)
+        selectedButton.setTitleColor(.white, for: .normal)
+        selectedButton.backgroundColor = Color.navBar
+        selectedButton.layer.masksToBounds = true
+        selectedButton.layer.cornerRadius = 6
+        selectedButton.addTarget(self, action: #selector(selectedButtonPressed), for: .touchUpInside)
+        return selectedButton
+    }()
+    private lazy var noteLabel: UILabel = {
+        let noteLabel = UILabel()
+        noteLabel.textColor = Color.defaultText
+        noteLabel.font = Font.MKFont(12)
+        noteLabel.textAlignment = .left
+        noteLabel.numberOfLines = 0
+        return noteLabel
+    }()
 }

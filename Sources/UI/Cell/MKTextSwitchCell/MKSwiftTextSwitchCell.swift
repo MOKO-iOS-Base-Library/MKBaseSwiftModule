@@ -12,29 +12,29 @@ import SnapKit
 
 public class MKSwiftTextSwitchCellModel {
     // MARK: Cell Top Configuration
-    var index: Int = 0
-    var contentColor: UIColor = .white
+    public var index: Int = 0
+    public var contentColor: UIColor = .white
     
     // MARK: Left Label and Icon Configuration
-    var leftIcon: UIImage?
-    var msg: String = ""
-    var msgColor: UIColor = Color.defaultText
-    var msgFont: UIFont = .systemFont(ofSize: 15)
+    public var leftIcon: UIImage?
+    public var msg: String = ""
+    public var msgColor: UIColor = Color.defaultText
+    public var msgFont: UIFont = Font.MKFont(15)
     
     // MARK: Switch Configuration
-    var isOn: Bool = false
-    var switchEnable: Bool = true
+    public var isOn: Bool = false
+    public var switchEnable: Bool = true
     
     // MARK: Bottom Label Configuration
-    var noteMsg: String = ""
-    var noteMsgColor: UIColor = Color.defaultText
-    var noteMsgFont: UIFont = .systemFont(ofSize: 12)
+    public var noteMsg: String = ""
+    public var noteMsgColor: UIColor = Color.defaultText
+    public var noteMsgFont: UIFont = Font.MKFont(12)
     
     private let offsetX: CGFloat = 15
     private let switchButtonWidth: CGFloat = 40
     private let switchButtonHeight: CGFloat = 30
     
-    func cellHeight(withContentWidth width: CGFloat) -> CGFloat {
+    public func cellHeight(withContentWidth width: CGFloat) -> CGFloat {
         let maxMsgWidth = width - 3 * offsetX - switchButtonWidth - (leftIcon != nil ? (leftIcon!.size.width + 3) : 0)
         let msgSize = msg.size(withFont: msgFont, maxSize: CGSize(width: maxMsgWidth, height: .greatestFiniteMagnitude))
         
@@ -60,45 +60,23 @@ public class MKSwiftTextSwitchCell: UITableViewCell {
     // MARK: Properties
     static let cellIdentifier = "MKSwiftTextSwitchCellIdentifier"
     
-    var dataModel: MKSwiftTextSwitchCellModel? {
+    public var dataModel: MKSwiftTextSwitchCellModel? {
         didSet {
             updateUI()
         }
     }
     
-    weak var delegate: MKSwiftTextSwitchCellDelegate?
+    public weak var delegate: MKSwiftTextSwitchCellDelegate?
     
-    // MARK: UI Components
-    private lazy var leftIconView: UIImageView = {
-        let view = UIImageView()
-        view.contentMode = .scaleAspectFit
-        return view
-    }()
-    
-    private lazy var msgLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Color.defaultText
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 15)
-        label.numberOfLines = 0
-        return label
-    }()
-    
-    private lazy var switchButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftTextSwitchCell", imageName: "mk_swift_switchUnselectedIcon.png"), for: .normal)
-        button.addTarget(self, action: #selector(switchButtonPressed), for: .touchUpInside)
-        return button
-    }()
-    
-    private lazy var noteLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Color.defaultText
-        label.font = .systemFont(ofSize: 12)
-        label.textAlignment = .left
-        label.numberOfLines = 0
-        return label
-    }()
+    // MARK: - Class Methods
+    public class func initCellWithTableView(_ tableView: UITableView) -> MKSwiftTextSwitchCell {
+        let identifier = "MKSwiftTextSwitchCellIdenty"
+        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftTextSwitchCell
+        if cell == nil {
+            cell = MKSwiftTextSwitchCell(style: .default, reuseIdentifier: identifier)
+        }
+        return cell!
+    }
     
     private let offsetX: CGFloat = 15
     private let switchButtonWidth: CGFloat = 40
@@ -114,12 +92,11 @@ public class MKSwiftTextSwitchCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Public Methods
-    static func dequeueReusableCell(with tableView: UITableView) -> MKSwiftTextSwitchCell {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? MKSwiftTextSwitchCell {
-            return cell
-        }
-        return MKSwiftTextSwitchCell(style: .default, reuseIdentifier: cellIdentifier)
+    // MARK: Actions
+    @objc private func switchButtonPressed() {
+        switchButton.isSelected = !switchButton.isSelected
+        switchButton.setImage(switchButton.isSelected ? loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftTextSwitchCell", imageName: "mk_swift_switchSelectedIcon.png") : loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftTextSwitchCell", imageName: "mk_swift_switchUnselectedIcon.png"), for: .normal)
+        delegate?.MKSwiftTextSwitchCellStatusChanged(isOn: switchButton.isSelected, index: dataModel?.index ?? 0)
     }
     
     // MARK: Private Methods
@@ -237,11 +214,36 @@ public class MKSwiftTextSwitchCell: UITableViewCell {
         return dataModel.noteMsg.size(withFont: dataModel.noteMsgFont, maxSize: CGSize(width: width, height: .greatestFiniteMagnitude))
     }
     
-    // MARK: Actions
-    @objc private func switchButtonPressed() {
-        switchButton.isSelected = !switchButton.isSelected
-        switchButton.setImage(switchButton.isSelected ? loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftTextSwitchCell", imageName: "mk_swift_switchSelectedIcon.png") : loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftTextSwitchCell", imageName: "mk_swift_switchUnselectedIcon.png"), for: .normal)
-        delegate?.MKSwiftTextSwitchCellStatusChanged(isOn: switchButton.isSelected, index: dataModel?.index ?? 0)
-    }
+    // MARK: UI Components
+    private lazy var leftIconView: UIImageView = {
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFit
+        return view
+    }()
+    
+    private lazy var msgLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Color.defaultText
+        label.textAlignment = .left
+        label.font = Font.MKFont(15)
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    private lazy var switchButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftTextSwitchCell", imageName: "mk_swift_switchUnselectedIcon.png"), for: .normal)
+        button.addTarget(self, action: #selector(switchButtonPressed), for: .touchUpInside)
+        return button
+    }()
+    
+    private lazy var noteLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = Color.defaultText
+        label.font = Font.MKFont(12)
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        return label
+    }()
 }
 

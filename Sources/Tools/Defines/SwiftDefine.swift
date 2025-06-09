@@ -9,34 +9,32 @@ import Foundation
 import UIKit
 
 // MARK: - Weak/Strong References
-// Weak reference
-func weakify<T: AnyObject>(_ object: T) -> () -> T? {
+public func weakify<T: AnyObject>(_ object: T) -> () -> T? {
     return { [weak object] in object }
 }
 
-// Strong reference (to be used inside closures)
-func strongify<T: AnyObject>(weakObject: () -> T?, closure: (T) -> Void) {
+public func strongify<T: AnyObject>(weakObject: () -> T?, closure: (T) -> Void) {
     guard let object = weakObject() else { return }
     closure(object)
 }
 
 // MARK: - Device Related
-@MainActor struct Screen {
-    static let bounds = UIScreen.main.bounds
-    static let width = UIScreen.main.bounds.width
-    static let height = UIScreen.main.bounds.height
-    static let maxLength = max(width, height)
-    static let minLength = min(width, height)
-    static let scale = UIScreen.main.scale
+@MainActor public enum Screen {
+    public static let bounds = UIScreen.main.bounds
+    public static let width = UIScreen.main.bounds.width
+    public static let height = UIScreen.main.bounds.height
+    public static let maxLength = max(width, height)
+    public static let minLength = min(width, height)
+    public static let scale = UIScreen.main.scale
 }
 
 // MARK: - System Related
-@MainActor struct App {
-    static var delegate: UIApplicationDelegate? {
+@MainActor public enum App {
+    public static var delegate: UIApplicationDelegate? {
         UIApplication.shared.delegate
     }
     
-    static var window: UIWindow? {
+    public static var window: UIWindow? {
         UIApplication.shared.connectedScenes
             .filter { $0.activationState == .foregroundActive }
             .first(where: { $0 is UIWindowScene })
@@ -44,101 +42,93 @@ func strongify<T: AnyObject>(weakObject: () -> T?, closure: (T) -> Void) {
             .first
     }
     
-    static var rootViewController: UIViewController? {
+    public static var rootViewController: UIViewController? {
         window?.rootViewController
     }
     
-    static var systemVersion: String {
+    public static var systemVersion: String {
         UIDevice.current.systemVersion
     }
     
-    static var name: String {
+    public static var name: String {
         Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ??
         Bundle.main.infoDictionary?["CFBundleName"] as? String ?? ""
     }
     
-    static var version: String {
+    public static var version: String {
         Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
     }
     
-    static func isIOS(_ version: Int) -> Bool {
-        return ProcessInfo.processInfo.operatingSystemVersion.majorVersion >= version
+    public static func isIOS(_ version: Int) -> Bool {
+        ProcessInfo.processInfo.operatingSystemVersion.majorVersion >= version
     }
     
-    static var timeStamp: String {
+    public static var timeStamp: String {
         String(Int(Date().timeIntervalSince1970))
+    }
+    
+    public static func dispatchMainSafe(_ closure: @Sendable @escaping () -> Void) {
+        if Thread.isMainThread {
+            closure()
+        } else {
+            DispatchQueue.main.async(execute: closure)
+        }
     }
 }
 
 // MARK: - Status Bar, Navigation Bar, Tab Bar
-@MainActor struct Layout {
-    static var statusBarHeight: CGFloat {
-        if #available(iOS 13.0, *) {
-            return App.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
-        } else {
-            return UIApplication.shared.statusBarFrame.height
-        }
+@MainActor public enum Layout {
+    public static var statusBarHeight: CGFloat {
+        return App.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
     }
     
-    static var navigationBarHeight: CGFloat {
+    public static var navigationBarHeight: CGFloat {
         UINavigationController().navigationBar.frame.height
     }
     
-    static var tabBarHeight: CGFloat {
+    public static var tabBarHeight: CGFloat {
         UITabBarController().tabBar.frame.height
     }
     
-    static var topBarHeight: CGFloat {
+    public static var topBarHeight: CGFloat {
         statusBarHeight + navigationBarHeight
     }
     
-    static var safeAreaBottom: CGFloat {
-        if #available(iOS 11.0, *) {
-            return App.window?.safeAreaInsets.bottom ?? 0
-        }
-        return 0
+    public static var safeAreaBottom: CGFloat {
+        return App.window?.safeAreaInsets.bottom ?? 0
     }
 }
 
 // MARK: - File Paths
-struct Path {
-    static let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first ?? ""
-    static let library = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first ?? ""
-    static let caches = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first ?? ""
-    static let temp = NSTemporaryDirectory()
+public enum Path {
+    public static let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first ?? ""
+    public static let library = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first ?? ""
+    public static let caches = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first ?? ""
+    public static let temp = NSTemporaryDirectory()
     
-    static func filePath(_ filename: String) -> String {
+    public static func filePath(_ filename: String) -> String {
         (documents as NSString).appendingPathComponent(filename)
     }
 }
 
-// MARK: - Dispatch
-func dispatchMainSafe(_ closure: @Sendable @escaping () -> Void) {
-    if Thread.isMainThread {
-        closure()
-    } else {
-        DispatchQueue.main.async(execute: closure)
+// MARK: - Font
+public enum Font {
+    public static func MKFont(_ size: CGFloat) -> UIFont {
+        if let font = UIFont(name: "Helvetica-Bold", size: size) {
+            return font
+        }
+        return UIFont.systemFont(ofSize: size)
     }
 }
 
-// MARK: - Font
-func font(_ size: CGFloat) -> UIFont {
-    UIFont(name: "Helvetica-Bold", size: size) ?? UIFont.systemFont(ofSize: size)
-}
-
-// MARK: - Localization
-func LS(_ key: String) -> String {
-    NSLocalizedString(key, comment: "")
-}
-
 // MARK: - Line
-@MainActor struct Line {
-    static let height: CGFloat = Screen.scale == 2.0 ? 0.5 : 0.34
-    static let color = Color.fromHex(0xe8e8e8)
+@MainActor public enum Line {
+    public static let height: CGFloat = Screen.scale == 2.0 ? 0.5 : 0.34
+    public static let color = Color.fromHex(0xe8e8e8)
 }
 
 // MARK: - Images
-@MainActor func loadImage(name: String, ext: String? = nil) -> UIImage? {
+@MainActor public func loadImage(name: String, ext: String? = nil) -> UIImage? {
     let bundle = Bundle.main
     let imageName = name + (Screen.scale > 2.0 ? "@3x" : "@2x")
     var image = UIImage(named: imageName, in: bundle, compatibleWith: nil)
@@ -151,7 +141,7 @@ func LS(_ key: String) -> String {
     return image
 }
 
-func loadIcon(podLibName: String, bundleClassName: String, imageName: String) -> UIImage? {
+public func loadIcon(podLibName: String, bundleClassName: String, imageName: String) -> UIImage? {
     guard let bundleClass = NSClassFromString(bundleClassName) else { return nil }
     let bundle = Bundle(for: bundleClass)
     guard let bundlePath = bundle.path(forResource: podLibName, ofType: "bundle") else { return nil }
@@ -159,12 +149,12 @@ func loadIcon(podLibName: String, bundleClassName: String, imageName: String) ->
 }
 
 // MARK: - Colors
-struct Color {
-    static func rgb(_ r: CGFloat, _ g: CGFloat, _ b: CGFloat, _ a: CGFloat = 1.0) -> UIColor {
+public enum Color {
+    public static func rgb(_ r: CGFloat, _ g: CGFloat, _ b: CGFloat, _ a: CGFloat = 1.0) -> UIColor {
         UIColor(red: r/255.0, green: g/255.0, blue: b/255.0, alpha: a)
     }
     
-    static func fromHex(_ rgbValue: Int) -> UIColor {
+    public static func fromHex(_ rgbValue: Int) -> UIColor {
         UIColor(
             red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
             green: CGFloat((rgbValue & 0xFF00) >> 8) / 255.0,
@@ -173,7 +163,7 @@ struct Color {
         )
     }
     
-    static var random: UIColor {
+    public static var random: UIColor {
         UIColor(
             red: CGFloat.random(in: 0...1),
             green: CGFloat.random(in: 0...1),
@@ -182,72 +172,72 @@ struct Color {
         )
     }
     
-    static let black = fromHex(0x333333)
-    static let deepBlack = fromHex(0x000000)
-    static let blue = fromHex(0x4790ef)
-    static let skyBlue = fromHex(0xf3f8fe)
-    static let lightBlue = fromHex(0x4490ee)
-    static let gray = fromHex(0x999999)
-    static let lightGray = fromHex(0xdddddd)
-    static let line = fromHex(0xe5e5e5)
-    static let red = fromHex(0xff3400)
-    static let lightRed = fromHex(0xff4200)
-    static let green = fromHex(0x32b16c)
-    static let buttonSure = rgb(75, 146, 236)
-    static let fontBlack = rgb(51, 51, 51)
-    static let white = rgb(255, 255, 255)
-    static let clear = white.withAlphaComponent(0)
-    static let navBar = fromHex(0x2F84D0)
-    static let defaultText = fromHex(0x353535)
+    public static let black = fromHex(0x333333)
+    public static let deepBlack = fromHex(0x000000)
+    public static let blue = fromHex(0x4790ef)
+    public static let skyBlue = fromHex(0xf3f8fe)
+    public static let lightBlue = fromHex(0x4490ee)
+    public static let gray = fromHex(0x999999)
+    public static let lightGray = fromHex(0xdddddd)
+    public static let line = fromHex(0xe5e5e5)
+    public static let red = fromHex(0xff3400)
+    public static let lightRed = fromHex(0xff4200)
+    public static let green = fromHex(0x32b16c)
+    public static let buttonSure = rgb(75, 146, 236)
+    public static let fontBlack = rgb(51, 51, 51)
+    public static let white = rgb(255, 255, 255)
+    public static let clear = white.withAlphaComponent(0)
+    public static let navBar = fromHex(0x2F84D0)
+    public static let defaultText = fromHex(0x353535)
 }
 
 // MARK: - String/Array/Dictionary Validation
-struct Valid {
-    static func string(_ s: Any?) -> String {
+public enum Valid {
+    public static func string(_ s: Any?) -> String {
         guard let str = s as? String else { return "" }
         return ["(null)", "null", "<null>"].contains(str) ? "" : str
     }
     
-    static func date(_ d: Date?) -> Date {
+    public static func date(_ d: Date?) -> Date {
         d ?? Date()
     }
     
-    static func isStringEmpty(_ s: Any?) -> Bool {
+    public static func isStringEmpty(_ s: Any?) -> Bool {
         guard let str = s as? String else { return true }
         return str.isEmpty
     }
     
-    static func isStringValid(_ s: Any?) -> Bool {
+    public static func isStringValid(_ s: Any?) -> Bool {
         !isStringEmpty(s)
     }
     
-    static func safeString(_ s: Any?) -> String {
+    public static func safeString(_ s: Any?) -> String {
         isStringValid(s) ? (s as! String) : ""
     }
     
-    static func stringContains(_ str: String, key: String) -> Bool {
+    public static func stringContains(_ str: String, key: String) -> Bool {
         str.contains(key)
     }
     
-    static func isDictValid(_ d: Any?) -> Bool {
+    public static func isDictValid(_ d: Any?) -> Bool {
         guard let dict = d as? [AnyHashable: Any] else { return false }
         return !dict.isEmpty
     }
     
-    static func isArrayValid(_ a: Any?) -> Bool {
+    public static func isArrayValid(_ a: Any?) -> Bool {
         guard let array = a as? [Any] else { return false }
         return !array.isEmpty
     }
     
-    static func isNumberValid(_ n: Any?) -> Bool {
+    public static func isNumberValid(_ n: Any?) -> Bool {
         n is NSNumber
     }
     
-    static func isClassValid(_ o: Any?, cls: AnyClass) -> Bool {
+    public static func isClassValid(_ o: Any?, cls: AnyClass) -> Bool {
         o != nil && (type(of: o!) == cls)
     }
     
-    static func isDataValid(_ d: Any?) -> Bool {
+    public static func isDataValid(_ d: Any?) -> Bool {
         d is Data
     }
 }

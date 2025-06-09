@@ -31,7 +31,7 @@ public class MKSwiftPickerView: UIView {
         cancelButton.backgroundColor = .clear
         cancelButton.setTitle("Cancel", for: .normal)
         cancelButton.setTitleColor(.darkText, for: .normal)
-        cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        cancelButton.titleLabel?.font = Font.MKFont(16)
         cancelButton.addTarget(self, action: #selector(cancelButtonPressed), for: .touchUpInside)
         topView.addSubview(cancelButton)
         
@@ -40,7 +40,7 @@ public class MKSwiftPickerView: UIView {
         confirmButton.backgroundColor = .clear
         confirmButton.setTitle("Confirm", for: .normal)
         confirmButton.setTitleColor(.darkText, for: .normal)
-        confirmButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        confirmButton.titleLabel?.font = Font.MKFont(16)
         confirmButton.addTarget(self, action: #selector(confirmButtonPressed), for: .touchUpInside)
         topView.addSubview(confirmButton)
         
@@ -161,7 +161,7 @@ extension MKSwiftPickerView: UIPickerViewDataSource, UIPickerViewDelegate {
     public func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.darkText,
-            .font: UIFont.systemFont(ofSize: 15)
+            .font: UIFontFont.MKFont(15)
         ]
         return NSAttributedString(string: dataList[row], attributes: attributes)
     }

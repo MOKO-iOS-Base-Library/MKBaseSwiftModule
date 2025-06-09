@@ -10,12 +10,12 @@ import SnapKit
 
 // MARK: - Cell Model
 public class MKSwiftFilterNormalTextFieldCellModel {
-    var index: Int = 0
-    var msg: String = ""
-    var textFieldValue: String = ""
-    var textPlaceholder: String = ""
-    var textFieldType: MKSwiftTextFieldType = .normal
-    var maxLength: Int = 0
+    public var index: Int = 0
+    public var msg: String = ""
+    public var textFieldValue: String = ""
+    public var textPlaceholder: String = ""
+    public var textFieldType: MKSwiftTextFieldType = .normal
+    public var maxLength: Int = 0
 }
 
 // MARK: - Cell Delegate
@@ -26,18 +26,28 @@ public protocol MKSwiftFilterNormalTextFieldCellDelegate: AnyObject {
 // MARK: - Cell Implementation
 public class MKSwiftFilterNormalTextFieldCell: MKSwiftBaseCell {
     
-    // MARK: - UI Components
-    private var msgLabel: UILabel!
-    private var textField: MKSwiftTextField!
-    
     // MARK: - Properties
-    var dataModel: MKSwiftFilterNormalTextFieldCellModel? {
+    public var dataModel: MKSwiftFilterNormalTextFieldCellModel? {
         didSet {
             updateUI()
         }
     }
     
-    weak var delegate: MKSwiftFilterNormalTextFieldCellDelegate?
+    public weak var delegate: MKSwiftFilterNormalTextFieldCellDelegate?
+    
+    // MARK: - Class Methods
+    public class func initCellWithTableView(_ tableView: UITableView) -> MKSwiftFilterNormalTextFieldCell {
+        let identifier = "MKSwiftFilterNormalTextFieldCellIdenty"
+        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftFilterNormalTextFieldCell
+        if cell == nil {
+            cell = MKSwiftFilterNormalTextFieldCell(style: .default, reuseIdentifier: identifier)
+        }
+        return cell!
+    }
+    
+    // MARK: - UI Components
+    private var msgLabel: UILabel!
+    private var textField: MKSwiftTextField!
     
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -49,16 +59,6 @@ public class MKSwiftFilterNormalTextFieldCell: MKSwiftBaseCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Class Methods
-    class func initCellWithTableView(_ tableView: UITableView) -> MKSwiftFilterNormalTextFieldCell {
-        let identifier = "MKSwiftFilterNormalTextFieldCellIdenty"
-        var cell = tableView.dequeueReusableCell(withIdentifier: identifier) as? MKSwiftFilterNormalTextFieldCell
-        if cell == nil {
-            cell = MKSwiftFilterNormalTextFieldCell(style: .default, reuseIdentifier: identifier)
-        }
-        return cell!
-    }
-    
     // MARK: - UI Setup
     private func setupUI() {
         contentView.backgroundColor = .clear
@@ -66,7 +66,7 @@ public class MKSwiftFilterNormalTextFieldCell: MKSwiftBaseCell {
         msgLabel = UILabel()
         msgLabel.textColor = Color.defaultText
         msgLabel.textAlignment = .left
-        msgLabel.font = .systemFont(ofSize: 15)
+        msgLabel.font = Font.MKFont(15)
         contentView.addSubview(msgLabel)
         
         textField = MKSwiftTextField(textFieldType: .normal)
