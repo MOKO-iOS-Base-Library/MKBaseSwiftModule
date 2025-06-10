@@ -95,7 +95,7 @@ public class MKSwiftTextSwitchCell: UITableViewCell {
     // MARK: Actions
     @objc private func switchButtonPressed() {
         switchButton.isSelected = !switchButton.isSelected
-        switchButton.setImage(switchButton.isSelected ? loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftTextSwitchCell", imageName: "mk_swift_switchSelectedIcon.png") : loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftTextSwitchCell", imageName: "mk_swift_switchUnselectedIcon.png"), for: .normal)
+        switchButton.setImage(switchButton.isSelected ? moduleIcon(name: "mk_swift_switchSelectedIcon") : moduleIcon(name: "mk_swift_switchUnselectedIcon"), for: .normal)
         delegate?.MKSwiftTextSwitchCellStatusChanged(isOn: switchButton.isSelected, index: dataModel?.index ?? 0)
     }
     
@@ -116,7 +116,7 @@ public class MKSwiftTextSwitchCell: UITableViewCell {
         switchButton.isEnabled = dataModel.switchEnable
         switchButton.isSelected = dataModel.isOn
         switchButton.setImage(
-            dataModel.isOn ? loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftTextSwitchCell", imageName: "mk_swift_switchSelectedIcon.png") : loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftTextSwitchCell", imageName: "mk_swift_switchUnselectedIcon.png"),
+            dataModel.isOn ? moduleIcon(name: "mk_swift_switchSelectedIcon") : moduleIcon(name: "mk_swift_switchUnselectedIcon"),
             for: .normal
         )
         
@@ -232,7 +232,7 @@ public class MKSwiftTextSwitchCell: UITableViewCell {
     
     private lazy var switchButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftTextSwitchCell", imageName: "mk_swift_switchUnselectedIcon.png"), for: .normal)
+        button.setImage(moduleIcon(name: "mk_swift_switchUnselectedIcon"), for: .normal)
         button.addTarget(self, action: #selector(switchButtonPressed), for: .touchUpInside)
         return button
     }()

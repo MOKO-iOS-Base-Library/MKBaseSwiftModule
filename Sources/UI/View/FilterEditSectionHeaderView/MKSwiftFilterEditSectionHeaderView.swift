@@ -41,14 +41,14 @@ public class MKSwiftFilterEditSectionHeaderView: UITableViewHeaderFooterView {
     
     private lazy var addButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftTextSwitchCell", imageName: "mk_swift_addIcon.png"), for: .normal)
+        button.setImage(moduleIcon(name: "mk_swift_addIcon"), for: .normal)
         button.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
         return button
     }()
     
     private lazy var subButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftTextSwitchCell", imageName: "mk_swift_subIcon.png"), for: .normal)
+        button.setImage(moduleIcon(name: "mk_swift_subIcon"), for: .normal)
         button.addTarget(self, action: #selector(subButtonPressed), for: .touchUpInside)
         return button
     }()

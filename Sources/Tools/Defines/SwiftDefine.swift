@@ -148,6 +148,10 @@ public func loadIcon(podLibName: String, bundleClassName: String, imageName: Str
     return UIImage(contentsOfFile: (bundlePath as NSString).appendingPathComponent(imageName))
 }
 
+public func moduleIcon(name :String) -> UIImage? {
+    return UIImage(named: name, in: .module, compatibleWith: nil)
+}
+
 // MARK: - Colors
 public enum Color {
     public static func rgb(_ r: CGFloat, _ g: CGFloat, _ b: CGFloat, _ a: CGFloat = 1.0) -> UIColor {

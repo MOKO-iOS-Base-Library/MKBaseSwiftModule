@@ -40,7 +40,7 @@ public class MKSwiftSearchButton: UIControl {
     // MARK: - UI Components
     private lazy var searchIcon: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftSearchButton", imageName: "mk_swift_searchGrayIcon.png")
+        imageView.image = moduleIcon(name: "mk_swift_searchGrayIcon")
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
@@ -65,7 +65,7 @@ public class MKSwiftSearchButton: UIControl {
     
     private lazy var clearButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftSearchButton", imageName: "mk_swift_clearButtonIcon.png"), for: .normal)
+        button.setImage(moduleIcon(name: "mk_swift_clearButtonIcon"), for: .normal)
         button.addTarget(self, action: #selector(clearButtonPressed), for: .touchUpInside)
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         return button

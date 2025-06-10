@@ -10,10 +10,10 @@ import UIKit
 public class MKSwiftSlider: UISlider {
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.setThumbImage(loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftSlider", imageName: "mk_swift_sliderThumbIcon.png"), for: .normal)
-        self.setThumbImage(loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftSlider", imageName: "mk_swift_sliderThumbIcon.png"), for: .highlighted)
-        self.setMinimumTrackImage(loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftSlider", imageName: "mk_swift_sliderMinimumTrackIcon.png"), for: .normal)
-        self.setMaximumTrackImage(loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftSlider", imageName: "mk_swift_sliderMaximumTrackImage.png"), for: .normal)
+        self.setThumbImage(moduleIcon(name: "mk_swift_sliderThumbIcon"), for: .normal)
+        self.setThumbImage(moduleIcon(name: "mk_swift_sliderThumbIcon"), for: .highlighted)
+        self.setMinimumTrackImage(moduleIcon(name: "mk_swift_sliderMinimumTrackIcon"), for: .normal)
+        self.setMaximumTrackImage(moduleIcon(name: "mk_swift_sliderMaximumTrackImage"), for: .normal)
     }
     
     required init?(coder: NSCoder) {

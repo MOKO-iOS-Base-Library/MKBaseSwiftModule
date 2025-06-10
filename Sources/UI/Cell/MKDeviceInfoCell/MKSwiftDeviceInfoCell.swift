@@ -13,6 +13,8 @@ public class MKSwiftDeviceInfoCellModel {
     public var leftMsg: String = ""
     public var rightMsg: String = ""
     
+    public init() {}
+    
     public func cellHeightWithContentWidth(_ width: CGFloat) -> CGFloat {
         let leftSize = leftMsg.size(withFont: Font.MKFont(15), maxSize: CGSize(width: (width / 2 - 15 - 5), height: .greatestFiniteMagnitude))
         
@@ -29,7 +31,7 @@ public class MKSwiftDeviceInfoCell: MKSwiftBaseCell {
     // MARK: - Properties
     public var dataModel: MKSwiftDeviceInfoCellModel? {
         didSet {
-            updateUI()
+            updateContent()
         }
     }
     
@@ -43,14 +45,11 @@ public class MKSwiftDeviceInfoCell: MKSwiftBaseCell {
         return cell!
     }
     
-    // MARK: - UI Components
-    private var msgLabel: UILabel!
-    private var rightMsgLabel: UILabel!
-    
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupUI()
+        contentView.addSubview(msgLabel)
+        contentView.addSubview(rightMsgLabel)
     }
     
     required init?(coder: NSCoder) {
@@ -81,26 +80,9 @@ public class MKSwiftDeviceInfoCell: MKSwiftBaseCell {
     }
     
     // MARK: - UI Setup
-    private func setupUI() {
-        contentView.backgroundColor = .white
-        
-        msgLabel = UILabel()
-        msgLabel.textColor = Color.defaultText
-        msgLabel.font = Font.MKFont(15)
-        msgLabel.textAlignment = .left
-        msgLabel.numberOfLines = 0
-        contentView.addSubview(msgLabel)
-        
-        rightMsgLabel = UILabel()
-        rightMsgLabel.textColor = Color.defaultText
-        rightMsgLabel.textAlignment = .right
-        rightMsgLabel.font = Font.MKFont(13)
-        rightMsgLabel.numberOfLines = 0
-        contentView.addSubview(rightMsgLabel)
-    }
     
     // MARK: - Update UI
-    private func updateUI() {
+    private func updateContent() {
         guard let dataModel = dataModel else { return }
         
         msgLabel.text = dataModel.leftMsg
@@ -108,4 +90,16 @@ public class MKSwiftDeviceInfoCell: MKSwiftBaseCell {
         
         setNeedsLayout()
     }
+    
+    // MARK: - Lazy
+    private lazy var msgLabel: UILabel = {
+        let msgLabel = MKSwiftUIAdaptor.createNormalLabel()
+        msgLabel.numberOfLines = 0
+        return msgLabel
+    }()
+    private lazy var rightMsgLabel: UILabel = {
+        let rightMsgLabel = MKSwiftUIAdaptor.createNormalLabel(font: Font.MKFont(13))
+        rightMsgLabel.numberOfLines = 0
+        return rightMsgLabel
+    }()
 }

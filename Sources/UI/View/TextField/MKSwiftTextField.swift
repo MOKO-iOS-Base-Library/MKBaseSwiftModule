@@ -13,20 +13,22 @@ public enum MKSwiftTextFieldType: Int {
 
 public class MKSwiftTextField: UITextField {
     
-    var maxLength: Int = 0
-    var textType: MKSwiftTextFieldType = .normal {
+    public var maxLength: Int = 0
+    public var textType: MKSwiftTextFieldType = .normal {
         didSet {
             currentTextType = textType
             keyboardType = getKeyboardType()
             text = ""
         }
     }
-    var textChangedBlock: ((String) -> Void)?
+    public var textChangedBlock: ((String) -> Void)?
+    
+    
     
     private var currentTextType: MKSwiftTextFieldType = .normal
     private var inputLen: Int = 0
     
-    init(textFieldType: MKSwiftTextFieldType) {
+    public init(textFieldType: MKSwiftTextFieldType) {
         super.init(frame: .zero)
         currentTextType = textFieldType
         keyboardType = getKeyboardType()

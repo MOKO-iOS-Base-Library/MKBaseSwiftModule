@@ -17,6 +17,8 @@ public class MKSwiftSettingTextCellModel {
     public var leftMsgTextFont: UIFont = Font.MKFont(15)
     public var leftMsgTextColor: UIColor = Color.defaultText
     public var leftMsg: String = ""
+    
+    public init() {}
 }
 
 // MARK: - Cell Implementation
@@ -25,7 +27,7 @@ public class MKSwiftSettingTextCell: MKSwiftBaseCell {
     // MARK: - Properties
     public var dataModel: MKSwiftSettingTextCellModel? {
         didSet {
-            updateUI()
+            updateContent()
         }
     }
     
@@ -39,17 +41,14 @@ public class MKSwiftSettingTextCell: MKSwiftBaseCell {
         return cell!
     }
     
-    // MARK: - UI Components
     private var leftIcon: UIImageView?
-    private var leftMsgLabel: UILabel!
-    private var rightIcon: UIImageView!
-    
     private let offset_X: CGFloat = 15
     
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupUI()
+        contentView.addSubview(leftMsgLabel)
+        contentView.addSubview(rightIcon)
     }
     
     required init?(coder: NSCoder) {
@@ -88,24 +87,8 @@ public class MKSwiftSettingTextCell: MKSwiftBaseCell {
         }
     }
     
-    // MARK: - UI Setup
-    private func setupUI() {
-        contentView.backgroundColor = .white
-        
-        leftMsgLabel = UILabel()
-        leftMsgLabel.textColor = Color.defaultText
-        leftMsgLabel.textAlignment = .left
-        leftMsgLabel.font = Font.MKFont(15)
-        leftMsgLabel.numberOfLines = 0
-        contentView.addSubview(leftMsgLabel)
-        
-        rightIcon = UIImageView()
-        rightIcon.image = loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftSettingTextCell", imageName: "mk_swift_goNextButton.png")
-        contentView.addSubview(rightIcon)
-    }
-    
     // MARK: - Update UI
-    private func updateUI() {
+    private func updateContent() {
         guard let dataModel = dataModel else { return }
         
         contentView.backgroundColor = dataModel.contentColor
@@ -124,4 +107,17 @@ public class MKSwiftSettingTextCell: MKSwiftBaseCell {
         
         setNeedsLayout()
     }
+    
+    // MARK: - UI Components
+    
+    private lazy var leftMsgLabel: UILabel = {
+        let leftMsgLabel = MKSwiftUIAdaptor.createNormalLabel()
+        leftMsgLabel.numberOfLines = 0
+        return leftMsgLabel
+    }()
+    private lazy var rightIcon: UIImageView = {
+        let rightIcon = UIImageView()
+        rightIcon.image = moduleIcon(name: "mk_swift_goNextButton")
+        return rightIcon
+    }()
 }

@@ -161,7 +161,7 @@ extension MKSwiftPickerView: UIPickerViewDataSource, UIPickerViewDelegate {
     public func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.darkText,
-            .font: UIFontFont.MKFont(15)
+            .font: Font.MKFont(15)
         ]
         return NSAttributedString(string: dataList[row], attributes: attributes)
     }

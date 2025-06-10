@@ -31,12 +31,13 @@ import UIKit
     
     // MARK: - Label Factory
     public static func createNormalLabel(
-        text: String
+        font:UIFont = Font.MKFont(15),
+        text: String = ""
     ) -> UILabel {
         let label = UILabel()
         label.text = text
         label.textColor = Color.defaultText
-        label.font = Font.MKFont(15)
+        label.font = font
         label.textAlignment = .left
         label.numberOfLines = 0
         return label

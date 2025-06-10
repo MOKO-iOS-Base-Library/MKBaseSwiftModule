@@ -216,15 +216,13 @@ public class MKSwiftFilterByRawDataCell: MKSwiftBaseCell {
     
     //MARK: - Lazy method
     private lazy var msgLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Color.defaultText
-        label.textAlignment = .left
-        label.font = Font.MKFont(15)
-        return label
+        return MKSwiftUIAdaptor.createNormalLabel()
     }()
     
     private lazy var typeTextField: MKSwiftTextField = {
-        let textField = MKSwiftUIAdaptor.createTextField(placeholder: "",textType: .hexCharOnly,maxLen: 2)
+        let textField = MKSwiftUIAdaptor.createTextField(placeholder: "",
+                                                         textType: .hexCharOnly,
+                                                         maxLen: 2)
         textField.font = Font.MKFont(13)
         textField.textChangedBlock = { [weak self] text in
             self?.textFieldValueChanged(text, textType: .dataType)
@@ -233,7 +231,9 @@ public class MKSwiftFilterByRawDataCell: MKSwiftBaseCell {
     }()
     
     private lazy var minTextField: MKSwiftTextField = {
-        let textField = MKSwiftUIAdaptor.createTextField(placeholder: "",textType: .realNumberOnly,maxLen: 2)
+        let textField = MKSwiftUIAdaptor.createTextField(placeholder: "",
+                                                         textType: .realNumberOnly,
+                                                         maxLen: 2)
         textField.font = Font.MKFont(13)
         textField.textChangedBlock = { [weak self] text in
             self?.textFieldValueChanged(text, textType: .minIndex)
@@ -242,7 +242,9 @@ public class MKSwiftFilterByRawDataCell: MKSwiftBaseCell {
     }()
     
     private lazy var maxTextField: MKSwiftTextField = {
-        let textField = MKSwiftUIAdaptor.createTextField(placeholder: "",textType: .realNumberOnly,maxLen: 2)
+        let textField = MKSwiftUIAdaptor.createTextField(placeholder: "",
+                                                         textType: .realNumberOnly,
+                                                         maxLen: 2)
         textField.font = Font.MKFont(13)
         textField.textChangedBlock = { [weak self] text in
             self?.textFieldValueChanged(text, textType: .maxIndex)
@@ -251,25 +253,16 @@ public class MKSwiftFilterByRawDataCell: MKSwiftBaseCell {
     }()
     
     private lazy var characterLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.textColor = Color.defaultText
-        label.font = Font.MKFont(20)
-        label.text = "~"
-        return label
+        return MKSwiftUIAdaptor.createNormalLabel(font: Font.MKFont(20),text: "~")
     }()
     
     private lazy var unitLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.textColor = Color.defaultText
-        label.font = Font.MKFont(13)
-        label.text = "Byte"
-        return label
+        return MKSwiftUIAdaptor.createNormalLabel(font: Font.MKFont(13),text: "Byte")
     }()
     
     private lazy var rawDataField: MKSwiftTextField = {
-        let textField = MKSwiftUIAdaptor.createTextField(placeholder: "",textType: .hexCharOnly)
+        let textField = MKSwiftUIAdaptor.createTextField(placeholder: "",
+                                                         textType: .hexCharOnly)
         textField.font = Font.MKFont(13)
         textField.textChangedBlock = { [weak self] text in
             self?.textFieldValueChanged(text, textType: .rawDataType)

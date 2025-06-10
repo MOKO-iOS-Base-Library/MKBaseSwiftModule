@@ -49,7 +49,7 @@ public class MKSwiftSearchConditionsView: UIView {
                                                  y: offsetX * 3 + 30,
                                                  width: signalIconWidth,
                                                  height: signalIconHeight))
-        imageView.image = loadIcon(podLibName: "MKBaseSwiftModule", bundleClassName: "MKSwiftSearchButton", imageName: "mk_swift_wifisignalIcon.png")
+        imageView.image = moduleIcon(name: "mk_swift_wifisignalIcon")
         return imageView
     }()
     

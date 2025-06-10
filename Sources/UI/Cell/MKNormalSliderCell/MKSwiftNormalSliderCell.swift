@@ -34,6 +34,8 @@ public class MKSwiftNormalSliderCellModel {
     public var noteMsgColor: UIColor = Color.defaultText
     public var noteMsgFont: UIFont = Font.MKFont(12)
     
+    public init() {}
+    
     public func cellHeightWithContentWidth(_ width: CGFloat) -> CGFloat {
         let msgHeight: CGFloat
         if !msg.string.isEmpty {
@@ -67,16 +69,10 @@ public protocol MKSwiftNormalSliderCellDelegate: AnyObject {
 // MARK: - Cell Implementation
 public class MKSwiftNormalSliderCell: MKSwiftBaseCell {
     
-    // MARK: - UI Components
-    private var msgLabel: UILabel!
-    private var sliderValueLabel: UILabel!
-    private var sliderView: MKSwiftSlider!
-    private var noteLabel: UILabel!
-    
     // MARK: - Properties
     public var dataModel: MKSwiftNormalSliderCellModel? {
         didSet {
-            updateUI()
+            updateContent()
         }
     }
     
@@ -99,7 +95,10 @@ public class MKSwiftNormalSliderCell: MKSwiftBaseCell {
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupUI()
+        contentView.addSubview(msgLabel)
+        contentView.addSubview(sliderValueLabel)
+        contentView.addSubview(sliderView)
+        contentView.addSubview(noteLabel)
     }
     
     required init?(coder: NSCoder) {
@@ -170,37 +169,7 @@ public class MKSwiftNormalSliderCell: MKSwiftBaseCell {
     }
     
     // MARK: - UI Setup
-    private func setupUI() {
-        contentView.backgroundColor = .white
-        
-        msgLabel = UILabel()
-        msgLabel.textColor = Color.defaultText
-        msgLabel.textAlignment = .left
-        msgLabel.font = Font.MKFont(15)
-        msgLabel.numberOfLines = 0
-        contentView.addSubview(msgLabel)
-        
-        sliderValueLabel = UILabel()
-        sliderValueLabel.textColor = Color.defaultText
-        sliderValueLabel.textAlignment = .left
-        sliderValueLabel.font = Font.MKFont(11)
-        contentView.addSubview(sliderValueLabel)
-        
-        sliderView = MKSwiftSlider()
-        sliderView.maximumValue = 0
-        sliderView.minimumValue = -127
-        sliderView.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
-        contentView.addSubview(sliderView)
-        
-        noteLabel = UILabel()
-        noteLabel.textColor = Color.defaultText
-        noteLabel.font = Font.MKFont(12)
-        noteLabel.textAlignment = .left
-        noteLabel.numberOfLines = 0
-        contentView.addSubview(noteLabel)
-    }
-    
-    private func updateUI() {
+    private func updateContent() {
         guard let dataModel = dataModel else { return }
         
         contentView.backgroundColor = dataModel.contentColor
@@ -224,4 +193,28 @@ public class MKSwiftNormalSliderCell: MKSwiftBaseCell {
         
         setNeedsLayout()
     }
+    
+    // MARK: - Lazy
+    private lazy var msgLabel: UILabel = {
+        let msgLabel = MKSwiftUIAdaptor.createNormalLabel()
+        msgLabel.numberOfLines = 0
+        return msgLabel
+    }()
+    private lazy var sliderValueLabel: UILabel = {
+        return MKSwiftUIAdaptor.createNormalLabel(font: Font.MKFont(11))
+    }()
+    private lazy var sliderView: MKSwiftSlider = {
+        let sliderView = MKSwiftSlider()
+        sliderView.maximumValue = 0
+        sliderView.minimumValue = -127
+        sliderView.addTarget(self,
+                             action: #selector(sliderValueChanged),
+                             for: .valueChanged)
+        return sliderView
+    }()
+    private lazy var noteLabel: UILabel = {
+        let noteLabel = MKSwiftUIAdaptor.createNormalLabel(font: Font.MKFont(12))
+        noteLabel.numberOfLines = 0
+        return noteLabel
+    }()
 }

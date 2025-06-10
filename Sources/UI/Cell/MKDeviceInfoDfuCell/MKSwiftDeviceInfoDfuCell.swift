@@ -14,6 +14,8 @@ public class MKSwiftDeviceInfoDfuCellModel {
     public var leftMsg: String = ""
     public var rightMsg: String = ""
     public var rightButtonTitle: String = ""
+    
+    public init() {}
 }
 
 // MARK: - Cell Delegate
@@ -24,15 +26,10 @@ public protocol MKSwiftDeviceInfoDfuCellDelegate: AnyObject {
 // MARK: - Cell Implementation
 public class MKSwiftDeviceInfoDfuCell: MKSwiftBaseCell {
     
-    // MARK: - UI Components
-    private var msgLabel: UILabel!
-    private var rightMsgLabel: UILabel!
-    private var rightButton: UIButton!
-    
     // MARK: - Properties
     public var dataModel: MKSwiftDeviceInfoDfuCellModel? {
         didSet {
-            updateUI()
+            updateContent()
         }
     }
     
@@ -51,7 +48,9 @@ public class MKSwiftDeviceInfoDfuCell: MKSwiftBaseCell {
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupUI()
+        contentView.addSubview(msgLabel)
+        contentView.addSubview(rightMsgLabel)
+        contentView.addSubview(rightButton)
     }
     
     required init?(coder: NSCoder) {
@@ -89,35 +88,9 @@ public class MKSwiftDeviceInfoDfuCell: MKSwiftBaseCell {
         delegate?.mk_textButtonCell_buttonAction(dataModel?.index ?? 0)
     }
     
-    // MARK: - UI Setup
-    private func setupUI() {
-        contentView.backgroundColor = .white
-        
-        msgLabel = UILabel()
-        msgLabel.textColor = Color.defaultText
-        msgLabel.font = Font.MKFont(15)
-        msgLabel.textAlignment = .left
-        contentView.addSubview(msgLabel)
-        
-        rightMsgLabel = UILabel()
-        rightMsgLabel.textColor = Color.fromHex(0x808080)
-        rightMsgLabel.font = Font.MKFont(13)
-        rightMsgLabel.textAlignment = .right
-        contentView.addSubview(rightMsgLabel)
-        
-        rightButton = UIButton(type: .custom)
-        rightButton.titleLabel?.font = Font.MKFont(12)
-        rightButton.setTitleColor(Color.defaultText, for: .normal)
-        rightButton.addTarget(self, action: #selector(rightButtonPressed), for: .touchUpInside)
-        rightButton.layer.borderColor = UIColor.lightGray.cgColor
-        rightButton.layer.borderWidth = 0.5
-        rightButton.layer.cornerRadius = 4
-        contentView.addSubview(rightButton)
-    }
-    
     
     // MARK: - Update UI
-    private func updateUI() {
+    private func updateContent() {
         guard let dataModel = dataModel else { return }
         
         msgLabel.text = dataModel.leftMsg
@@ -126,4 +99,23 @@ public class MKSwiftDeviceInfoDfuCell: MKSwiftBaseCell {
         
         setNeedsLayout()
     }
+    
+    // MARK: - UI Components
+    private lazy var msgLabel: UILabel = {
+        return MKSwiftUIAdaptor.createNormalLabel()
+    }()
+    private lazy var rightMsgLabel: UILabel = {
+        let rightMsgLabel = UILabel()
+        rightMsgLabel.textColor = Color.fromHex(0x808080)
+        rightMsgLabel.font = Font.MKFont(13)
+        rightMsgLabel.textAlignment = .right
+        return rightMsgLabel
+    }()
+    private lazy var rightButton: UIButton = {
+        let rightButton = MKSwiftUIAdaptor.createRoundedButton(title: "",
+                                                               target: self,
+                                                               action: #selector(rightButtonPressed))
+        rightButton.titleLabel?.font = Font.MKFont(12)
+        return rightButton
+    }()
 }

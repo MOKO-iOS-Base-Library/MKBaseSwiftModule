@@ -109,25 +109,18 @@ public class MKSwiftFilterBeaconCell: MKSwiftBaseCell {
     }
     
     //MARK: - Lazy method
-    private let msgLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Color.defaultText
-        label.textAlignment = .left
-        label.font = Font.MKFont(15)
-        return label
+    private lazy var msgLabel: UILabel = {
+        return MKSwiftUIAdaptor.createNormalLabel()
     }()
     
-    private let minLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Color.defaultText
-        label.textAlignment = .left
-        label.font = Font.MKFont(15)
-        label.text = "Min"
-        return label
+    private lazy var minLabel: UILabel = {
+        return MKSwiftUIAdaptor.createNormalLabel(text: "Min")
     }()
     
     private lazy var minTextField: MKSwiftTextField = {
-        let textField = MKSwiftUIAdaptor.createTextField(placeholder: "0~65535",textType: .realNumberOnly,maxLen: 5)
+        let textField = MKSwiftUIAdaptor.createTextField(placeholder: "0~65535",
+                                                         textType: .realNumberOnly,
+                                                         maxLen: 5)
         textField.textChangedBlock = { [weak self] text in
             guard let self = self, let dataModel = self.dataModel else { return }
             self.delegate?.mk_beaconMinValueChanged(text, index: dataModel.index)
@@ -135,26 +128,18 @@ public class MKSwiftFilterBeaconCell: MKSwiftBaseCell {
         return textField
     }()
     
-    private let centerLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Color.defaultText
-        label.textAlignment = .center
-        label.font = Font.MKFont(15)
-        label.text = "~"
-        return label
+    private lazy var centerLabel: UILabel = {
+        return MKSwiftUIAdaptor.createNormalLabel(text: "~")
     }()
     
-    private let maxLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Color.defaultText
-        label.textAlignment = .left
-        label.font = Font.MKFont(15)
-        label.text = "Max"
-        return label
+    private lazy var maxLabel: UILabel = {
+        return MKSwiftUIAdaptor.createNormalLabel(text: "Max")
     }()
     
     private lazy var maxTextField: MKSwiftTextField = {
-        let textField = MKSwiftUIAdaptor.createTextField(placeholder: "0~65535",textType: .realNumberOnly,maxLen: 5)
+        let textField = MKSwiftUIAdaptor.createTextField(placeholder: "0~65535",
+                                                         textType: .realNumberOnly,
+                                                         maxLen: 5)
         textField.textChangedBlock = { [weak self] text in
             guard let self = self, let dataModel = self.dataModel else { return }
             self.delegate?.mk_beaconMaxValueChanged(text, index: dataModel.index)

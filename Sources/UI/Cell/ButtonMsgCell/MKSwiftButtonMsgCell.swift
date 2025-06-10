@@ -178,27 +178,18 @@ public class MKSwiftButtonMsgCell: MKSwiftBaseCell {
     
     // MARK: - Lazy
     private lazy var msgLabel: UILabel = {
-        let msgLabel = UILabel()
-        msgLabel.textColor = Color.defaultText
-        msgLabel.textAlignment = .left
-        msgLabel.font = Font.MKFont(15)
+        let msgLabel = MKSwiftUIAdaptor.createNormalLabel()
         msgLabel.numberOfLines = 0
         return msgLabel
     }()
     private lazy var selectedButton: UIButton = {
-        let selectedButton = UIButton(type: .custom)
-        selectedButton.setTitleColor(.white, for: .normal)
-        selectedButton.backgroundColor = Color.navBar
-        selectedButton.layer.masksToBounds = true
-        selectedButton.layer.cornerRadius = 6
-        selectedButton.addTarget(self, action: #selector(selectedButtonPressed), for: .touchUpInside)
+        let selectedButton = MKSwiftUIAdaptor.createRoundedButton(title: "",
+                                                                  target: self,
+                                                                  action: #selector(selectedButtonPressed))
         return selectedButton
     }()
     private lazy var noteLabel: UILabel = {
-        let noteLabel = UILabel()
-        noteLabel.textColor = Color.defaultText
-        noteLabel.font = Font.MKFont(12)
-        noteLabel.textAlignment = .left
+        let noteLabel = MKSwiftUIAdaptor.createNormalLabel(font: Font.MKFont(12))
         noteLabel.numberOfLines = 0
         return noteLabel
     }()
