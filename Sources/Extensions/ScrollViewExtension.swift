@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIScrollView {
+public extension UIScrollView {
     // MARK: - Convenience Scroll Methods
     
     func mk_scrollToTop(animated: Bool = true) {
@@ -47,7 +47,7 @@ extension UIScrollView {
     }
 }
 
-extension UISegmentedControl {
+public extension UISegmentedControl {
     func mk_setTintColor(_ tintColor: UIColor) {
         let tintColorImage = image(with: tintColor)
         let bgColor = backgroundColor ?? .clear

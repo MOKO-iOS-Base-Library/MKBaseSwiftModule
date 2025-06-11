@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UITextField {
+public extension UITextField {
     
     private enum AssociatedKeys {
         @MainActor static var prohibitedMethodsListKey: UInt8 = 0

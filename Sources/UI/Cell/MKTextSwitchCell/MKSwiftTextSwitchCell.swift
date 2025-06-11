@@ -30,11 +30,13 @@ public class MKSwiftTextSwitchCellModel {
     public var noteMsgColor: UIColor = Color.defaultText
     public var noteMsgFont: UIFont = Font.MKFont(12)
     
+    public init() {}
+    
     private let offsetX: CGFloat = 15
     private let switchButtonWidth: CGFloat = 40
     private let switchButtonHeight: CGFloat = 30
     
-    public func cellHeight(withContentWidth width: CGFloat) -> CGFloat {
+    public func cellHeightWithContentWidth(_ width: CGFloat) -> CGFloat {
         let maxMsgWidth = width - 3 * offsetX - switchButtonWidth - (leftIcon != nil ? (leftIcon!.size.width + 3) : 0)
         let msgSize = msg.size(withFont: msgFont, maxSize: CGSize(width: maxMsgWidth, height: .greatestFiniteMagnitude))
         
@@ -55,14 +57,10 @@ public protocol MKSwiftTextSwitchCellDelegate: AnyObject {
 
 // MARK: - Cell
 
-public class MKSwiftTextSwitchCell: UITableViewCell {
-    
-    // MARK: Properties
-    static let cellIdentifier = "MKSwiftTextSwitchCellIdentifier"
-    
+public class MKSwiftTextSwitchCell: MKSwiftBaseCell {
     public var dataModel: MKSwiftTextSwitchCellModel? {
         didSet {
-            updateUI()
+            updateContent()
         }
     }
     
@@ -85,72 +83,26 @@ public class MKSwiftTextSwitchCell: UITableViewCell {
     // MARK: Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupUI()
+        contentView.addSubview(msgLabel)
+        contentView.addSubview(switchButton)
+        contentView.addSubview(noteLabel)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: Actions
-    @objc private func switchButtonPressed() {
-        switchButton.isSelected = !switchButton.isSelected
-        switchButton.setImage(switchButton.isSelected ? moduleIcon(name: "mk_swift_switchSelectedIcon") : moduleIcon(name: "mk_swift_switchUnselectedIcon"), for: .normal)
-        delegate?.MKSwiftTextSwitchCellStatusChanged(isOn: switchButton.isSelected, index: dataModel?.index ?? 0)
-    }
-    
-    // MARK: Private Methods
-    private func setupUI() {
-        contentView.addSubview(msgLabel)
-        contentView.addSubview(switchButton)
-        contentView.addSubview(noteLabel)
-    }
-    
-    private func updateUI() {
-        guard let dataModel = dataModel else { return }
-        
-        contentView.backgroundColor = dataModel.contentColor
-        msgLabel.text = dataModel.msg
-        msgLabel.font = dataModel.msgFont
-        msgLabel.textColor = dataModel.msgColor
-        switchButton.isEnabled = dataModel.switchEnable
-        switchButton.isSelected = dataModel.isOn
-        switchButton.setImage(
-            dataModel.isOn ? moduleIcon(name: "mk_swift_switchSelectedIcon") : moduleIcon(name: "mk_swift_switchUnselectedIcon"),
-            for: .normal
-        )
-        
-        if let leftIcon = dataModel.leftIcon {
-            leftIconView.image = leftIcon
-            contentView.addSubview(leftIconView)
-        } else {
-            leftIconView.removeFromSuperview()
-        }
-        
-        noteLabel.text = dataModel.noteMsg
-        noteLabel.font = dataModel.noteMsgFont
-        noteLabel.textColor = dataModel.noteMsgColor
-        
-        setNeedsLayout()
-    }
-    
     public override func layoutSubviews() {
         super.layoutSubviews()
-        updateConstraints()
-    }
-    
-    public override func updateConstraints() {
-        guard let dataModel = dataModel else { return }
-        
-        let hasNote = !dataModel.noteMsg.isEmpty
+        let hasNote = !dataModel!.noteMsg.isEmpty
         let msgSize = msgSize()
         
-        if dataModel.leftIcon != nil {
+        if dataModel!.leftIcon != nil {
             leftIconView.snp.remakeConstraints { make in
                 make.left.equalTo(offsetX)
-                make.width.equalTo(dataModel.leftIcon!.size.width)
+                make.width.equalTo(dataModel!.leftIcon!.size.width)
                 make.centerY.equalTo(msgLabel)
-                make.height.equalTo(dataModel.leftIcon!.size.height)
+                make.height.equalTo(dataModel!.leftIcon!.size.height)
             }
             
             msgLabel.snp.remakeConstraints { make in
@@ -190,6 +142,42 @@ public class MKSwiftTextSwitchCell: UITableViewCell {
             make.bottom.equalTo(-offsetX)
             make.height.equalTo(noteSize.height)
         }
+    }
+    
+    // MARK: Actions
+    @objc private func switchButtonPressed() {
+        switchButton.isSelected = !switchButton.isSelected
+        switchButton.setImage(switchButton.isSelected ? moduleIcon(name: "mk_swift_switchSelectedIcon") : moduleIcon(name: "mk_swift_switchUnselectedIcon"), for: .normal)
+        delegate?.MKSwiftTextSwitchCellStatusChanged(isOn: switchButton.isSelected, index: dataModel?.index ?? 0)
+    }
+    
+    // MARK: Private Methods
+    private func updateContent() {
+        guard let dataModel = dataModel else { return }
+        
+        contentView.backgroundColor = dataModel.contentColor
+        msgLabel.text = dataModel.msg
+        msgLabel.font = dataModel.msgFont
+        msgLabel.textColor = dataModel.msgColor
+        switchButton.isEnabled = dataModel.switchEnable
+        switchButton.isSelected = dataModel.isOn
+        switchButton.setImage(
+            dataModel.isOn ? moduleIcon(name: "mk_swift_switchSelectedIcon") : moduleIcon(name: "mk_swift_switchUnselectedIcon"),
+            for: .normal
+        )
+        
+        if let leftIcon = dataModel.leftIcon {
+            leftIconView.image = leftIcon
+            contentView.addSubview(leftIconView)
+        } else {
+            leftIconView.removeFromSuperview()
+        }
+        
+        noteLabel.text = dataModel.noteMsg
+        noteLabel.font = dataModel.noteMsgFont
+        noteLabel.textColor = dataModel.noteMsgColor
+        
+        setNeedsLayout()
     }
     
     private func msgSize() -> CGSize {

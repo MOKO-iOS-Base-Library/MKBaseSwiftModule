@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UITableView {
+public extension UITableView {
     /// Perform batch updates with a closure
     func mk_update(with block: (UITableView) -> Void) {
         beginUpdates()

@@ -29,6 +29,40 @@ open class MKSwiftBaseViewController: UIViewController, UIGestureRecognizerDeleg
         return navigationController?.viewControllers.first == self
     }
     
+    // MARK: - UI Components
+    
+    open private(set) lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        label.textColor = .white
+        label.textAlignment = .center
+        label.backgroundColor = .clear
+        return label
+    }()
+    
+    open private(set) lazy var leftButton: UIButton = {
+        let button = UIButton(type: .system)
+        if let image = moduleIcon(name: "mk_swift_back_button_white") {
+            button.setImage(image, for: .normal)
+        } else {
+            button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
+        }
+        button.tintColor = .white
+        button.contentHorizontalAlignment = .left
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.addTarget(self, action: #selector(leftButtonMethod), for: .touchUpInside)
+        return button
+    }()
+    
+    open private(set) lazy var rightButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(UIColor.white.withAlphaComponent(0.4), for: .highlighted)
+        button.addTarget(self, action: #selector(rightButtonMethod), for: .touchUpInside)
+        return button
+    }()
+    
     // MARK: - Lifecycle
     
     open override func viewDidLoad() {
@@ -60,9 +94,9 @@ open class MKSwiftBaseViewController: UIViewController, UIGestureRecognizerDeleg
             navigationController?.popViewController(animated: true)
         }
     }
-
+    
     @objc open func rightButtonMethod() {
-        // 子类重写实现
+        // Subclasses should override
     }
     
     // MARK: - Public Methods
@@ -71,6 +105,10 @@ open class MKSwiftBaseViewController: UIViewController, UIGestureRecognizerDeleg
         edgesForExtendedLayout = []
         let resizedImage = image.resizableImage(withCapInsets: UIEdgeInsets(top: 2, left: 1, bottom: 2, right: 1))
         navigationController?.navigationBar.setBackgroundImage(resizedImage, for: .default)
+    }
+    
+    open class func isCurrentViewControllerVisible(_ viewController: UIViewController) -> Bool {
+        return viewController.isViewLoaded && viewController.view.window != nil
     }
     
     open func popToViewController(withClassName className: String) {
@@ -97,12 +135,6 @@ open class MKSwiftBaseViewController: UIViewController, UIGestureRecognizerDeleg
         return gestureRecognizer is UIScreenEdgePanGestureRecognizer
     }
     
-    // MARK: - Status Bar
-    
-    open override var preferredStatusBarStyle: UIStatusBarStyle {
-        return custom_naviBarColor?.isDark == true ? .lightContent : .darkContent
-    }
-    
     // MARK: - Setup
     
     private func setupUI() {
@@ -111,45 +143,16 @@ open class MKSwiftBaseViewController: UIViewController, UIGestureRecognizerDeleg
     }
     
     private func setupNavigationItems() {
-        // Title View
-        let titleContainer = UIView()
-        titleContainer.addSubview(titleLabel)
-        
-        NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: titleContainer.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: titleContainer.trailingAnchor),
-            titleLabel.topAnchor.constraint(equalTo: titleContainer.topAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: titleContainer.bottomAnchor),
-            titleLabel.widthAnchor.constraint(lessThanOrEqualToConstant: UIScreen.main.bounds.width - 120)
-        ])
-        
-        navigationItem.titleView = titleContainer
-        
         // Left Button
-        let leftButtonContainer = UIView()
-        leftButtonContainer.addSubview(leftButton)
-        
-        NSLayoutConstraint.activate([
-            leftButton.leadingAnchor.constraint(equalTo: leftButtonContainer.leadingAnchor),
-            leftButton.topAnchor.constraint(equalTo: leftButtonContainer.topAnchor),
-            leftButton.bottomAnchor.constraint(equalTo: leftButtonContainer.bottomAnchor),
-            leftButton.widthAnchor.constraint(equalToConstant: 40)
-        ])
-        
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: leftButtonContainer)
+        let leftBarButtonItem = UIBarButtonItem(customView: leftButton)
+        navigationItem.leftBarButtonItem = leftBarButtonItem
         
         // Right Button
-        let rightButtonContainer = UIView()
-        rightButtonContainer.addSubview(rightButton)
+        let rightBarButtonItem = UIBarButtonItem(customView: rightButton)
+        navigationItem.rightBarButtonItem = rightBarButtonItem
         
-        NSLayoutConstraint.activate([
-            rightButton.trailingAnchor.constraint(equalTo: rightButtonContainer.trailingAnchor),
-            rightButton.topAnchor.constraint(equalTo: rightButtonContainer.topAnchor),
-            rightButton.bottomAnchor.constraint(equalTo: rightButtonContainer.bottomAnchor),
-            rightButton.widthAnchor.constraint(equalToConstant: 40)
-        ])
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightButtonContainer)
+        // Title View
+        navigationItem.titleView = titleLabel
     }
     
     private func setupNavigationBar() {
@@ -163,7 +166,7 @@ open class MKSwiftBaseViewController: UIViewController, UIGestureRecognizerDeleg
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = custom_naviBarColor
         
-        // 根据背景色自动调整文字和图标颜色
+        // Set title color based on background darkness
         let isDarkColor = custom_naviBarColor?.isDark ?? true
         let textColor: UIColor = isDarkColor ? .white : .black
         
@@ -174,41 +177,8 @@ open class MKSwiftBaseViewController: UIViewController, UIGestureRecognizerDeleg
         navBar.scrollEdgeAppearance = appearance
         navBar.compactAppearance = appearance
         
-        // 设置状态栏样式
         setNeedsStatusBarAppearanceUpdate()
     }
-    
-    // MARK: - UI Components
-    
-    private(set) lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = Font.MKFont(20)
-        label.textColor = .white
-        label.textAlignment = .center
-        label.backgroundColor = .clear
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private(set) lazy var leftButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        button.tintColor = .white
-        button.contentHorizontalAlignment = .left
-        button.titleLabel?.font = Font.MKFont(16)
-        button.addTarget(self, action: #selector(leftButtonMethod), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    private(set) lazy var rightButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.titleLabel?.font = Font.MKFont(16)
-        button.setTitleColor(.white, for: .normal)
-        button.addTarget(self, action: #selector(rightButtonMethod), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
 }
 
 // MARK: - UIColor Extension
@@ -218,7 +188,7 @@ extension UIColor {
         var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
         self.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
         
-        // 计算亮度 (0-1)
+        // Calculate luminance (0-1)
         let luminance = 0.2126 * red + 0.7152 * green + 0.0722 * blue
         return luminance < 0.5
     }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension UIImage {
+public extension UIImage {
     // MARK: - Image Processing
     
     /// Returns a stretchable image

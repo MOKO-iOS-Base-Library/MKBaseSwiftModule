@@ -50,9 +50,11 @@ public class MKSwiftTextFieldCellModel {
     public var noteMsgColor: UIColor = Color.defaultText
     public var noteMsgFont: UIFont = Font.MKFont(12)
     
+    public init() {}
+    
     private let offsetX: CGFloat = 15
     
-    public func cellHeight(withContentWidth width: CGFloat) -> CGFloat {
+    public func cellHeightWithContentWidth(_ width: CGFloat) -> CGFloat {
         let msgWidth = (width - 3 * offsetX) / 2
         let msgSize = msg.size(withFont: msgFont, maxSize: CGSize(width: msgWidth, height: .greatestFiniteMagnitude))
         
@@ -67,20 +69,18 @@ public class MKSwiftTextFieldCellModel {
 
 // MARK: - Protocol
 
-protocol MKSwiftTextFieldCellDelegate: AnyObject {
+public protocol MKSwiftTextFieldCellDelegate: AnyObject {
     func mkDeviceTextCellValueChanged(_ index: Int, textValue: String)
 }
 
 // MARK: - Cell
 
-class MKSwiftTextFieldCell: MKSwiftBaseCell {
+public class MKSwiftTextFieldCell: MKSwiftBaseCell {
     
     // MARK: Properties
-    static let cellIdentifier = "MKSwiftTextFieldCellIdentifier"
-    
     public var dataModel: MKSwiftTextFieldCellModel? {
         didSet {
-            updateUI()
+            updateContent()
         }
     }
     
@@ -103,7 +103,9 @@ class MKSwiftTextFieldCell: MKSwiftBaseCell {
     // MARK: Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupUI()
+        contentView.addSubview(msgLabel)
+        contentView.addSubview(unitLabel)
+        contentView.addSubview(noteLabel)
         setupNotifications()
     }
     
@@ -115,9 +117,55 @@ class MKSwiftTextFieldCell: MKSwiftBaseCell {
         NotificationCenter.default.removeObserver(self)
     }
     
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
-        updateConstraints()
+        
+        let hasNote = !dataModel!.noteMsg.isEmpty
+        let msgSize = msgSize()
+        
+        msgLabel.snp.remakeConstraints { make in
+            make.left.equalTo(offsetX)
+            make.width.equalTo(msgSize.width)
+            if hasNote {
+                make.top.equalTo(offsetX)
+            } else {
+                make.centerY.equalToSuperview()
+            }
+            make.height.equalTo(msgSize.height)
+        }
+        
+        textField.snp.remakeConstraints { make in
+            make.left.equalTo(5)
+            make.right.equalTo(-5)
+            make.top.equalTo(2)
+            make.bottom.equalTo(0)
+        }
+        
+        unitLabel.snp.remakeConstraints { make in
+            make.right.equalTo(-offsetX)
+            make.width.equalTo(unitLabelWidth)
+            make.centerY.equalTo(msgLabel)
+            make.height.equalToSuperview()
+        }
+        
+        let noteSize = noteSize()
+        noteLabel.snp.remakeConstraints { make in
+            make.left.equalTo(offsetX)
+            make.right.equalTo(-offsetX)
+            make.bottom.equalTo(-offsetX)
+            make.height.equalTo(noteSize.height)
+        }
+        
+        textBorderView.snp.remakeConstraints { make in
+            make.left.equalTo(msgLabel.snp.right).offset(offsetX)
+            if !dataModel!.unit.isEmpty {
+                make.right.equalTo(unitLabel.snp.left).offset(-5)
+            } else {
+                make.right.equalTo(-offsetX)
+            }
+            make.centerY.equalTo(msgLabel)
+            make.height.equalTo(textBorderViewHeight)
+        }
     }
     
     // MARK: Actions
@@ -131,11 +179,6 @@ class MKSwiftTextFieldCell: MKSwiftBaseCell {
     }
     
     // MARK: Private Methods
-    private func setupUI() {
-        contentView.addSubview(msgLabel)
-        contentView.addSubview(unitLabel)
-        contentView.addSubview(noteLabel)
-    }
     
     private func setupNotifications() {
         NotificationCenter.default.addObserver(
@@ -146,7 +189,7 @@ class MKSwiftTextFieldCell: MKSwiftBaseCell {
         )
     }
     
-    private func updateUI() {
+    private func updateContent() {
         guard let dataModel = dataModel else { return }
         
         contentView.backgroundColor = dataModel.contentColor
@@ -199,57 +242,6 @@ class MKSwiftTextFieldCell: MKSwiftBaseCell {
         textBorderView.addSubview(textField)
         
         setNeedsLayout()
-    }
-    
-    internal override func updateConstraints() {
-        guard let dataModel = dataModel else { return }
-        
-        let hasNote = !dataModel.noteMsg.isEmpty
-        let msgSize = msgSize()
-        
-        msgLabel.snp.remakeConstraints { make in
-            make.left.equalTo(offsetX)
-            make.width.equalTo(msgSize.width)
-            if hasNote {
-                make.top.equalTo(offsetX)
-            } else {
-                make.centerY.equalToSuperview()
-            }
-            make.height.equalTo(msgSize.height)
-        }
-        
-        textField.snp.remakeConstraints { make in
-            make.left.equalTo(5)
-            make.right.equalTo(-5)
-            make.top.equalTo(2)
-            make.bottom.equalTo(0)
-        }
-        
-        unitLabel.snp.remakeConstraints { make in
-            make.right.equalTo(-offsetX)
-            make.width.equalTo(unitLabelWidth)
-            make.centerY.equalTo(msgLabel)
-            make.height.equalToSuperview()
-        }
-        
-        let noteSize = noteSize()
-        noteLabel.snp.remakeConstraints { make in
-            make.left.equalTo(offsetX)
-            make.right.equalTo(-offsetX)
-            make.bottom.equalTo(-offsetX)
-            make.height.equalTo(noteSize.height)
-        }
-        
-        textBorderView.snp.remakeConstraints { make in
-            make.left.equalTo(msgLabel.snp.right).offset(offsetX)
-            if !dataModel.unit.isEmpty {
-                make.right.equalTo(unitLabel.snp.left).offset(-5)
-            } else {
-                make.right.equalTo(-offsetX)
-            }
-            make.centerY.equalTo(msgLabel)
-            make.height.equalTo(textBorderViewHeight)
-        }
     }
     
     private func msgSize() -> CGSize {

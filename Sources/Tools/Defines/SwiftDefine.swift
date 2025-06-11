@@ -124,7 +124,7 @@ public enum Font {
 // MARK: - Line
 @MainActor public enum Line {
     public static let height: CGFloat = Screen.scale == 2.0 ? 0.5 : 0.34
-    public static let color = Color.fromHex(0xe8e8e8)
+    public static let color = Color.fromHex(0xe5e5e5)
 }
 
 // MARK: - Images
@@ -139,13 +139,6 @@ public enum Font {
     }
     
     return image
-}
-
-public func loadIcon(podLibName: String, bundleClassName: String, imageName: String) -> UIImage? {
-    guard let bundleClass = NSClassFromString(bundleClassName) else { return nil }
-    let bundle = Bundle(for: bundleClass)
-    guard let bundlePath = bundle.path(forResource: podLibName, ofType: "bundle") else { return nil }
-    return UIImage(contentsOfFile: (bundlePath as NSString).appendingPathComponent(imageName))
 }
 
 public func moduleIcon(name :String) -> UIImage? {

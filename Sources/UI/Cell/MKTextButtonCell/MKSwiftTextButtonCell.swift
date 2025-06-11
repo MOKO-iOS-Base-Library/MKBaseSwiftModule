@@ -37,7 +37,9 @@ public class MKSwiftTextButtonCellModel {
     public var noteMsgColor: UIColor = Color.defaultText
     public var noteMsgFont: UIFont = Font.MKFont(12)
     
-    public func cellHeight(withContentWidth width: CGFloat) -> CGFloat {
+    public init() {}
+    
+    public func cellHeightWithContentWidth(_ width: CGFloat) -> CGFloat {
         let msgFont = self.msgFont
         let msgWidth = width - 3 * offsetX - selectButtonWidth  // Changed offset_X to offsetX
         let msgSize = msg.size(
@@ -69,14 +71,10 @@ public protocol MKSwiftTextButtonCellDelegate: AnyObject {
 
 // MARK: - Cell
 
-public class MKSwiftTextButtonCell: UITableViewCell {
-    
-    // MARK: Properties
-    static let cellIdentifier = "MKSwiftTextButtonCellIdentifier"
-    
+public class MKSwiftTextButtonCell: MKSwiftBaseCell {
     public var dataModel: MKSwiftTextButtonCellModel? {
         didSet {
-            updateUI()
+            updateContent()
         }
     }
     
@@ -99,7 +97,9 @@ public class MKSwiftTextButtonCell: UITableViewCell {
     // MARK: Lifecycle
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupUI()
+        contentView.addSubview(msgLabel)
+        contentView.addSubview(selectedButton)
+        contentView.addSubview(noteLabel)
     }
     
     required init?(coder: NSCoder) {
@@ -108,13 +108,7 @@ public class MKSwiftTextButtonCell: UITableViewCell {
     
     public override func layoutSubviews() {
         super.layoutSubviews()
-        updateConstraints()
-    }
-    
-    public override func updateConstraints() {
-        guard let dataModel = dataModel else { return }
-        
-        let hasNote = !dataModel.noteMsg.isEmpty
+        let hasNote = !dataModel!.noteMsg.isEmpty
         let msgSize = msgSize()
         
         msgLabel.snp.remakeConstraints { make in
@@ -142,24 +136,6 @@ public class MKSwiftTextButtonCell: UITableViewCell {
             make.bottom.equalTo(-offsetX)
             make.height.equalTo(noteSize.height)
         }
-    }
-    
-    private func msgSize() -> CGSize {
-        guard let dataModel = dataModel, !dataModel.msg.isEmpty else {
-            return .zero
-        }
-        
-        let maxMsgWidth = contentView.frame.width - 3 * offsetX - selectButtonWidth
-        return dataModel.msg.size(withFont: dataModel.msgFont, maxSize: CGSize(width: maxMsgWidth, height: .greatestFiniteMagnitude))
-    }
-    
-    private func noteSize() -> CGSize {
-        guard let dataModel = dataModel, !dataModel.noteMsg.isEmpty else {
-            return .zero
-        }
-        
-        let width = contentView.frame.width - 2 * offsetX
-        return dataModel.noteMsg.size(withFont: dataModel.noteMsgFont, maxSize: CGSize(width: width, height: .greatestFiniteMagnitude))
     }
     
     // MARK: Actions
@@ -190,13 +166,8 @@ public class MKSwiftTextButtonCell: UITableViewCell {
     }
     
     // MARK: Private Methods
-    private func setupUI() {
-        contentView.addSubview(msgLabel)
-        contentView.addSubview(selectedButton)
-        contentView.addSubview(noteLabel)
-    }
     
-    private func updateUI() {
+    private func updateContent() {
         guard let dataModel = dataModel else { return }
         
         contentView.backgroundColor = dataModel.contentColor
@@ -220,31 +191,40 @@ public class MKSwiftTextButtonCell: UITableViewCell {
         setNeedsLayout()
     }
     
+    private func msgSize() -> CGSize {
+        guard let dataModel = dataModel, !dataModel.msg.isEmpty else {
+            return .zero
+        }
+        
+        let maxMsgWidth = contentView.frame.width - 3 * offsetX - selectButtonWidth
+        return dataModel.msg.size(withFont: dataModel.msgFont, maxSize: CGSize(width: maxMsgWidth, height: .greatestFiniteMagnitude))
+    }
+    
+    private func noteSize() -> CGSize {
+        guard let dataModel = dataModel, !dataModel.noteMsg.isEmpty else {
+            return .zero
+        }
+        
+        let width = contentView.frame.width - 2 * offsetX
+        return dataModel.noteMsg.size(withFont: dataModel.noteMsgFont, maxSize: CGSize(width: width, height: .greatestFiniteMagnitude))
+    }
+    
     // MARK: UI Components
     private lazy var msgLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Color.defaultText
-        label.textAlignment = .left
-        label.font = Font.MKFont(15)
+        let label = MKSwiftUIAdaptor.createNormalLabel()
         label.numberOfLines = 0
         return label
     }()
     
     private lazy var selectedButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = Color.fromHex(0x2F84D0)
-        button.layer.masksToBounds = true
-        button.layer.cornerRadius = 6
-        button.addTarget(self, action: #selector(selectedButtonPressed), for: .touchUpInside)
+        let button = MKSwiftUIAdaptor.createRoundedButton(title: "",
+                                                          target: self,
+                                                          action: #selector(selectedButtonPressed))
         return button
     }()
     
     private lazy var noteLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = Color.defaultText
-        label.font = Font.MKFont(12)
-        label.textAlignment = .left
+        let label = MKSwiftUIAdaptor.createNormalLabel(font: Font.MKFont(12))
         label.numberOfLines = 0
         return label
     }()

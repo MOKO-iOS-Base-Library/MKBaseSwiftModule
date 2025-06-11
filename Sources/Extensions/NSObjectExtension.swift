@@ -89,7 +89,7 @@ private class MKModelMeta {
 }
 
 // MARK: - NSObject Extension
-extension NSObject {
+public extension NSObject {
     // MARK: JSON/Dictionary to Model
     
     @objc public class func mk_model(withJSON json: Any?) -> Self? {

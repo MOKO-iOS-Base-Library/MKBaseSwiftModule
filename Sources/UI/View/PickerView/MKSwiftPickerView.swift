@@ -9,6 +9,38 @@ import UIKit
 
 public class MKSwiftPickerView: UIView {
     
+    // MARK: - Public Methods
+    public func showPickView(with dataList: [String],
+                           selectedRow: Int = 0,
+                           selectionHandler: @escaping (Int) -> Void) {
+        guard !dataList.isEmpty, selectedRow < dataList.count else {
+            print("Invalid data for picker view")
+            return
+        }
+        
+        self.dataList = dataList
+        self.currentRow = selectedRow
+        self.selectionHandler = selectionHandler
+        
+        if let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
+            window.addSubview(self)
+            pickerView.reloadAllComponents()
+            pickerView.selectRow(currentRow, inComponent: 0, animated: false)
+            
+            UIView.animate(withDuration: animationDuration) {
+                self.bottomView.transform = CGAffineTransform(translationX: 0, y: -self.pickerViewHeight)
+            }
+        }
+    }
+    
+    @objc public func dismiss() {
+        UIView.animate(withDuration: animationDuration, animations: {
+            self.bottomView.transform = .identity
+        }) { _ in
+            self.removeFromSuperview()
+        }
+    }
+    
     // MARK: - Constants
     private let animationDuration: TimeInterval = 0.3
     private let pickerViewHeight: CGFloat = 270
@@ -88,38 +120,6 @@ public class MKSwiftPickerView: UIView {
                                              selector: #selector(dismiss),
                                              name: Notification.Name("mk_swift_dismissPickView"),
                                              object: nil)
-    }
-    
-    // MARK: - Public Methods
-    public func showPickView(with dataList: [String],
-                           selectedRow: Int = 0,
-                           selectionHandler: @escaping (Int) -> Void) {
-        guard !dataList.isEmpty, selectedRow < dataList.count else {
-            print("Invalid data for picker view")
-            return
-        }
-        
-        self.dataList = dataList
-        self.currentRow = selectedRow
-        self.selectionHandler = selectionHandler
-        
-        if let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
-            window.addSubview(self)
-            pickerView.reloadAllComponents()
-            pickerView.selectRow(currentRow, inComponent: 0, animated: false)
-            
-            UIView.animate(withDuration: animationDuration) {
-                self.bottomView.transform = CGAffineTransform(translationX: 0, y: -self.pickerViewHeight)
-            }
-        }
-    }
-    
-    @objc public func dismiss() {
-        UIView.animate(withDuration: animationDuration, animations: {
-            self.bottomView.transform = .identity
-        }) { _ in
-            self.removeFromSuperview()
-        }
     }
     
     // MARK: - Private Methods

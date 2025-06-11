@@ -7,14 +7,7 @@
 
 import UIKit
 
-extension UIButton {
-    private enum AssociatedKeys {
-        @MainActor static var acceptEventInterval: UInt8 = 0
-        @MainActor static var acceptEventTime: UInt8 = 0
-    }
-    
-    // MARK: - Runtime Properties
-    
+public extension UIButton {
     /// Time interval between button taps to prevent multiple rapid taps
     var acceptEventInterval: TimeInterval {
         get {
@@ -29,22 +22,6 @@ extension UIButton {
             )
         }
     }
-    
-    private var acceptEventTime: TimeInterval {
-        get {
-            objc_getAssociatedObject(self, &AssociatedKeys.acceptEventTime) as? TimeInterval ?? 0
-        }
-        set {
-            objc_setAssociatedObject(
-                self,
-                &AssociatedKeys.acceptEventTime,
-                newValue,
-                .OBJC_ASSOCIATION_RETAIN_NONATOMIC
-            )
-        }
-    }
-    
-    // MARK: - Countdown Timer
     
     /// Starts a countdown timer on the button
     /// - Parameter seconds: The duration of the countdown in seconds
@@ -88,10 +65,31 @@ extension UIButton {
         timer.resume()
     }
     
-    // MARK: - Swizzling
-    
+    /// Enables the button tap interval functionality
     @objc public static func enableButtonTapInterval() {
         swizzleSendAction()
+    }
+}
+
+// MARK: - Private Implementation
+private extension UIButton {
+    private enum AssociatedKeys {
+        @MainActor static var acceptEventInterval: UInt8 = 0
+        @MainActor static var acceptEventTime: UInt8 = 0
+    }
+    
+    private var acceptEventTime: TimeInterval {
+        get {
+            objc_getAssociatedObject(self, &AssociatedKeys.acceptEventTime) as? TimeInterval ?? 0
+        }
+        set {
+            objc_setAssociatedObject(
+                self,
+                &AssociatedKeys.acceptEventTime,
+                newValue,
+                .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+            )
+        }
     }
     
     private static func swizzleSendAction() {

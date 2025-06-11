@@ -34,7 +34,7 @@ open class MKSwiftBaseCell: UITableViewCell {
     
     private lazy var lineView:UIView = {
         let lineView = UIView();
-        lineView.backgroundColor = Color.line;
+        lineView.backgroundColor = Line.color
         return lineView;
     }()
 }

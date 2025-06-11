@@ -9,7 +9,7 @@ import UIKit
 
 import Toast
 
-extension UIView {
+public extension UIView {
     
     // MARK: - Gesture Recognizers
         
