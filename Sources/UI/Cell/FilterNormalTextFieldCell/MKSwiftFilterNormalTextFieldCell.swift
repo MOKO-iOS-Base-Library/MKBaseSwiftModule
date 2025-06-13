@@ -71,7 +71,6 @@ public class MKSwiftFilterNormalTextFieldCell: MKSwiftBaseCell {
             make.left.equalToSuperview().offset(15)
             make.right.equalToSuperview().offset(-15)
             make.top.equalTo(msgLabel.snp.bottom).offset(5)
-            make.height.equalTo(30)
             make.bottom.equalToSuperview().offset(-5)
         }
     }

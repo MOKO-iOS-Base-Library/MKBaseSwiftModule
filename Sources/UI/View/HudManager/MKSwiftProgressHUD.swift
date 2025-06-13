@@ -235,12 +235,7 @@ public final class MKSwiftProgressHUD: UIView {
     // MARK: - Private Methods
     
     private func setupDefaults() {
-        if #available(iOS 13.0, *) {
-            contentColor = UIColor.label.withAlphaComponent(0.7)
-        } else {
-            contentColor = UIColor(white: 0, alpha: 0.7)
-        }
-        
+        contentColor = UIColor.label.withAlphaComponent(0.7)
         isOpaque = false
         backgroundColor = .clear
         alpha = 0.0
@@ -263,7 +258,7 @@ public final class MKSwiftProgressHUD: UIView {
         label.adjustsFontSizeToFitWidth = false
         label.textAlignment = .center
         label.textColor = contentColor
-        label.font = .boldSystemFont(ofSize: 16)
+        label.font = .boldSystemFont(ofSize: 20)
         label.isOpaque = false
         label.backgroundColor = .clear
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -294,18 +289,63 @@ public final class MKSwiftProgressHUD: UIView {
         bottomSpacer.translatesAutoresizingMaskIntoConstraints = false
         bottomSpacer.isHidden = true
         bezelView.addSubview(bottomSpacer)
+        
+        // Bezel view constraints
+        NSLayoutConstraint.activate([
+            bezelView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            bezelView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            bezelView.widthAnchor.constraint(greaterThanOrEqualToConstant: 120),
+            bezelView.heightAnchor.constraint(greaterThanOrEqualToConstant: 120)
+        ])
+        
+        // Internal bezel constraints
+        let defaultPadding: CGFloat = 4.0
+        let margin: CGFloat = 20.0
+        
+        // Top spacer constraints
+        NSLayoutConstraint.activate([
+            topSpacer.heightAnchor.constraint(greaterThanOrEqualToConstant: defaultPadding),
+            topSpacer.leadingAnchor.constraint(equalTo: bezelView.leadingAnchor),
+            topSpacer.trailingAnchor.constraint(equalTo: bezelView.trailingAnchor),
+            topSpacer.topAnchor.constraint(equalTo: bezelView.topAnchor)
+        ])
+        
+        // Bottom spacer constraints
+        NSLayoutConstraint.activate([
+            bottomSpacer.heightAnchor.constraint(greaterThanOrEqualToConstant: defaultPadding),
+            bottomSpacer.leadingAnchor.constraint(equalTo: bezelView.leadingAnchor),
+            bottomSpacer.trailingAnchor.constraint(equalTo: bezelView.trailingAnchor),
+            bottomSpacer.bottomAnchor.constraint(equalTo: bezelView.bottomAnchor)
+        ])
+        
+        // Label constraints
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(greaterThanOrEqualTo: bezelView.leadingAnchor, constant: margin),
+            label.trailingAnchor.constraint(lessThanOrEqualTo: bezelView.trailingAnchor, constant: -margin),
+            label.centerXAnchor.constraint(equalTo: bezelView.centerXAnchor)
+        ])
+        
+        // Details label constraints
+        NSLayoutConstraint.activate([
+            detailsLabel.leadingAnchor.constraint(greaterThanOrEqualTo: bezelView.leadingAnchor, constant: margin),
+            detailsLabel.trailingAnchor.constraint(lessThanOrEqualTo: bezelView.trailingAnchor, constant: -margin),
+            detailsLabel.centerXAnchor.constraint(equalTo: bezelView.centerXAnchor)
+        ])
+        
+        // Button constraints
+        NSLayoutConstraint.activate([
+            button.leadingAnchor.constraint(greaterThanOrEqualTo: bezelView.leadingAnchor, constant: margin),
+            button.trailingAnchor.constraint(lessThanOrEqualTo: bezelView.trailingAnchor, constant: -margin),
+            button.centerXAnchor.constraint(equalTo: bezelView.centerXAnchor)
+        ])
     }
     
     private func updateIndicators() {
         switch mode {
         case .indeterminate:
             let activityIndicator: UIActivityIndicatorView
-            if #available(iOS 13.0, *) {
-                activityIndicator = UIActivityIndicatorView(style: .large)
-                activityIndicator.color = .white
-            } else {
-                activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
-            }
+            activityIndicator = UIActivityIndicatorView(style: .large)
+            activityIndicator.color = .white
             activityIndicator.startAnimating()
             setIndicator(activityIndicator)
             
@@ -325,6 +365,28 @@ public final class MKSwiftProgressHUD: UIView {
             
         case .text:
             setIndicator(nil)
+        }
+        
+        // Add constraints for the indicator
+        if let indicator = indicator {
+            NSLayoutConstraint.activate([
+                indicator.centerXAnchor.constraint(equalTo: bezelView.centerXAnchor),
+                indicator.topAnchor.constraint(equalTo: topSpacer.bottomAnchor, constant: 15),
+                indicator.widthAnchor.constraint(lessThanOrEqualTo: bezelView.widthAnchor, multiplier: 0.8),
+                indicator.heightAnchor.constraint(lessThanOrEqualTo: bezelView.heightAnchor, multiplier: 0.5)
+            ])
+            
+            // Position the label below the indicator
+            NSLayoutConstraint.activate([
+                label.topAnchor.constraint(equalTo: indicator.bottomAnchor, constant: 15),
+                label.bottomAnchor.constraint(equalTo: bottomSpacer.topAnchor, constant: -15)
+            ])
+        } else {
+            // When there's no indicator, position the label in the center
+            NSLayoutConstraint.activate([
+                label.topAnchor.constraint(equalTo: topSpacer.bottomAnchor, constant: 15),
+                label.bottomAnchor.constraint(equalTo: bottomSpacer.topAnchor, constant: -15)
+            ])
         }
     }
     
@@ -833,25 +895,17 @@ public final class MKBackgroundView: UIView {
     }
     
     public var blurEffectStyle: UIBlurEffect.Style = {
-        if #available(iOS 13.0, *) {
-            #if targetEnvironment(macCatalyst)
-            return .regular
-            #else
-            return .systemThickMaterial
-            #endif
-        } else {
-            return .light
-        }
+#if targetEnvironment(macCatalyst)
+return .regular
+#else
+return .systemThickMaterial
+#endif
     }() {
         didSet { updateForBackgroundStyle() }
     }
     
     public var color: UIColor? = {
-        if #available(iOS 13.0, *) {
-            return nil
-        } else {
-            return UIColor(white: 0.8, alpha: 0.6)
-        }
+        return nil
     }() {
         didSet { updateViews(for: color) }
     }
