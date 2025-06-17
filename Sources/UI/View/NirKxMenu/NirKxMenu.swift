@@ -395,8 +395,9 @@ private class KxMenuView: UIView {
         
         guard !menuItems.isEmpty else { return UIView() }
         
-        let kMinMenuItemHeight: CGFloat = 44.0  // 提高最小高度
-        let kMinMenuItemWidth: CGFloat = 80.0  // 提高最小宽度
+        // 统一行高参数
+        let kMinMenuItemHeight: CGFloat = 44.0
+        let kMinMenuItemWidth: CGFloat = 120.0
         let kMarginX = configuration.marginXSpacing
         let kMarginY = configuration.marginYSpacing
         
@@ -411,7 +412,6 @@ private class KxMenuView: UIView {
             let titleSize = menuItem.title.size(withAttributes: [.font: titleFont])
             let imageWidth = menuItem.image?.size.width ?? 0
             
-            // 计算当前item所需宽度
             let itemWidth: CGFloat
             if menuItem.image != nil {
                 itemWidth = imageWidth + configuration.intervalSpacing + titleSize.width + kMarginX * 3
@@ -420,7 +420,7 @@ private class KxMenuView: UIView {
             }
             
             maxItemWidth = max(maxItemWidth, itemWidth)
-            maxItemHeight = max(maxItemHeight, max(titleSize.height, 44) + kMarginY * 2)
+            maxItemHeight = max(maxItemHeight, titleSize.height + kMarginY * 2)
         }
         
         // 创建内容视图
@@ -431,7 +431,7 @@ private class KxMenuView: UIView {
         
         var itemY: CGFloat = 0
         
-        // 第二遍：布局所有菜单项
+        // 第二遍：布局所有菜单项（移除第一行的额外间距）
         for (index, menuItem) in menuItems.enumerated() {
             let itemFrame = CGRect(x: 0, y: itemY, width: maxItemWidth, height: maxItemHeight)
             let itemView = UIView(frame: itemFrame)
@@ -488,7 +488,7 @@ private class KxMenuView: UIView {
             itemY += maxItemHeight
         }
         
-        // 调整内容视图大小（去掉底部多余空间）
+        // 调整内容视图大小（确保没有多余高度）
         contentView.frame = CGRect(x: 0, y: 0,
                                  width: maxItemWidth,
                                  height: itemY)
