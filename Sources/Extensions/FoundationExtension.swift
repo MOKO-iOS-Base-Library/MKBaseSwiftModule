@@ -14,6 +14,17 @@ import zlib
 public extension String {
     // MARK: - Size Calculations
     
+    func substring(from location: Int, length: Int) -> String? {
+        guard location >= 0, location < self.count else {
+            return nil
+        }
+        
+        let startIndex = self.index(self.startIndex, offsetBy: location)
+        let endIndex = self.index(startIndex, offsetBy: length, limitedBy: self.endIndex) ?? self.endIndex
+        
+        return String(self[startIndex..<endIndex])
+    }
+    
     static func size(with text: String, font: UIFont, maxSize: CGSize) -> CGSize {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byWordWrapping
