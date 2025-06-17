@@ -19,7 +19,7 @@ open class MKSwiftBaseViewController: UIViewController, UIGestureRecognizerDeleg
         }
     }
     
-    open var custom_naviBarColor: UIColor? = .systemBlue {
+    open var custom_naviBarColor: UIColor? = Color.navBar {
         didSet {
             updateNavigationBarAppearance()
         }
