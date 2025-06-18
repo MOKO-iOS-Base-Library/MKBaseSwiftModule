@@ -92,7 +92,7 @@ private class MKModelMeta {
 public extension NSObject {
     // MARK: JSON/Dictionary to Model
     
-    @objc public class func mk_model(withJSON json: Any?) -> Self? {
+    @objc class func mk_model(withJSON json: Any?) -> Self? {
         guard let json = json else { return nil }
         let dictionary: [String: Any]?
         
@@ -109,7 +109,7 @@ public extension NSObject {
         return mk_model(with: dictionary)
     }
     
-    @objc public class func mk_model(with dictionary: [String: Any]?) -> Self? {
+    @objc class func mk_model(with dictionary: [String: Any]?) -> Self? {
         guard let dictionary = dictionary else { return nil }
         
         let cls = self as NSObject.Type
@@ -128,61 +128,61 @@ public extension NSObject {
     
     // MARK: Model to JSON/Dictionary
     
-    @objc public func mk_modelToJSONObject() -> Any? {
+    @objc func mk_modelToJSONObject() -> Any? {
         // Implementation would mirror the Objective-C version
         return nil
     }
     
-    @objc public func mk_modelToJSONData() -> Data? {
+    @objc func mk_modelToJSONData() -> Data? {
         guard let jsonObject = mk_modelToJSONObject() else { return nil }
         return try? JSONSerialization.data(withJSONObject: jsonObject, options: [])
     }
     
-    @objc public func mk_modelToJSONString() -> String? {
+    @objc func mk_modelToJSONString() -> String? {
         guard let data = mk_modelToJSONData() else { return nil }
         return String(data: data, encoding: .utf8)
     }
     
     // MARK: Model Copy
     
-    @objc public func mk_modelCopy() -> Any? {
+    @objc func mk_modelCopy() -> Any? {
         // Implementation would mirror the Objective-C version
         return nil
     }
     
     // MARK: NSCoding Support
     
-    @objc public func mk_modelEncode(with aCoder: NSCoder) {
+    @objc func mk_modelEncode(with aCoder: NSCoder) {
         // Implementation would mirror the Objective-C version
     }
     
-    @objc public func mk_modelInit(with aDecoder: NSCoder) -> Any? {
+    @objc func mk_modelInit(with aDecoder: NSCoder) -> Any? {
         // Implementation would mirror the Objective-C version
         return nil
     }
     
     // MARK: Equality & Hashing
     
-    @objc public func mk_modelHash() -> UInt {
+    @objc func mk_modelHash() -> UInt {
         // Implementation would mirror the Objective-C version
         return 0
     }
     
-    @objc public func mk_modelIsEqual(_ model: Any?) -> Bool {
+    @objc func mk_modelIsEqual(_ model: Any?) -> Bool {
         // Implementation would mirror the Objective-C version
         return false
     }
     
     // MARK: Description
     
-    @objc public func mk_modelDescription() -> String {
+    @objc func mk_modelDescription() -> String {
         // Implementation would mirror the Objective-C version
         return ""
     }
     
     // MARK: Dictionary to Model
     
-    @objc public func mk_modelSet(withJSON json: Any?) -> Bool {
+    @objc func mk_modelSet(withJSON json: Any?) -> Bool {
         guard let json = json else { return false }
         
         let dictionary: [String: Any]?
@@ -199,8 +199,8 @@ public extension NSObject {
         return mk_modelSet(with: dictionary)
     }
     
-    @objc public func mk_modelSet(with dictionary: [String: Any]?) -> Bool {
-        guard let dictionary = dictionary else { return false }
+    @objc func mk_modelSet(with dictionary: [String: Any]?) -> Bool {
+        guard dictionary != nil else { return false }
         
         // Implementation would mirror the Objective-C version
         return true

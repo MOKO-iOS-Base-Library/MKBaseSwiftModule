@@ -14,9 +14,9 @@ import zlib
 public extension String {
     // MARK: - Size Calculations
     
-    func substring(from location: Int, length: Int) -> String? {
+    func substring(from location: Int, length: Int) -> String {
         guard location >= 0, location < self.count else {
-            return nil
+            return ""
         }
         
         let startIndex = self.index(self.startIndex, offsetBy: location)

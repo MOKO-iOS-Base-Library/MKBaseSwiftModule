@@ -36,12 +36,12 @@ public extension UIScrollView {
     
     // MARK: - Touch Handling
     
-    open override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         next?.touchesMoved(touches, with: event)
         super.touchesMoved(touches, with: event)
     }
     
-    open override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         next?.touchesEnded(touches, with: event)
         super.touchesEnded(touches, with: event)
     }

@@ -149,10 +149,27 @@ public final class MKSwiftProgressHUD: UIView {
         setupDefaults()
         setupViews()
         updateIndicators()
-        registerForNotifications()
     }
     
     // MARK: - Public Methods
+    
+    // 2. 添加 traitCollectionDidChange 方法
+    public override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        // 检查界面特征是否发生变化
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) ||
+           traitCollection.verticalSizeClass != previousTraitCollection?.verticalSizeClass ||
+           traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass {
+            frame = superview?.bounds ?? .zero
+        }
+    }
+
+    // 3. 添加安全区域变化监听
+    public override func safeAreaInsetsDidChange() {
+        super.safeAreaInsetsDidChange()
+        frame = superview?.bounds ?? .zero
+    }
     
     public static func show(addedTo view: UIView, animated: Bool) -> MKSwiftProgressHUD {
         let hud = MKSwiftProgressHUD(view: view)
@@ -556,15 +573,6 @@ public final class MKSwiftProgressHUD: UIView {
     
     @objc private func updateProgressFromProgressObject() {
         progress = Float(progressObject?.fractionCompleted ?? 0)
-    }
-    
-    private func registerForNotifications() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(statusBarOrientationDidChange),
-            name: UIApplication.didChangeStatusBarOrientationNotification,
-            object: nil
-        )
     }
     
     @objc private func statusBarOrientationDidChange() {

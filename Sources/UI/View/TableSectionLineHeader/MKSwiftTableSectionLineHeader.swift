@@ -56,7 +56,7 @@ public class MKSwiftTableSectionLineHeader: UITableViewHeaderFooterView {
         let size = headerModel?.text?.boundingRect(
             with: CGSize(width: maxWidth, height: .greatestFiniteMagnitude),
             options: [.usesLineFragmentOrigin, .usesFontLeading],
-            attributes: [.font: headerModel?.msgTextFont],
+            attributes: [.font: headerModel?.msgTextFont as Any],
             context: nil
         ).size
         

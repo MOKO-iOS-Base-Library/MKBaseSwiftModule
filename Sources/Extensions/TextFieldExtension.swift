@@ -80,7 +80,7 @@ public extension UITextField {
     
     // MARK: - Override
     
-    open override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         guard let prohibitedMethods = prohibitedMethodsList, !prohibitedMethods.isEmpty else {
             return super.canPerformAction(action, withSender: sender)
         }

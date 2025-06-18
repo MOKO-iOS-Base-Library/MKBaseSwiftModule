@@ -66,7 +66,7 @@ public extension UIButton {
     }
     
     /// Enables the button tap interval functionality
-    @objc public static func enableButtonTapInterval() {
+    @objc static func enableButtonTapInterval() {
         swizzleSendAction()
     }
 }

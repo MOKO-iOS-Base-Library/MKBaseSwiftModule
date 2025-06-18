@@ -137,17 +137,15 @@ public enum KxMenu {
 
 // MARK: - Private Implementation
 
-private class KxMenuController {
+private class KxMenuController: @unchecked Sendable {
     @MainActor static let shared = KxMenuController()
     private var menuView: KxMenuView?
-    private var isObserving = false
+    private var orientationObserver: NSObjectProtocol?
     
     private init() {}
     
     deinit {
-        if isObserving {
-            NotificationCenter.default.removeObserver(self)
-        }
+        stopObserving()
     }
     
     @MainActor func showMenu(in view: UIView, fromRect rect: CGRect, menuItems: [KxMenuItem], with configuration: KxMenuConfiguration) {
@@ -156,15 +154,7 @@ private class KxMenuController {
         menuView?.dismiss(animated: false)
         menuView = nil
         
-        if !isObserving {
-            isObserving = true
-            NotificationCenter.default.addObserver(
-                self,
-                selector: #selector(orientationWillChange),
-                name: UIApplication.willChangeStatusBarOrientationNotification,
-                object: nil
-            )
-        }
+        startObserving()
         
         menuView = KxMenuView(configuration: configuration)
         menuView?.show(in: view, from: rect, items: menuItems)
@@ -173,15 +163,43 @@ private class KxMenuController {
     @MainActor func dismissMenu() {
         menuView?.dismiss(animated: true)
         menuView = nil
-        
-        if isObserving {
-            isObserving = false
-            NotificationCenter.default.removeObserver(self)
+        stopObserving()
+    }
+    
+    private func startObserving() {
+        // iOS 16+ 使用新的方向通知
+        if #available(iOS 16.0, *) {
+            orientationObserver = NotificationCenter.default.addObserver(
+                forName: UIDevice.orientationDidChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self else { return }
+                Task { @MainActor in
+                    self.dismissMenu()
+                }
+            }
+        }
+        // iOS 14-15
+        else {
+            orientationObserver = NotificationCenter.default.addObserver(
+                forName: UIDevice.orientationDidChangeNotification,
+                object: nil,
+                queue: .main
+            ) { [weak self] _ in
+                guard let self else { return }
+                Task { @MainActor in
+                    self.dismissMenu()
+                }
+            }
         }
     }
     
-    @MainActor @objc private func orientationWillChange() {
-        dismissMenu()
+    private func stopObserving() {
+        if let observer = orientationObserver {
+            NotificationCenter.default.removeObserver(observer)
+            orientationObserver = nil
+        }
     }
 }
 
@@ -401,7 +419,7 @@ private class KxMenuView: UIView {
         let kMarginX = configuration.marginXSpacing
         let kMarginY = configuration.marginYSpacing
         
-        let titleFont = KxMenu.titleFont ?? UIFont.systemFont(ofSize: 16, weight: .medium)
+        let titleFont = KxMenu.titleFont
         
         // 计算最大宽度
         var maxItemWidth: CGFloat = kMinMenuItemWidth

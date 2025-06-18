@@ -103,7 +103,7 @@ public class MKSwiftAlertView: UIView {
         guard !actionList.isEmpty, actionList.count <= 2 else { return }
         alertTitle = title
         alertMessage = message
-        if let window = UIApplication.shared.keyWindow {
+        if let window = App.window {
             window.addSubview(self)
         }
         
@@ -260,7 +260,7 @@ public class MKSwiftAlertView: UIView {
             make.right.equalTo(-5)
             make.top.equalTo(Constants.titleLabelOffsetY)
             
-            if alertTitle.isEmpty ?? true {
+            if alertTitle.isEmpty {
                 make.height.equalTo(0)
             } else {
                 make.height.equalTo(titleLabel.font.lineHeight)
@@ -272,7 +272,7 @@ public class MKSwiftAlertView: UIView {
             make.left.equalTo(Constants.msgLabelOffsetX)
             make.right.equalTo(-Constants.msgLabelOffsetX)
             
-            if alertTitle.isEmpty ?? true {
+            if alertTitle.isEmpty {
                 make.top.equalTo(Constants.titleLabelOffsetY)
             } else {
                 make.top.equalTo(titleLabel.snp.bottom).offset(10)
