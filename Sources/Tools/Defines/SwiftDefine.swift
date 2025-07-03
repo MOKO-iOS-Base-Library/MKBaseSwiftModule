@@ -141,8 +141,10 @@ public enum Font {
     return image
 }
 
-public func moduleIcon(name :String) -> UIImage? {
-    return UIImage(named: name, in: .module, compatibleWith: nil)
+public func moduleIcon(name: String, in bundle: Bundle? = nil) -> UIImage? {
+    return UIImage(named: name,
+                 in: bundle ?? .module,  // 可指定任意Bundle
+                 compatibleWith: nil)
 }
 
 // MARK: - Colors
