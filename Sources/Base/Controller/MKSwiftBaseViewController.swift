@@ -32,8 +32,13 @@ open class MKSwiftBaseViewController: UIViewController, UIGestureRecognizerDeleg
     // MARK: - UI Components
     
     open private(set) lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        let label = UILabel(frame: CGRect(
+            x: 60.0,
+            y: 7.0,
+            width: Screen.width - 120.0,
+            height: 30.0
+        ))
+        label.font = Font.MKFont(20.0)
         label.textColor = .white
         label.textAlignment = .center
         label.backgroundColor = .clear
@@ -41,22 +46,24 @@ open class MKSwiftBaseViewController: UIViewController, UIGestureRecognizerDeleg
     }()
     
     open private(set) lazy var leftButton: UIButton = {
-        let button = UIButton(type: .system)
-        if let image = moduleIcon(name: "mk_swift_back_button_white") {
-            button.setImage(image, for: .normal)
-        } else {
-            button.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        }
-        button.tintColor = .white
+        let button = UIButton(frame: CGRect(x: 0.0, y: 2.0, width: 40.0, height: 40.0))
+        button.setImage(moduleIcon(name: "mk_swift_back_button_white"), for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(UIColor.white.withAlphaComponent(0.4), for: .highlighted)
         button.contentHorizontalAlignment = .left
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.titleLabel?.font = Font.MKFont(16.0)
         button.addTarget(self, action: #selector(leftButtonMethod), for: .touchUpInside)
         return button
     }()
     
     open private(set) lazy var rightButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        let button = UIButton(frame: CGRect(
+            x: UIScreen.main.bounds.width - 40.0,
+            y: 2.0,
+            width: 40.0,
+            height: 40.0
+        ))
+        button.titleLabel?.font = Font.MKFont(16.0)
         button.setTitleColor(.white, for: .normal)
         button.setTitleColor(UIColor.white.withAlphaComponent(0.4), for: .highlighted)
         button.addTarget(self, action: #selector(rightButtonMethod), for: .touchUpInside)
