@@ -22,14 +22,12 @@ public class MKSwiftPickerView: UIView {
         self.currentRow = selectedRow
         self.selectionHandler = selectionHandler
         
-        if let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) {
-            window.addSubview(self)
-            pickerView.reloadAllComponents()
-            pickerView.selectRow(currentRow, inComponent: 0, animated: false)
-            
-            UIView.animate(withDuration: animationDuration) {
-                self.bottomView.transform = CGAffineTransform(translationX: 0, y: -self.pickerViewHeight)
-            }
+        App.window?.addSubview(self)
+        pickerView.reloadAllComponents()
+        pickerView.selectRow(currentRow, inComponent: 0, animated: false)
+        
+        UIView.animate(withDuration: animationDuration) {
+            self.bottomView.transform = CGAffineTransform(translationX: 0, y: -self.pickerViewHeight)
         }
     }
     

@@ -67,7 +67,6 @@ public class MKSwiftSearchButton: UIControl {
         let button = UIButton(type: .custom)
         button.setImage(moduleIcon(name: "mk_swift_clearButtonIcon"), for: .normal)
         button.addTarget(self, action: #selector(clearButtonPressed), for: .touchUpInside)
-        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         return button
     }()
     

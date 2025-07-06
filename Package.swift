@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "MKBaseSwiftModule",
     platforms: [
-        .iOS(.v14),  // 最低支持iOS 14
+        .iOS(.v16),  // 最低支持iOS 16
     ],
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
@@ -22,7 +22,9 @@ let package = Package(
         .package(url: "https://github.com/SnapKit/SnapKit.git", .upToNextMajor(from: "5.6.0")),
         .package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", .upToNextMajor(from: "5.0.0")),
         .package(url: "https://github.com/raulriera/TextFieldEffects.git", .upToNextMajor(from: "1.3.0")),
-        .package(url: "https://github.com/scalessec/Toast-Swift.git", .upToNextMajor(from: "5.0.0"))
+        .package(url: "https://github.com/scalessec/Toast-Swift.git", .upToNextMajor(from: "5.0.0")),
+        .package(url: "https://github.com/ZipArchive/ZipArchive.git", .upToNextMajor(from: "2.4.0")),
+        .package(url: "https://github.com/jmcnamara/libxlsxwriter", from: "1.2.3"),
     ],
     targets: [
         .target(
@@ -35,7 +37,9 @@ let package = Package(
                 .product(name: "SnapKit", package: "SnapKit"),
                 .product(name: "SwiftyJSON", package: "SwiftyJSON"),
                 .product(name: "TextFieldEffects", package: "TextFieldEffects"),
-                .product(name: "Toast", package: "Toast-Swift")
+                .product(name: "Toast", package: "Toast-Swift"),
+                .product(name: "ZipArchive", package: "ZipArchive"),
+                .product(name: "libxlsxwriter", package: "libxlsxwriter")
             ],
             path: "Sources",
             resources: [
@@ -43,7 +47,7 @@ let package = Package(
             ],
             swiftSettings: [
                 .define("DEBUG", .when(configuration: .debug)),
-                .define("IOS14_OR_LATER")  // 添加编译标志
+                .define("IOS16_OR_LATER")  // 添加编译标志
             ]
         ),
         .testTarget(

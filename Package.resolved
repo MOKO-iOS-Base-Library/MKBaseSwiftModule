@@ -1,5 +1,5 @@
 {
-  "originHash" : "94f73996e44b195c810983c07ca7aafd0c017da65f191bf85cdd06b0e3403954",
+  "originHash" : "7e2f2deb5edc0011f3cc90c0486a47d365b0afd4b377f2939803c9c585e83383",
   "pins" : [
     {
       "identity" : "devicekit",
@@ -26,6 +26,15 @@
       "state" : {
         "revision" : "c00b1ae9fa1ad8af4465bb6ca901f6943fc98eba",
         "version" : "6.5.16"
+      }
+    },
+    {
+      "identity" : "libxlsxwriter",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jmcnamara/libxlsxwriter",
+      "state" : {
+        "revision" : "051a01a2c31eb55fa467964a2c2328cfb8bcbde8",
+        "version" : "1.2.3"
       }
     },
     {
@@ -71,6 +80,15 @@
       "state" : {
         "revision" : "ddccd20d6fb718448d9b179c454c561653fda7d5",
         "version" : "5.1.1"
+      }
+    },
+    {
+      "identity" : "ziparchive",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ZipArchive/ZipArchive.git",
+      "state" : {
+        "revision" : "df35718ea19a94e015b91dc4881dee028ce4cdba",
+        "version" : "2.6.0"
       }
     }
   ],

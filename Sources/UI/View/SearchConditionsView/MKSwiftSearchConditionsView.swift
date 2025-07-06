@@ -155,9 +155,8 @@ public class MKSwiftSearchConditionsView: UIView {
                          rssiValue: Int,
                          minSearchRssi: Int,
                          searchBlock: @escaping (String?, Int) -> Void) {
-        guard let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow }) else { return }
         
-        window.addSubview(self)
+        App.window?.addSubview(self)
         self.searchBlock = searchBlock
         
         if let searchKey = searchKey, !searchKey.isEmpty {
@@ -169,11 +168,7 @@ public class MKSwiftSearchConditionsView: UIView {
         rssiValueLabel.text = "\(rssiValue)dBm"
         
         UIView.animate(withDuration: 0.25) {
-            if let topBarHeight = window.windowScene?.statusBarManager?.statusBarFrame.height {
-                self.backView.transform = CGAffineTransform(translationX: 0, y: self.backViewHeight + topBarHeight)
-            } else {
-                self.backView.transform = CGAffineTransform(translationX: 0, y: self.backViewHeight)
-            }
+            self.backView.transform = CGAffineTransform(translationX: 0, y: self.backViewHeight + Layout.topBarHeight)
         } completion: { _ in
             self.textField.becomeFirstResponder()
         }
