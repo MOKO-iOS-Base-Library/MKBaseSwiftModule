@@ -12,6 +12,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "MKBaseSwiftModule",
+            type: .dynamic, //改为动态库
             targets: ["MKBaseSwiftModule"]),
     ],
     dependencies: [
