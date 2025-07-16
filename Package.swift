@@ -1,18 +1,15 @@
 // swift-tools-version: 6.0
-// The swift-tools-version declares the minimum version of Swift required to build this package.
-
 import PackageDescription
 
 let package = Package(
     name: "MKBaseSwiftModule",
     platforms: [
-        .iOS(.v16),  // 最低支持iOS 16
+        .iOS(.v16),
     ],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "MKBaseSwiftModule",
-            type: .dynamic, //改为动态库
+            type: .dynamic,
             targets: ["MKBaseSwiftModule"]),
     ],
     dependencies: [
@@ -24,7 +21,7 @@ let package = Package(
         .package(url: "https://github.com/SwiftyJSON/SwiftyJSON.git", .upToNextMajor(from: "5.0.0")),
         .package(url: "https://github.com/raulriera/TextFieldEffects.git", .upToNextMajor(from: "1.3.0")),
         .package(url: "https://github.com/scalessec/Toast-Swift.git", .upToNextMajor(from: "5.0.0")),
-        .package(url: "https://github.com/ZipArchive/ZipArchive.git", .upToNextMajor(from: "2.4.0")),
+        .package(url: "https://github.com/weichsel/ZIPFoundation.git", from: "0.9.16"),
         .package(url: "https://github.com/jmcnamara/libxlsxwriter", from: "1.2.3"),
     ],
     targets: [
@@ -39,7 +36,7 @@ let package = Package(
                 .product(name: "SwiftyJSON", package: "SwiftyJSON"),
                 .product(name: "TextFieldEffects", package: "TextFieldEffects"),
                 .product(name: "Toast", package: "Toast-Swift"),
-                .product(name: "ZipArchive", package: "ZipArchive"),
+                .product(name: "ZIPFoundation", package: "ZIPFoundation"),
                 .product(name: "libxlsxwriter", package: "libxlsxwriter")
             ],
             path: "Sources",
@@ -48,7 +45,11 @@ let package = Package(
             ],
             swiftSettings: [
                 .define("DEBUG", .when(configuration: .debug)),
-                .define("IOS16_OR_LATER")  // 添加编译标志
+                .define("IOS16_OR_LATER")
+            ],
+            linkerSettings: [
+                .linkedLibrary("z"),
+                .linkedLibrary("iconv")
             ]
         ),
         .testTarget(

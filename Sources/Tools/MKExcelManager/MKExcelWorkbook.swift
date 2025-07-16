@@ -6,7 +6,8 @@
 //
 
 import Foundation
-import ZipArchive
+import libxlsxwriter
+import ZIPFoundation
 
 public class MKExcelWorkbook {
     // MARK: - Properties
@@ -32,8 +33,10 @@ public class MKExcelWorkbook {
             
             try writeOriginFileTempZip(with: data, path: tempZipPath)
             
-            // Unzip
-            SSZipArchive.unzipFile(atPath: tempZipPath, toDestination: tempFolderPath)
+            // Unzip using ZIPFoundation
+            let sourceURL = URL(fileURLWithPath: tempZipPath)
+            let destinationURL = URL(fileURLWithPath: tempFolderPath)
+            try FileManager.default.unzipItem(at: sourceURL, to: destinationURL)
             
             // Delete temp zip
             try deleteOriginTempZIP(with: tempZipPath)

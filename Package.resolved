@@ -1,5 +1,5 @@
 {
-  "originHash" : "7e2f2deb5edc0011f3cc90c0486a47d365b0afd4b377f2939803c9c585e83383",
+  "originHash" : "dcdc5cedd09dd43a30bca9aafc0cae49494592cd1c8e4517301ca7fd4e8a3360",
   "pins" : [
     {
       "identity" : "devicekit",
@@ -83,12 +83,12 @@
       }
     },
     {
-      "identity" : "ziparchive",
+      "identity" : "zipfoundation",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/ZipArchive/ZipArchive.git",
+      "location" : "https://github.com/weichsel/ZIPFoundation.git",
       "state" : {
-        "revision" : "df35718ea19a94e015b91dc4881dee028ce4cdba",
-        "version" : "2.6.0"
+        "revision" : "02b6abe5f6eef7e3cbd5f247c5cc24e246efcfe0",
+        "version" : "0.9.19"
       }
     }
   ],
