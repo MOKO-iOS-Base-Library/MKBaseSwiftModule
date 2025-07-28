@@ -9,7 +9,6 @@ let package = Package(
     products: [
         .library(
             name: "MKBaseSwiftModule",
-            type: .dynamic,
             targets: ["MKBaseSwiftModule"]),
     ],
     dependencies: [
