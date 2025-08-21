@@ -4,7 +4,7 @@ import PackageDescription
 let package = Package(
     name: "MKBaseSwiftModule",
     platforms: [
-        .iOS(.v16),
+        .iOS(.v14),
     ],
     products: [
         .library(
@@ -44,7 +44,7 @@ let package = Package(
             ],
             swiftSettings: [
                 .define("DEBUG", .when(configuration: .debug)),
-                .define("IOS16_OR_LATER")
+                .define("IOS14_OR_LATER")
             ],
             linkerSettings: [
                 .linkedLibrary("z"),
