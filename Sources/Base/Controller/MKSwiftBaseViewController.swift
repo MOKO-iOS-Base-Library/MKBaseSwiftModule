@@ -90,6 +90,18 @@ open class MKSwiftBaseViewController: UIViewController, UIGestureRecognizerDeleg
     open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         navigationController?.interactivePopGestureRecognizer?.delegate = nil
+        
+        // 检查当前控制器是否已从导航栈中移除
+        if !(navigationController?.viewControllers.contains(self) ?? false) {
+            // 调用专门的回调方法
+            viewDidPopFromNavigationStack()
+        }
+    }
+    
+    /// 当控制器从导航栈中弹出销毁时的回调方法，子类可以重写此方法
+    open func viewDidPopFromNavigationStack() {
+        // 默认空实现，子类可以重写
+        // 这里可以执行清理操作，如取消网络请求、释放资源等
     }
     
     // MARK: - Actions
