@@ -141,10 +141,27 @@ public enum Font {
     return image
 }
 
+public class ResourceHelper {
+    public static var bundle: Bundle {
+        #if SWIFT_PACKAGE
+        return Bundle.module
+        #else
+        // 对于非 SPM 环境（如主工程或其他 SPM）
+        return Bundle(for: ResourceHelper.self)
+        #endif
+    }
+}
+
+// Bundle 扩展
+extension Bundle {
+    public static var myModule: Bundle {
+        return ResourceHelper.bundle
+    }
+}
+
 public func moduleIcon(name: String, in bundle: Bundle? = nil) -> UIImage? {
-    return UIImage(named: name,
-                 in: bundle ?? .module,  // 可指定任意Bundle
-                 compatibleWith: nil)
+    let targetBundle = bundle ?? ResourceHelper.bundle
+    return UIImage(named: name, in: targetBundle, compatibleWith: nil)
 }
 
 // MARK: - Colors
