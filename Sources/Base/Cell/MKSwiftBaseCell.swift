@@ -54,7 +54,7 @@ open class MKSwiftBaseCell: UITableViewCell {
     
     private lazy var lineView: UIView = {
         let view = UIView()
-        view.backgroundColor = Line.color
+        view.backgroundColor = MKLine.color
         return view
     }()
     
@@ -69,7 +69,7 @@ open class MKSwiftBaseCell: UITableViewCell {
             make.left.equalTo(15)
             make.right.equalTo(-15)
             make.bottom.equalToSuperview()
-            make.height.equalTo(Line.height)
+            make.height.equalTo(MKLine.height)
         }
     }
 }

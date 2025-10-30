@@ -33,7 +33,7 @@ public class MKSwiftSearchConditionsView: UIView {
                                              width: UIScreen.main.bounds.width - 4 * offsetX,
                                              height: 30))
         field.borderStyle = .none
-        field.font = Font.MKFont(13)
+        field.font = MKFont.font(13)
         field.textColor = .darkText
         field.placeholder = "Device name or mac address"
         field.clearButtonMode = .whileEditing
@@ -60,7 +60,7 @@ public class MKSwiftSearchConditionsView: UIView {
                                           height: signalIconHeight))
         label.textColor = .darkText
         label.textAlignment = .left
-        label.font = Font.MKFont(12)
+        label.font = MKFont.font(12)
         label.text = "RSSI:"
         return label
     }()
@@ -85,7 +85,7 @@ public class MKSwiftSearchConditionsView: UIView {
                                           height: signalIconHeight))
         label.textColor = .darkText
         label.textAlignment = .left
-        label.font = Font.MKFont(12)
+        label.font = MKFont.font(12)
         label.text = "-100dBm"
         return label
     }()
@@ -97,7 +97,7 @@ public class MKSwiftSearchConditionsView: UIView {
                                             height: 45))
         button.backgroundColor = .blue
         button.setTitle("DONE", for: .normal)
-        button.titleLabel?.font = Font.MKFont(16)
+        button.titleLabel?.font = MKFont.font(16)
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 4.0
         button.addTarget(self, action: #selector(doneButtonPressed), for: .touchUpInside)
@@ -156,7 +156,7 @@ public class MKSwiftSearchConditionsView: UIView {
                          minSearchRssi: Int,
                          searchBlock: @escaping (String?, Int) -> Void) {
         
-        App.window?.addSubview(self)
+        MKApp.window?.addSubview(self)
         self.searchBlock = searchBlock
         
         if let searchKey = searchKey, !searchKey.isEmpty {
@@ -168,7 +168,7 @@ public class MKSwiftSearchConditionsView: UIView {
         rssiValueLabel.text = "\(rssiValue)dBm"
         
         UIView.animate(withDuration: 0.25) {
-            self.backView.transform = CGAffineTransform(translationX: 0, y: self.backViewHeight + Layout.topBarHeight)
+            self.backView.transform = CGAffineTransform(translationX: 0, y: self.backViewHeight + MKLayout.topBarHeight)
         } completion: { _ in
             self.textField.becomeFirstResponder()
         }

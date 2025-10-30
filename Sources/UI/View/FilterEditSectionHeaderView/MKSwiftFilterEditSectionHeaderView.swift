@@ -33,8 +33,8 @@ public class MKSwiftFilterEditSectionHeaderView: UITableViewHeaderFooterView {
     // MARK: - UI Components
     private lazy var msgLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Color.defaultText
-        label.font = Font.MKFont(14)
+        label.textColor = MKColor.defaultText
+        label.font = MKFont.font(14)
         label.textAlignment = .left
         return label
     }()
@@ -84,7 +84,7 @@ public class MKSwiftFilterEditSectionHeaderView: UITableViewHeaderFooterView {
     
     // MARK: - Private Methods
     private func setupUI() {
-        contentView.backgroundColor = Color.rgb(242, 242, 242)
+        contentView.backgroundColor = MKColor.rgb(242, 242, 242)
         contentView.addSubview(msgLabel)
         contentView.addSubview(addButton)
         contentView.addSubview(subButton)
@@ -107,7 +107,7 @@ public class MKSwiftFilterEditSectionHeaderView: UITableViewHeaderFooterView {
             make.left.equalToSuperview().offset(15)
             make.right.equalTo(addButton.snp.left).offset(-15)
             make.centerY.equalToSuperview()
-            make.height.equalTo(Font.MKFont(14).lineHeight)
+            make.height.equalTo(MKFont.font(14).lineHeight)
         }
     }
     
@@ -117,7 +117,7 @@ public class MKSwiftFilterEditSectionHeaderView: UITableViewHeaderFooterView {
             return
         }
         
-        contentView.backgroundColor = dataModel.contentColor ?? Color.rgb(242, 242, 242)
+        contentView.backgroundColor = dataModel.contentColor ?? MKColor.rgb(242, 242, 242)
         msgLabel.text = dataModel.msg
     }
     

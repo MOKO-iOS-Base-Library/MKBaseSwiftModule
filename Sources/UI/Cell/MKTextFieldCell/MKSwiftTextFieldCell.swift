@@ -24,13 +24,13 @@ public class MKSwiftTextFieldCellModel {
     
     // MARK: Left Label Configuration
     public var msg: String = ""
-    public var msgColor: UIColor = Color.defaultText
-    public var msgFont: UIFont = Font.MKFont(15)
+    public var msgColor: UIColor = MKColor.defaultText
+    public var msgFont: UIFont = MKFont.font(15)
     
     // MARK: Right Label Configuration
     public var unit: String = ""
-    public var unitColor: UIColor = Color.defaultText
-    public var unitFont: UIFont = Font.MKFont(13)
+    public var unitColor: UIColor = MKColor.defaultText
+    public var unitFont: UIFont = MKFont.font(13)
     
     // MARK: TextField Configuration
     public var textEnable: Bool = true
@@ -38,17 +38,17 @@ public class MKSwiftTextFieldCellModel {
     public var textFieldValue: String = ""
     public var textPlaceholder: String = ""
     public var textAlignment: NSTextAlignment = .left
-    public var textFieldTextColor: UIColor = Color.defaultText
-    public var textFieldTextFont: UIFont = Font.MKFont(15)
+    public var textFieldTextColor: UIColor = MKColor.defaultText
+    public var textFieldTextFont: UIFont = MKFont.font(15)
     public var textFieldType: MKSwiftTextFieldType = .normal
     public var maxLength: Int = 0
     public var clearButtonMode: UITextField.ViewMode = .never
-    public var borderColor: UIColor = Color.fromHex(0xDEDEDE)
+    public var borderColor: UIColor = MKColor.fromHex(0xDEDEDE)
     
     // MARK: Bottom Label Configuration
     public var noteMsg: String = ""
-    public var noteMsgColor: UIColor = Color.defaultText
-    public var noteMsgFont: UIFont = Font.MKFont(12)
+    public var noteMsgColor: UIColor = MKColor.defaultText
+    public var noteMsgFont: UIFont = MKFont.font(12)
     
     public init() {}
     
@@ -230,7 +230,7 @@ public class MKSwiftTextFieldCell: MKSwiftBaseCell {
         
         if dataModel.cellType == .topLine {
             let topLine = UIView()
-            topLine.backgroundColor = Color.fromHex(0xDEDEDE)
+            topLine.backgroundColor = MKColor.fromHex(0xDEDEDE)
             textBorderView.addSubview(topLine)
             topLine.snp.makeConstraints { make in
                 make.left.right.top.equalToSuperview()
@@ -265,9 +265,9 @@ public class MKSwiftTextFieldCell: MKSwiftBaseCell {
     // MARK: UI Components
     private lazy var msgLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Color.defaultText
+        label.textColor = MKColor.defaultText
         label.textAlignment = .left
-        label.font = Font.MKFont(15)
+        label.font = MKFont.font(15)
         label.numberOfLines = 0
         return label
     }()
@@ -277,7 +277,7 @@ public class MKSwiftTextFieldCell: MKSwiftBaseCell {
         view.backgroundColor = .white
         view.layer.masksToBounds = true
         view.layer.borderWidth = 0.5
-        view.layer.borderColor = Color.fromHex(0xDEDEDE).cgColor
+        view.layer.borderColor = MKColor.fromHex(0xDEDEDE).cgColor
         return view
     }()
     
@@ -292,16 +292,16 @@ public class MKSwiftTextFieldCell: MKSwiftBaseCell {
     
     private lazy var unitLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Color.defaultText
+        label.textColor = MKColor.defaultText
         label.textAlignment = .left
-        label.font = Font.MKFont(13)
+        label.font = MKFont.font(13)
         return label
     }()
     
     private lazy var noteLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Color.defaultText
-        label.font = Font.MKFont(12)
+        label.textColor = MKColor.defaultText
+        label.font = MKFont.font(12)
         label.textAlignment = .left
         label.numberOfLines = 0
         return label

@@ -14,8 +14,8 @@ public class MKSwiftSettingTextCellModel {
     
     // Left label and icon
     public var leftIcon: UIImage?
-    public var leftMsgTextFont: UIFont = Font.MKFont(15)
-    public var leftMsgTextColor: UIColor = Color.defaultText
+    public var leftMsgTextFont: UIFont = MKFont.font(15)
+    public var leftMsgTextColor: UIColor = MKColor.defaultText
     public var leftMsg: String = ""
     
     public init() {}

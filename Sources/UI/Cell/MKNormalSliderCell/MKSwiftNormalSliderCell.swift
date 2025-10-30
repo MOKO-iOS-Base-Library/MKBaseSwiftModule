@@ -17,8 +17,8 @@ public class MKSwiftNormalSliderCellModel {
     
     // Right unit label configuration
     public var unit: String = "dBm"
-    public var unitColor: UIColor = Color.defaultText
-    public var unitFont: UIFont = Font.MKFont(11)
+    public var unitColor: UIColor = MKColor.defaultText
+    public var unitFont: UIFont = MKFont.font(11)
     
     // Slider configuration
     public var sliderEnable: Bool = true
@@ -31,8 +31,8 @@ public class MKSwiftNormalSliderCellModel {
     public var noteMsg: String = ""
     public var leftNoteMsg: String = ""
     public var rightNoteMsg: String = ""
-    public var noteMsgColor: UIColor = Color.defaultText
-    public var noteMsgFont: UIFont = Font.MKFont(12)
+    public var noteMsgColor: UIColor = MKColor.defaultText
+    public var noteMsgFont: UIFont = MKFont.font(12)
     
     public init() {}
     
@@ -40,7 +40,7 @@ public class MKSwiftNormalSliderCellModel {
         let msgHeight: CGFloat
         if !msg.string.isEmpty {
             msgHeight = String.size(with: msg.string,
-                                  font: Font.MKFont(15),
+                                  font: MKFont.font(15),
                                   maxSize: CGSize(width: width, height: .greatestFiniteMagnitude)).height
         } else {
             msgHeight = 0
@@ -201,7 +201,7 @@ public class MKSwiftNormalSliderCell: MKSwiftBaseCell {
         return msgLabel
     }()
     private lazy var sliderValueLabel: UILabel = {
-        return MKSwiftUIAdaptor.createNormalLabel(font: Font.MKFont(11))
+        return MKSwiftUIAdaptor.createNormalLabel(font: MKFont.font(11))
     }()
     private lazy var sliderView: MKSwiftSlider = {
         let sliderView = MKSwiftSlider()
@@ -213,7 +213,7 @@ public class MKSwiftNormalSliderCell: MKSwiftBaseCell {
         return sliderView
     }()
     private lazy var noteLabel: UILabel = {
-        let noteLabel = MKSwiftUIAdaptor.createNormalLabel(font: Font.MKFont(12))
+        let noteLabel = MKSwiftUIAdaptor.createNormalLabel(font: MKFont.font(12))
         noteLabel.numberOfLines = 0
         return noteLabel
     }()

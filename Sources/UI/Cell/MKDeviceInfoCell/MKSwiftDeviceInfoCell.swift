@@ -16,9 +16,9 @@ public class MKSwiftDeviceInfoCellModel {
     public init() {}
     
     public func cellHeightWithContentWidth(_ width: CGFloat) -> CGFloat {
-        let leftSize = leftMsg.size(withFont: Font.MKFont(15), maxSize: CGSize(width: (width / 2 - 15 - 5), height: .greatestFiniteMagnitude))
+        let leftSize = leftMsg.size(withFont: MKFont.font(15), maxSize: CGSize(width: (width / 2 - 15 - 5), height: .greatestFiniteMagnitude))
         
-        let rightSize = rightMsg.size(withFont: Font.MKFont(15), maxSize: CGSize(width: (width / 2 - 15 - 5), height: .greatestFiniteMagnitude))
+        let rightSize = rightMsg.size(withFont: MKFont.font(15), maxSize: CGSize(width: (width / 2 - 15 - 5), height: .greatestFiniteMagnitude))
         
         let height = max(leftSize.height, rightSize.height)
         return max(44, height + 20)
@@ -66,7 +66,7 @@ public class MKSwiftDeviceInfoCell: MKSwiftBaseCell {
             make.left.equalToSuperview().offset(15)
             make.right.equalTo(contentView.snp.centerX).offset(-5)
             make.centerY.equalToSuperview()
-            make.height.equalTo(leftSize?.height ?? Font.MKFont(15).lineHeight)
+            make.height.equalTo(leftSize?.height ?? MKFont.font(15).lineHeight)
         }
         
         let rightSize = rightMsgLabel.text?.size(withFont: msgLabel.font, maxSize: CGSize(width: (contentView.frame.width / 2 - 15 - 5), height: .greatestFiniteMagnitude))
@@ -75,7 +75,7 @@ public class MKSwiftDeviceInfoCell: MKSwiftBaseCell {
             make.right.equalToSuperview().offset(-15)
             make.left.equalTo(contentView.snp.centerX).offset(5)
             make.centerY.equalToSuperview()
-            make.height.equalTo(rightSize?.height ?? Font.MKFont(15).lineHeight)
+            make.height.equalTo(rightSize?.height ?? MKFont.font(15).lineHeight)
         }
     }
     
@@ -98,7 +98,7 @@ public class MKSwiftDeviceInfoCell: MKSwiftBaseCell {
         return msgLabel
     }()
     private lazy var rightMsgLabel: UILabel = {
-        let rightMsgLabel = MKSwiftUIAdaptor.createNormalLabel(font: Font.MKFont(13))
+        let rightMsgLabel = MKSwiftUIAdaptor.createNormalLabel(font: MKFont.font(13))
         rightMsgLabel.numberOfLines = 0
         return rightMsgLabel
     }()

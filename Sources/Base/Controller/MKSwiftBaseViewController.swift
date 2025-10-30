@@ -19,7 +19,7 @@ open class MKSwiftBaseViewController: UIViewController, UIGestureRecognizerDeleg
         }
     }
     
-    open var custom_naviBarColor: UIColor? = Color.navBar {
+    open var custom_naviBarColor: UIColor? = MKColor.navBar {
         didSet {
             updateNavigationBarAppearance()
         }
@@ -35,10 +35,10 @@ open class MKSwiftBaseViewController: UIViewController, UIGestureRecognizerDeleg
         let label = UILabel(frame: CGRect(
             x: 60.0,
             y: 7.0,
-            width: Screen.width - 120.0,
+            width: MKScreen.width - 120.0,
             height: 30.0
         ))
-        label.font = Font.MKFont(20.0)
+        label.font = MKFont.font(20.0)
         label.textColor = .white
         label.textAlignment = .center
         label.backgroundColor = .clear
@@ -51,7 +51,7 @@ open class MKSwiftBaseViewController: UIViewController, UIGestureRecognizerDeleg
         button.setTitleColor(.white, for: .normal)
         button.setTitleColor(UIColor.white.withAlphaComponent(0.4), for: .highlighted)
         button.contentHorizontalAlignment = .left
-        button.titleLabel?.font = Font.MKFont(16.0)
+        button.titleLabel?.font = MKFont.font(16.0)
         button.addTarget(self, action: #selector(leftButtonMethod), for: .touchUpInside)
         return button
     }()
@@ -63,7 +63,7 @@ open class MKSwiftBaseViewController: UIViewController, UIGestureRecognizerDeleg
             width: 40.0,
             height: 40.0
         ))
-        button.titleLabel?.font = Font.MKFont(16.0)
+        button.titleLabel?.font = MKFont.font(16.0)
         button.setTitleColor(.white, for: .normal)
         button.setTitleColor(UIColor.white.withAlphaComponent(0.4), for: .highlighted)
         button.addTarget(self, action: #selector(rightButtonMethod), for: .touchUpInside)
@@ -197,18 +197,5 @@ open class MKSwiftBaseViewController: UIViewController, UIGestureRecognizerDeleg
         navBar.compactAppearance = appearance
         
         setNeedsStatusBarAppearanceUpdate()
-    }
-}
-
-// MARK: - UIColor Extension
-
-extension UIColor {
-    var isDark: Bool {
-        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
-        self.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        
-        // Calculate luminance (0-1)
-        let luminance = 0.2126 * red + 0.7152 * green + 0.0722 * blue
-        return luminance < 0.5
     }
 }

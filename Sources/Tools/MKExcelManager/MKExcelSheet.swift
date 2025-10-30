@@ -102,11 +102,11 @@ public class MKExcelSheet {
         guard let mergeCellInfoArray = mergeCellInfoArray else {
             return ""
         }
-        if Valid.isDictValid(mergeCellInfoArray) {
+        if MKValid.isDictValid(mergeCellInfoArray) {
             return getMergeStr(mergeInfoDic: (mergeCellInfoArray as! [String:Any]), column: cell.column!, row: cell.row)
         }
         
-        if !Valid.isArrayValid(mergeCellInfoArray) {
+        if !MKValid.isArrayValid(mergeCellInfoArray) {
             return ""
         }
         if let list = mergeCellInfoArray as? [Any] {

@@ -61,14 +61,14 @@ public class MKSwiftFilterBeaconCell: MKSwiftBaseCell {
             make.left.equalToSuperview().offset(15)
             make.right.equalToSuperview().offset(-15)
             make.top.equalToSuperview().offset(5)
-            make.height.equalTo(Font.MKFont(15).lineHeight)
+            make.height.equalTo(MKFont.font(15).lineHeight)
         }
         
         minLabel.snp.makeConstraints { make in
             make.left.equalToSuperview().offset(15)
             make.width.equalTo(50)
             make.centerY.equalTo(minTextField)
-            make.height.equalTo(Font.MKFont(15).lineHeight)
+            make.height.equalTo(MKFont.font(15).lineHeight)
         }
         
         minTextField.snp.makeConstraints { make in
@@ -82,14 +82,14 @@ public class MKSwiftFilterBeaconCell: MKSwiftBaseCell {
             make.left.equalTo(minTextField.snp.right).offset(10)
             make.width.equalTo(30)
             make.centerY.equalTo(minTextField)
-            make.height.equalTo(Font.MKFont(15).lineHeight)
+            make.height.equalTo(MKFont.font(15).lineHeight)
         }
         
         maxLabel.snp.makeConstraints { make in
             make.left.equalTo(centerLabel.snp.right).offset(10)
             make.width.equalTo(50)
             make.centerY.equalTo(minTextField)
-            make.height.equalTo(Font.MKFont(15).lineHeight)
+            make.height.equalTo(MKFont.font(15).lineHeight)
         }
         
         maxTextField.snp.makeConstraints { make in

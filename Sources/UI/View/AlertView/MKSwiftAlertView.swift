@@ -103,7 +103,7 @@ public class MKSwiftAlertView: UIView {
         guard !actionList.isEmpty, actionList.count <= 2 else { return }
         alertTitle = title
         alertMessage = message
-        if let window = App.window {
+        if let window = MKApp.window {
             window.addSubview(self)
         }
         

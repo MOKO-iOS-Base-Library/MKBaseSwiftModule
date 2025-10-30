@@ -22,7 +22,7 @@ public class MKSwiftPickerView: UIView {
         self.currentRow = selectedRow
         self.selectionHandler = selectionHandler
         
-        App.window?.addSubview(self)
+        MKApp.window?.addSubview(self)
         pickerView.reloadAllComponents()
         pickerView.selectRow(currentRow, inComponent: 0, animated: false)
         
@@ -50,7 +50,7 @@ public class MKSwiftPickerView: UIView {
                                        y: UIScreen.main.bounds.height,
                                        width: UIScreen.main.bounds.width,
                                        height: pickerViewHeight))
-        view.backgroundColor = Color.rgb(244, 244, 244)
+        view.backgroundColor = MKColor.rgb(244, 244, 244)
         
         let topView = UIView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
         topView.backgroundColor = .white
@@ -61,7 +61,7 @@ public class MKSwiftPickerView: UIView {
         cancelButton.backgroundColor = .clear
         cancelButton.setTitle("Cancel", for: .normal)
         cancelButton.setTitleColor(.darkText, for: .normal)
-        cancelButton.titleLabel?.font = Font.MKFont(16)
+        cancelButton.titleLabel?.font = MKFont.font(16)
         cancelButton.addTarget(self, action: #selector(cancelButtonPressed), for: .touchUpInside)
         topView.addSubview(cancelButton)
         
@@ -70,7 +70,7 @@ public class MKSwiftPickerView: UIView {
         confirmButton.backgroundColor = .clear
         confirmButton.setTitle("Confirm", for: .normal)
         confirmButton.setTitleColor(.darkText, for: .normal)
-        confirmButton.titleLabel?.font = Font.MKFont(16)
+        confirmButton.titleLabel?.font = MKFont.font(16)
         confirmButton.addTarget(self, action: #selector(confirmButtonPressed), for: .touchUpInside)
         topView.addSubview(confirmButton)
         
@@ -159,7 +159,7 @@ extension MKSwiftPickerView: UIPickerViewDataSource, UIPickerViewDelegate {
     public func pickerView(_ pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         let attributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: UIColor.darkText,
-            .font: Font.MKFont(15)
+            .font: MKFont.font(15)
         ]
         return NSAttributedString(string: dataList[row], attributes: attributes)
     }

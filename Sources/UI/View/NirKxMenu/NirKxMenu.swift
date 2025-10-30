@@ -118,8 +118,8 @@ private class ClosureHandler {
 nonisolated(unsafe) private var actionKey: UInt8 = 0
 
 public enum KxMenu {
-    public static let tintColor: UIColor = Color.defaultText
-    public static let titleFont: UIFont = Font.MKFont(15)
+    public static let tintColor: UIColor = MKColor.defaultText
+    public static let titleFont: UIFont = MKFont.font(15)
     
     @MainActor public static func showMenu(
         in view: UIView,

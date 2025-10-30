@@ -15,20 +15,20 @@ public class MKSwiftNormalTextCellModel {
     
     // Left label and icon
     public var leftIcon: UIImage?
-    public var leftMsgTextFont: UIFont = Font.MKFont(15)
-    public var leftMsgTextColor: UIColor = Color.defaultText
+    public var leftMsgTextFont: UIFont = MKFont.font(15)
+    public var leftMsgTextColor: UIColor = MKColor.defaultText
     public var leftMsg: String = ""
     
     // Right label
-    public var rightMsgTextFont: UIFont = Font.MKFont(13)
-    public var rightMsgTextColor: UIColor = Color.fromHex(0x808080)
+    public var rightMsgTextFont: UIFont = MKFont.font(13)
+    public var rightMsgTextColor: UIColor = MKColor.fromHex(0x808080)
     public var rightMsg: String = ""
     public var showRightIcon: Bool = false
     
     // Bottom label
     public var noteMsg: String = ""
-    public var noteMsgColor: UIColor = Color.defaultText
-    public var noteMsgFont: UIFont = Font.MKFont(12)
+    public var noteMsgColor: UIColor = MKColor.defaultText
+    public var noteMsgFont: UIFont = MKFont.font(12)
     
     public func cellHeightWithContentWidth(_ width: CGFloat) -> CGFloat {
         let maxMsgWidth: CGFloat
@@ -216,9 +216,9 @@ public class MKSwiftNormalTextCell: MKSwiftBaseCell {
     }()
     private lazy var rightMsgLabel: UILabel = {
         let rightMsgLabel = UILabel()
-        rightMsgLabel.textColor = Color.fromHex(0x808080)
+        rightMsgLabel.textColor = MKColor.fromHex(0x808080)
         rightMsgLabel.textAlignment = .right
-        rightMsgLabel.font = Font.MKFont(13)
+        rightMsgLabel.font = MKFont.font(13)
         return rightMsgLabel
     }()
     private lazy var rightIcon: UIImageView = {
@@ -228,7 +228,7 @@ public class MKSwiftNormalTextCell: MKSwiftBaseCell {
         return rightIcon
     }()
     private lazy var noteLabel: UILabel = {
-        let noteLabel = MKSwiftUIAdaptor.createNormalLabel(font: Font.MKFont(12))
+        let noteLabel = MKSwiftUIAdaptor.createNormalLabel(font: MKFont.font(12))
         noteLabel.numberOfLines = 0
         return noteLabel
     }()

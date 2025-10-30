@@ -55,9 +55,9 @@ public extension UIButton {
                     self.titleLabel?.lineBreakMode = .byWordWrapping
                     self.contentHorizontalAlignment = .center
                     self.setTitle("\(timeout)秒", for: .normal)
-                    self.setTitleColor(Color.rgb(51, 61, 81), for: .normal)
+                    self.setTitleColor(MKColor.rgb(51, 61, 81), for: .normal)
                     self.setBackgroundImage(nil, for: .normal)
-                    self.backgroundColor = Color.rgb(239, 239, 246)
+                    self.backgroundColor = MKColor.rgb(239, 239, 246)
                 }
                 timeout -= 1
             }

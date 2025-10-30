@@ -19,7 +19,7 @@ public func strongify<T: AnyObject>(weakObject: () -> T?, closure: (T) -> Void) 
 }
 
 // MARK: - Device Related
-@MainActor public enum Screen {
+@MainActor public enum MKScreen {
     public static let bounds = UIScreen.main.bounds
     public static let width = UIScreen.main.bounds.width
     public static let height = UIScreen.main.bounds.height
@@ -29,7 +29,7 @@ public func strongify<T: AnyObject>(weakObject: () -> T?, closure: (T) -> Void) 
 }
 
 // MARK: - System Related
-@MainActor public enum App {
+@MainActor public enum MKApp {
     public static var delegate: UIApplicationDelegate? {
         UIApplication.shared.delegate
     }
@@ -77,9 +77,9 @@ public func strongify<T: AnyObject>(weakObject: () -> T?, closure: (T) -> Void) 
 }
 
 // MARK: - Status Bar, Navigation Bar, Tab Bar
-@MainActor public enum Layout {
+@MainActor public enum MKLayout {
     public static var statusBarHeight: CGFloat {
-        return App.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+        return MKApp.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
     }
     
     public static var navigationBarHeight: CGFloat {
@@ -95,12 +95,12 @@ public func strongify<T: AnyObject>(weakObject: () -> T?, closure: (T) -> Void) 
     }
     
     public static var safeAreaBottom: CGFloat {
-        return App.window?.safeAreaInsets.bottom ?? 0
+        return MKApp.window?.safeAreaInsets.bottom ?? 0
     }
 }
 
 // MARK: - File Paths
-public enum Path {
+public enum MKPath {
     public static let documents = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first ?? ""
     public static let library = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first ?? ""
     public static let caches = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true).first ?? ""
@@ -112,8 +112,8 @@ public enum Path {
 }
 
 // MARK: - Font
-public enum Font {
-    public static func MKFont(_ size: CGFloat) -> UIFont {
+public enum MKFont {
+    public static func font(_ size: CGFloat) -> UIFont {
         if let font = UIFont(name: "Helvetica-Bold", size: size) {
             return font
         }
@@ -122,15 +122,15 @@ public enum Font {
 }
 
 // MARK: - Line
-@MainActor public enum Line {
-    public static let height: CGFloat = Screen.scale == 2.0 ? 0.5 : 0.34
-    public static let color = Color.fromHex(0xe5e5e5)
+@MainActor public enum MKLine {
+    public static let height: CGFloat = MKScreen.scale == 2.0 ? 0.5 : 0.34
+    public static let color = MKColor.fromHex(0xe5e5e5)
 }
 
 // MARK: - Images
 @MainActor public func loadImage(name: String, ext: String? = nil) -> UIImage? {
     let bundle = Bundle.main
-    let imageName = name + (Screen.scale > 2.0 ? "@3x" : "@2x")
+    let imageName = name + (MKScreen.scale > 2.0 ? "@3x" : "@2x")
     var image = UIImage(named: imageName, in: bundle, compatibleWith: nil)
     
     if image == nil, let ext = ext {
@@ -152,20 +152,13 @@ public class ResourceHelper {
     }
 }
 
-// Bundle 扩展
-extension Bundle {
-    public static var myModule: Bundle {
-        return ResourceHelper.bundle
-    }
-}
-
 public func moduleIcon(name: String, in bundle: Bundle? = nil) -> UIImage? {
     let targetBundle = bundle ?? ResourceHelper.bundle
     return UIImage(named: name, in: targetBundle, compatibleWith: nil)
 }
 
 // MARK: - Colors
-public enum Color {
+public enum MKColor {
     public static func rgb(_ r: CGFloat, _ g: CGFloat, _ b: CGFloat, _ a: CGFloat = 1.0) -> UIColor {
         UIColor(red: r/255.0, green: g/255.0, blue: b/255.0, alpha: a)
     }
@@ -208,7 +201,7 @@ public enum Color {
 }
 
 // MARK: - String/Array/Dictionary Validation
-public enum Valid {
+public enum MKValid {
     public static func string(_ s: Any?) -> String {
         guard let str = s as? String else { return "" }
         return ["(null)", "null", "<null>"].contains(str) ? "" : str

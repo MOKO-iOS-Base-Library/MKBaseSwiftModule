@@ -15,10 +15,10 @@ import UIKit
         action: Selector? = nil
     ) -> UIButton {
         let button = UIButton(type: .custom)
-        button.backgroundColor = Color.navBar
+        button.backgroundColor = MKColor.navBar
         button.setTitle(title, for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = Font.MKFont(15)
+        button.titleLabel?.font = MKFont.font(15)
         button.layer.masksToBounds = true
         button.layer.cornerRadius = 6
         
@@ -31,12 +31,12 @@ import UIKit
     
     // MARK: - Label Factory
     public static func createNormalLabel(
-        font:UIFont = Font.MKFont(15),
+        font:UIFont = MKFont.font(15),
         text: String = ""
     ) -> UILabel {
         let label = UILabel()
         label.text = text
-        label.textColor = Color.defaultText
+        label.textColor = MKColor.defaultText
         label.font = font
         label.textAlignment = .left
         label.numberOfLines = 0
@@ -48,7 +48,7 @@ import UIKit
         text: String = "",
         placeholder: String = "",
         textType: MKSwiftTextFieldType = .normal,
-        textColor: UIColor = Color.defaultText,
+        textColor: UIColor = MKColor.defaultText,
         textAlignment: NSTextAlignment = .left,
         maxLen: Int = 0
     ) -> MKSwiftTextField {
@@ -56,12 +56,12 @@ import UIKit
         textField.text = text
         textField.placeholder = placeholder
         textField.textColor = textColor
-        textField.font = Font.MKFont(15)
+        textField.font = MKFont.font(15)
         textField.textAlignment = textAlignment
         textField.maxLength = maxLen
         
         textField.layer.masksToBounds = true
-        textField.layer.borderColor = Color.line.cgColor
+        textField.layer.borderColor = MKColor.line.cgColor
         textField.layer.borderWidth = 0.5
         textField.layer.cornerRadius = 6
         

@@ -21,21 +21,21 @@ public class MKSwiftTextButtonCellModel {
     
     // MARK: Left Label Configuration
     public var msg: String = ""
-    public var msgColor: UIColor = Color.defaultText
-    public var msgFont: UIFont = Font.MKFont(15)
+    public var msgColor: UIColor = MKColor.defaultText
+    public var msgFont: UIFont = MKFont.font(15)
     
     // MARK: Right Button Configuration
     public var buttonEnable: Bool = true
     public var dataList: [String] = []
     public var dataListIndex: Int = 0
-    public var buttonBackColor: UIColor = Color.fromHex(0x2F84D0)
+    public var buttonBackColor: UIColor = MKColor.fromHex(0x2F84D0)
     public var buttonTitleColor: UIColor = .white
-    public var buttonLabelFont: UIFont = Font.MKFont(15)
+    public var buttonLabelFont: UIFont = MKFont.font(15)
     
     // MARK: Bottom Label Configuration
     public var noteMsg: String = ""
-    public var noteMsgColor: UIColor = Color.defaultText
-    public var noteMsgFont: UIFont = Font.MKFont(12)
+    public var noteMsgColor: UIColor = MKColor.defaultText
+    public var noteMsgFont: UIFont = MKFont.font(12)
     
     public init() {}
     
@@ -224,7 +224,7 @@ public class MKSwiftTextButtonCell: MKSwiftBaseCell {
     }()
     
     private lazy var noteLabel: UILabel = {
-        let label = MKSwiftUIAdaptor.createNormalLabel(font: Font.MKFont(12))
+        let label = MKSwiftUIAdaptor.createNormalLabel(font: MKFont.font(12))
         label.numberOfLines = 0
         return label
     }()

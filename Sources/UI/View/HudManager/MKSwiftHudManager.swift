@@ -28,7 +28,7 @@ import UIKit
         progressHUD = nil
         
         inView = view
-        let baseView = view ?? App.window
+        let baseView = view ?? MKApp.window
         
         guard let baseView = baseView else { return }
         
@@ -42,7 +42,7 @@ import UIKit
         if let inView = inView {
             inView.addSubview(hud)
         } else {
-            App.window?.addSubview(hud)
+            MKApp.window?.addSubview(hud)
         }
         
         progressHUD = hud

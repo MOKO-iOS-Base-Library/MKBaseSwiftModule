@@ -11,8 +11,8 @@ import SnapKit
 // MARK: - Data Model
 public class MKSwiftTableSectionLineHeaderModel {
     public var contentColor: UIColor?
-    public var msgTextFont: UIFont = Font.MKFont(15)
-    public var msgTextColor: UIColor = Color.defaultText
+    public var msgTextFont: UIFont = MKFont.font(15)
+    public var msgTextColor: UIColor = MKColor.defaultText
     public var text: String?
     
     public init() {}
@@ -40,7 +40,7 @@ public class MKSwiftTableSectionLineHeader: UITableViewHeaderFooterView {
     // MARK: - Initialization
     public override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = Color.rgb(242, 242, 242)
+        contentView.backgroundColor = MKColor.rgb(242, 242, 242)
         contentView.addSubview(msgLabel)
     }
     
@@ -76,7 +76,7 @@ public class MKSwiftTableSectionLineHeader: UITableViewHeaderFooterView {
             return
         }
         
-        contentView.backgroundColor = headerModel.contentColor ?? Color.rgb(242, 242, 242)
+        contentView.backgroundColor = headerModel.contentColor ?? MKColor.rgb(242, 242, 242)
         
         if let text = headerModel.text, !text.isEmpty {
             msgLabel.text = text
@@ -89,8 +89,8 @@ public class MKSwiftTableSectionLineHeader: UITableViewHeaderFooterView {
     // MARK: - UI Components
     private lazy var msgLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Color.defaultText
-        label.font = Font.MKFont(15)
+        label.textColor = MKColor.defaultText
+        label.font = MKFont.font(15)
         label.textAlignment = .left
         label.numberOfLines = 0
         return label

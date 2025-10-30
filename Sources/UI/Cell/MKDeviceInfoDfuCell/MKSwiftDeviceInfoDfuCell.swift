@@ -106,8 +106,8 @@ public class MKSwiftDeviceInfoDfuCell: MKSwiftBaseCell {
     }()
     private lazy var rightMsgLabel: UILabel = {
         let rightMsgLabel = UILabel()
-        rightMsgLabel.textColor = Color.fromHex(0x808080)
-        rightMsgLabel.font = Font.MKFont(13)
+        rightMsgLabel.textColor = MKColor.fromHex(0x808080)
+        rightMsgLabel.font = MKFont.font(13)
         rightMsgLabel.textAlignment = .right
         return rightMsgLabel
     }()
@@ -115,7 +115,7 @@ public class MKSwiftDeviceInfoDfuCell: MKSwiftBaseCell {
         let rightButton = MKSwiftUIAdaptor.createRoundedButton(title: "",
                                                                target: self,
                                                                action: #selector(rightButtonPressed))
-        rightButton.titleLabel?.font = Font.MKFont(12)
+        rightButton.titleLabel?.font = MKFont.font(12)
         return rightButton
     }()
 }

@@ -53,7 +53,7 @@ public class MKSwiftFilterByRawDataCellModel {
             return false
         }
         
-        guard Valid.isStringValid(rawData), rawData.count <= rawDataMaxBytes * 2,
+        guard MKValid.isStringValid(rawData), rawData.count <= rawDataMaxBytes * 2,
               rawData.matchesRegex(String.isHexadecimal) else {
             return false
         }
@@ -63,7 +63,7 @@ public class MKSwiftFilterByRawDataCellModel {
     }
     
     public func validRawDatas() -> Bool {
-        guard Valid.isStringValid(rawData), rawData.count <= rawDataMaxBytes * 2,
+        guard MKValid.isStringValid(rawData), rawData.count <= rawDataMaxBytes * 2,
               rawData.matchesRegex(String.isHexadecimal) else {
             return false
         }
@@ -131,7 +131,7 @@ public class MKSwiftFilterByRawDataCell: MKSwiftBaseCell {
             make.left.equalToSuperview().offset(15)
             make.right.equalToSuperview().offset(-15)
             make.top.equalToSuperview().offset(5)
-            make.height.equalTo(Font.MKFont(15).lineHeight)
+            make.height.equalTo(MKFont.font(15).lineHeight)
         }
         
         typeTextField.snp.makeConstraints { make in
@@ -223,7 +223,7 @@ public class MKSwiftFilterByRawDataCell: MKSwiftBaseCell {
         let textField = MKSwiftUIAdaptor.createTextField(placeholder: "",
                                                          textType: .hexCharOnly,
                                                          maxLen: 2)
-        textField.font = Font.MKFont(13)
+        textField.font = MKFont.font(13)
         textField.textChangedBlock = { [weak self] text in
             self?.textFieldValueChanged(text, textType: .dataType)
         }
@@ -234,7 +234,7 @@ public class MKSwiftFilterByRawDataCell: MKSwiftBaseCell {
         let textField = MKSwiftUIAdaptor.createTextField(placeholder: "",
                                                          textType: .realNumberOnly,
                                                          maxLen: 2)
-        textField.font = Font.MKFont(13)
+        textField.font = MKFont.font(13)
         textField.textChangedBlock = { [weak self] text in
             self?.textFieldValueChanged(text, textType: .minIndex)
         }
@@ -245,7 +245,7 @@ public class MKSwiftFilterByRawDataCell: MKSwiftBaseCell {
         let textField = MKSwiftUIAdaptor.createTextField(placeholder: "",
                                                          textType: .realNumberOnly,
                                                          maxLen: 2)
-        textField.font = Font.MKFont(13)
+        textField.font = MKFont.font(13)
         textField.textChangedBlock = { [weak self] text in
             self?.textFieldValueChanged(text, textType: .maxIndex)
         }
@@ -253,17 +253,17 @@ public class MKSwiftFilterByRawDataCell: MKSwiftBaseCell {
     }()
     
     private lazy var characterLabel: UILabel = {
-        return MKSwiftUIAdaptor.createNormalLabel(font: Font.MKFont(20),text: "~")
+        return MKSwiftUIAdaptor.createNormalLabel(font: MKFont.font(20),text: "~")
     }()
     
     private lazy var unitLabel: UILabel = {
-        return MKSwiftUIAdaptor.createNormalLabel(font: Font.MKFont(13),text: "Byte")
+        return MKSwiftUIAdaptor.createNormalLabel(font: MKFont.font(13),text: "Byte")
     }()
     
     private lazy var rawDataField: MKSwiftTextField = {
         let textField = MKSwiftUIAdaptor.createTextField(placeholder: "",
                                                          textType: .hexCharOnly)
-        textField.font = Font.MKFont(13)
+        textField.font = MKFont.font(13)
         textField.textChangedBlock = { [weak self] text in
             self?.textFieldValueChanged(text, textType: .rawDataType)
         }

@@ -10,6 +10,25 @@ import UIKit
 import CommonCrypto
 import zlib
 
+// Bundle 扩展
+extension Bundle {
+    public static var myModule: Bundle {
+        return ResourceHelper.bundle
+    }
+}
+
+// MARK: - UIColor Extension
+
+extension UIColor {
+    var isDark: Bool {
+        var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
+        self.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        // Calculate luminance (0-1)
+        let luminance = 0.2126 * red + 0.7152 * green + 0.0722 * blue
+        return luminance < 0.5
+    }
+}
 
 public extension String {
     // MARK: - Size Calculations

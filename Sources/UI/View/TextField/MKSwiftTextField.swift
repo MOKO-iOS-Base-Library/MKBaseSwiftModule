@@ -57,7 +57,7 @@ public class MKSwiftTextField: UITextField {
         
         autocorrectionType = .no
         autocapitalizationType = .none
-        textColor = Color.defaultText
+        textColor = MKColor.defaultText
     }
     
     deinit {
@@ -95,7 +95,7 @@ public class MKSwiftTextField: UITextField {
         )
         
         let attributes: [NSAttributedString.Key: Any] = [
-            .foregroundColor: Color.rgb(220, 220, 220),
+            .foregroundColor: MKColor.rgb(220, 220, 220),
             .font: font
         ]
         
