@@ -141,22 +141,6 @@ public enum MKFont {
     return image
 }
 
-public class ResourceHelper {
-    public static var bundle: Bundle {
-        #if SWIFT_PACKAGE
-        return Bundle.module
-        #else
-        // 对于非 SPM 环境（如主工程或其他 SPM）
-        return Bundle(for: ResourceHelper.self)
-        #endif
-    }
-}
-
-public func moduleIcon(name: String, in bundle: Bundle? = nil) -> UIImage? {
-    let targetBundle = bundle ?? ResourceHelper.bundle
-    return UIImage(named: name, in: targetBundle, compatibleWith: nil)
-}
-
 // MARK: - Colors
 public enum MKColor {
     public static func rgb(_ r: CGFloat, _ g: CGFloat, _ b: CGFloat, _ a: CGFloat = 1.0) -> UIColor {

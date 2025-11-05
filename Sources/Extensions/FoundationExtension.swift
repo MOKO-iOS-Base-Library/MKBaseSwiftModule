@@ -7,15 +7,6 @@
 
 import Foundation
 import UIKit
-import CommonCrypto
-import zlib
-
-// Bundle 扩展
-extension Bundle {
-    public static var myModule: Bundle {
-        return ResourceHelper.bundle
-    }
-}
 
 // MARK: - UIColor Extension
 

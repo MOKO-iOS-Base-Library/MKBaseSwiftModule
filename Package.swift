@@ -22,7 +22,6 @@ let package = Package(
             ],
             path: "Sources",
             resources: [
-                .process("Assets")
             ],
             swiftSettings: [
                 .define("DEBUG", .when(configuration: .debug)),
