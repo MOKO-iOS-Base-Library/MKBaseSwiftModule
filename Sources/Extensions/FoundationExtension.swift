@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - UIColor Extension
 
-extension UIColor {
+public extension UIColor {
     var isDark: Bool {
         var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0
         self.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
@@ -343,7 +343,7 @@ public extension String {
     static let isUrl = "[a-zA-z]+://[^\\s]*"
 }
 
-extension Array {
+public extension Array {
     // MARK: - Plist
     
     static func mk_array(withPlistData plist: Data) -> [Any]? {
@@ -401,7 +401,7 @@ extension Array {
     }
 }
 
-extension Array where Element: Equatable {
+public extension Array where Element: Equatable {
     mutating func mk_removeFirstObject() {
         if !isEmpty {
             removeFirst()
@@ -415,7 +415,7 @@ extension Array where Element: Equatable {
     }
 }
 
-extension Array {
+public extension Array {
     mutating func mk_removeLastObject() {
         if !isEmpty {
             removeLast()
@@ -458,7 +458,7 @@ extension Array {
     }
 }
 
-extension NSArray {
+public extension NSArray {
     static func mk_array(withPlistData plist: Data) -> NSArray? {
         do {
             let array = try PropertyListSerialization.propertyList(from: plist, options: .mutableContainersAndLeaves, format: nil)
@@ -474,7 +474,7 @@ extension NSArray {
     }
 }
 
-extension Dictionary {
+public extension Dictionary {
     // MARK: - Dictionary Convertor
     
     static func mk_dictionary(withPlistData plist: Data) -> [AnyHashable: Any]? {
@@ -697,7 +697,7 @@ extension Dictionary {
     }
 }
 
-extension Dictionary where Key == AnyHashable {
+public extension Dictionary where Key == AnyHashable {
     static func mk_dictionary(withXML xml: Any) -> [AnyHashable: Any]? {
         // XML parsing implementation would go here
         // This is complex and would require a separate XML parser implementation
@@ -705,7 +705,7 @@ extension Dictionary where Key == AnyHashable {
     }
 }
 
-extension NSDictionary {
+public extension NSDictionary {
     @objc static func mk_dictionary(withPlistData plist: Data) -> NSDictionary? {
         guard !plist.isEmpty else { return nil }
         do {
@@ -793,7 +793,7 @@ extension NSDictionary {
     }
 }
 
-extension NSMutableDictionary {
+public extension NSMutableDictionary {
     @objc func mk_popObject(forKey aKey: Any) -> Any? {
         guard let key = aKey as? NSCopying else { return nil }
         let value = self[key]
@@ -813,7 +813,7 @@ extension NSMutableDictionary {
     }
 }
 
-extension NSNumber {
+public extension NSNumber {
     @MainActor @objc static func mk_number(with string: String) -> NSNumber? {
         let str = string.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         guard !str.isEmpty else { return nil }
@@ -858,7 +858,7 @@ extension NSNumber {
 }
 
 
-extension DateFormatter {
+public extension DateFormatter {
     @objc static func dateFormatter() -> DateFormatter {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .gregorian)
