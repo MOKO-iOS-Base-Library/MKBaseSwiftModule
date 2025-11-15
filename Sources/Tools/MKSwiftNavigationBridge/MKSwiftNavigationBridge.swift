@@ -29,6 +29,7 @@ public final class MKSwiftNavigationBridge: NSObject {
         public var animationEnabled: Bool = true
         public var modalPresentationStyle: UIModalPresentationStyle = .fullScreen
         public var shouldSetCurrentNavControllerAutomatically: Bool = true
+        public var enableGestureBack: Bool = true
         
         public static let `default` = NavigationConfig()
     }
@@ -93,6 +94,7 @@ public final class MKSwiftNavigationBridge: NSObject {
         
         if shared.config.shouldSetCurrentNavControllerAutomatically {
             shared.currentNavigationController = navigationController
+            shared.enableGestureRecognizerIfNeeded()
         }
     }
     
@@ -119,12 +121,18 @@ public final class MKSwiftNavigationBridge: NSObject {
         currentNavigationController = navigationController
         if let navController = navigationController {
             addToNavigationStack(navController)
+            enableGestureRecognizerIfNeeded()
         }
     }
     
     /// 清除当前导航控制器引用
     public func clearCurrentNavigationController() {
         currentNavigationController = nil
+    }
+    
+    /// 刷新导航上下文
+    public func refreshNavigationContext() {
+        enableGestureRecognizerIfNeeded()
     }
     
     // MARK: 导航操作
@@ -134,6 +142,7 @@ public final class MKSwiftNavigationBridge: NSObject {
     public func popViewController(animated: Bool? = nil) {
         let shouldAnimate = animated ?? config.animationEnabled
         currentNavigationController?.popViewController(animated: shouldAnimate)
+        enableGestureRecognizerIfNeeded()
     }
     
     /// 返回到根页面
@@ -141,6 +150,7 @@ public final class MKSwiftNavigationBridge: NSObject {
     public func popToRootViewController(animated: Bool? = nil) {
         let shouldAnimate = animated ?? config.animationEnabled
         currentNavigationController?.popToRootViewController(animated: shouldAnimate)
+        enableGestureRecognizerIfNeeded()
     }
     
     /// 关闭模态页面
@@ -155,6 +165,7 @@ public final class MKSwiftNavigationBridge: NSObject {
     private func performPushToUIKit(_ viewController: UIViewController, animated: Bool) {
         if let navController = currentNavigationController {
             navController.pushViewController(viewController, animated: animated)
+            enableGestureRecognizerIfNeeded()
         } else {
             fallbackPushViewController(viewController, animated: animated)
         }
@@ -184,6 +195,8 @@ public final class MKSwiftNavigationBridge: NSObject {
             topViewController.present(navController, animated: animated)
             setCurrentNavigationController(navController)
         }
+        
+        enableGestureRecognizerIfNeeded()
     }
     
     private func findTopViewController() -> UIViewController? {
@@ -212,8 +225,25 @@ public final class MKSwiftNavigationBridge: NSObject {
     }
     
     private func setupBackButton<Content: View>(for hostingController: UIHostingController<Content>) {
-        // 这里可以配置自定义的返回按钮
-        // 例如设置 leftBarButtonItem 等
+        // 确保 SwiftUI 页面支持手势返回
+        hostingController.navigationItem.largeTitleDisplayMode = .never
+    }
+    
+    /// 启用手势返回识别器
+    private func enableGestureRecognizerIfNeeded() {
+        guard config.enableGestureBack else { return }
+        
+        if let navController = currentNavigationController {
+            navController.interactivePopGestureRecognizer?.isEnabled = true
+            // 确保手势代理不为空
+            if navController.interactivePopGestureRecognizer?.delegate == nil {
+                navController.interactivePopGestureRecognizer?.delegate = self
+            }
+            
+            #if DEBUG
+            print("[MKSwiftNavigationBridge] 手势返回已启用 - VC数量: \(navController.viewControllers.count)")
+            #endif
+        }
     }
     
     private func addToNavigationStack(_ navigationController: UINavigationController) {
@@ -239,6 +269,7 @@ public final class MKSwiftNavigationBridge: NSObject {
         if config.shouldSetCurrentNavControllerAutomatically,
            let viewController = notification.object as? UIViewController {
             currentNavigationController = viewController.navigationController
+            enableGestureRecognizerIfNeeded()
         }
     }
     
@@ -250,6 +281,14 @@ public final class MKSwiftNavigationBridge: NSObject {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+extension MKSwiftNavigationBridge: UIGestureRecognizerDelegate {
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        // 允许手势返回
+        return true
     }
 }
 
@@ -388,57 +427,3 @@ public extension MKSwiftNavigationBridge {
         }
     }
 }
-
-// MARK: - 使用示例
-/*
-// 在 SwiftUI 中的使用示例：
-struct MySwiftUIView: View {
-    var body: some View {
-        VStack {
-            // 推送 UIKit 页面
-            Button("Push to UIKit") {
-                MKSwiftNavigationBridge.shared.pushToUIKit(MyUIKitViewController.self)
-            }
-            
-            // 推送 SwiftUI 页面（使用闭包）
-            Button("Push to SwiftUI") {
-                MKSwiftNavigationBridge.shared.pushToSwiftUI {
-                    AnotherSwiftUIView()
-                }
-            }
-            
-            // 模态呈现 SwiftUI 页面（使用闭包）
-            Button("Present SwiftUI") {
-                MKSwiftNavigationBridge.shared.presentSwiftUI {
-                    ModalSwiftUIView()
-                }
-            }
-            
-            // 异步导航
-            Button("Async Navigation") {
-                Task {
-                    await MKSwiftNavigationBridge.shared.pushToUIKitAsync(MyAsyncViewController())
-                }
-            }
-        }
-    }
-}
-
-// 在 UIKit 中的使用示例：
-class MyUIKitViewController: UIViewController {
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        notifyNavigationBridge() // 自动设置当前导航控制器
-    }
-    
-    func exampleUsage() {
-        // 推送到 SwiftUI（使用闭包）
-        pushToSwiftUI {
-            MySwiftUIView()
-        }
-        
-        // 或者使用静态方法
-        MKSwiftNavigationBridge.pushSwiftUIFromUIKit(MySwiftUIView(), from: navigationController)
-    }
-}
-*/
